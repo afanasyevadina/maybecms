@@ -1,0 +1,73 @@
+<?php
+
+namespace Altenic\MaybeCms\Http\Controllers\Api;
+
+use Altenic\MaybeCms\Http\Controllers\Controller;
+use Altenic\MaybeCms\Http\Requests\PostCreateRequest;
+use Altenic\MaybeCms\Http\Requests\PostUpdateRequest;
+use Altenic\MaybeCms\Http\Resources\PostListResource;
+use Altenic\MaybeCms\Http\Resources\PostResource;
+use Altenic\MaybeCms\Models\PostType;
+use Altenic\MaybeCms\Models\Page;
+use Altenic\MaybeCms\Models\Post;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
+
+class PostController extends Controller
+{
+    use Blockable;
+
+    public function index(string $postType)
+    {
+        $model = PostType::where('plural_slug', $postType)->firstOrFail();
+        return PostListResource::collection(Post::byType($model->id)->paginate(20));
+    }
+
+    public function show(Post $post)
+    {
+        return PostResource::make($post);
+    }
+
+    public function store($postType, PostCreateRequest $request)
+    {
+        $model = PostType::where('plural_slug', $postType)->firstOrFail();
+        $post = $model->posts()->create($request->validated());
+        return response()->json([
+            'status' => 'success',
+            'data' => PostResource::make($post),
+        ], 201);
+    }
+
+    public function update(Post $post, PostUpdateRequest $request)
+    {
+        $post->update($request->safe()->except(['blocks', 'meta', 'fields', 'relations']));
+        $this->updateBlocks($post, $request->input('blocks') ?? []);
+        foreach ($request->input('fields') ?? [] as $field) {
+            $post->fields()->updateOrCreate([
+                'slug' => $field['slug'],
+            ], [
+                'type' => $field['type'],
+                'title' => $field['title'],
+                'content' => $field['content'],
+            ]);
+        }
+        foreach ($request->input('relations') as $relation) {
+            $modelRelation = $post->relations()->find($relation['id']);
+            $relatedPosts = $modelRelation?->type == 'has-one' ? [$relation['related_post']] : ($relation['related_posts'] ?? []);
+            $post->posts()->wherePivot('relation_id', $modelRelation?->id)->whereNotIn('related_post_id', $relatedPosts)->detach();
+            $post->posts()->attach(array_filter($relatedPosts), [
+                'relation_id' => $modelRelation?->id,
+            ]);
+        }
+        return response()->json([
+            'status' => 'success',
+            'data' => PostResource::make($post),
+        ]);
+    }
+
+    public function destroy(Page $post)
+    {
+        $post->delete();
+        return response()->noContent();
+    }
+}
