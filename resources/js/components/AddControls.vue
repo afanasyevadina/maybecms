@@ -51,8 +51,8 @@ export default {
         }
     },
     mounted() {
-        this.getJson(`/api/admin/primitives`, json => this.primitives = json.data)
-        this.getJson(`/api/admin/presets`, json => this.presets = json.data)
+        this.getJson(`/api/primitives`, json => this.primitives = json.data)
+        this.getJson(`/api/presets`, json => this.presets = json.data)
     }
 }
 </script>

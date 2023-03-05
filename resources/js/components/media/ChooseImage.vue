@@ -33,7 +33,7 @@
                                     <img class="preview-img img-fluid mb-3 border bg-light" :src="activeMedia.path" alt="">
                                     <div>Original name: {{ activeMedia.original_name }}</div>
                                     <div>Size: {{ formatSize(activeMedia.size) }}</div>
-                                    <div>Uploaded at: {{ activeMedia.created_at }}</div>
+                                    <div>Uploaded at: {{ formatDate(activeMedia.created_at) }}</div>
                                 </div>
                             </div>
                         </div>
@@ -62,7 +62,7 @@ export default {
         }
     },
     mounted() {
-        this.getJson(`/api/admin/files?type=image`,json => {
+        this.getJson(`/api/files?type=image`,json => {
                 this.images = json
                 this.loading = false
             })

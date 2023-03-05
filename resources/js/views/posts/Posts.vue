@@ -12,32 +12,8 @@
             </div>
             <template v-else>
                 <table class="table table-striped mb-4">
-                    <thead>
+                    <tbody v-if="!posts.data.length">
                     <tr>
-                        <th>#</th>
-                        <th>Title</th>
-                        <th>Last update</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <template v-for="post in posts.data" :key="post.id">
-                        <tr>
-                            <td>{{ post.id }}</td>
-                            <td>{{ post.title }}</td>
-                            <td>{{ post.updated_at }}</td>
-                            <td class="text-end text-nowrap">
-                                <router-link :to="`/${postType}/${post.id}`" class="btn btn-light me-2">
-                                    <i class="fas fa-pen"></i>
-                                </router-link>
-                                <a href="#" class="btn btn-light" data-bs-toggle="modal" :data-bs-target="`#delete-post-${post.id}`">
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <DeletePost :id="post.id"></DeletePost>
-                    </template>
-                    <tr v-if="!posts.data.length">
                         <td colspan="5" class="text-center py-3">
                             No {{ (model.plural_title || '').toLowerCase() }} yet
                             <br>
@@ -47,6 +23,34 @@
                         </td>
                     </tr>
                     </tbody>
+                    <template v-else>
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Last update</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <template v-for="post in posts.data" :key="post.id">
+                            <tr>
+                                <td>{{ post.id }}</td>
+                                <td>{{ post.title }}</td>
+                                <td>{{ formatDate(post.updated_at) }}</td>
+                                <td class="text-end text-nowrap">
+                                    <router-link :to="{name: 'Post', params: {postType: postType, id: post.id}}" class="btn btn-light me-2">
+                                        <i class="fas fa-pen"></i>
+                                    </router-link>
+                                    <a href="#" class="btn btn-light" data-bs-toggle="modal" :data-bs-target="`#delete-post-${post.id}`">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <DeletePost :id="post.id"></DeletePost>
+                        </template>
+                        </tbody>
+                    </template>
                 </table>
             </template>
         </div>
@@ -57,6 +61,7 @@
 <script>
 import CreatePost from "./CreatePost.vue";
 import DeletePost from "./DeletePost.vue";
+import {mapGetters} from 'vuex';
 
 export default {
     name: 'Posts',
@@ -74,12 +79,15 @@ export default {
         }
     },
     computed: {
+        ...mapGetters([
+            'getPostTypeBySlug'
+        ]),
         model: function () {
-            return this.$root.$data.postTypes.find(v => v.plural_slug === this.postType || v.slug === this.postType) || {}
+            return this.getPostTypeBySlug(this.postType)
         }
     },
     mounted() {
-        this.getJson(`/api/admin/${this.postType}`, json => {
+        this.getJson(`/api/posts/${this.postType}`, json => {
             this.posts = json
             this.loading = false
         })

@@ -2,6 +2,6 @@
 
 return [
     'user_model' => 'App\\Models\\User',
-    'admin_prefix' => 'maybecms',
+    'admin_prefix' => 'admin',
     'api_prefix' => 'admin',
 ];

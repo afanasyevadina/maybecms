@@ -24,7 +24,7 @@ export default {
         }
     },
     mounted() {
-        this.getJson(`/api/admin/${this.relation.related_model?.plural_slug}`,json => this.options = json.data)
+        this.getJson(`/api/posts/${this.relation.related_model?.slug}`,json => this.options = json.data)
     }
 }
 </script>

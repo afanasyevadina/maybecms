@@ -24,7 +24,7 @@ class AttachmentTest extends TestCase
 
     public function test_create_attachment_unauthorized()
     {
-        $this->postJson('/api/admin/attachments')
+        $this->postJson('/api/attachments')
             ->assertForbidden()
             ->assertJson([
                 'status' => 'error',
@@ -35,7 +35,7 @@ class AttachmentTest extends TestCase
     public function test_create_attachment_permission_denied()
     {
         $this->actingAs(app(UserFactory::class)->create(), 'sanctum');
-        $this->postJson('/api/admin/attachments')
+        $this->postJson('/api/attachments')
             ->assertForbidden()
             ->assertJson([
                 'status' => 'error',
@@ -46,7 +46,7 @@ class AttachmentTest extends TestCase
     public function test_create_attachment_validation_failed_empty_body()
     {
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
-        $this->postJson('/api/admin/attachments')
+        $this->postJson('/api/attachments')
             ->assertStatus(422)
             ->assertJson([
                 'status' => 'error',
@@ -63,7 +63,7 @@ class AttachmentTest extends TestCase
     public function test_create_attachment_validation_failed_incorrect_type()
     {
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
-        $this->postJson('/api/admin/attachments', [
+        $this->postJson('/api/attachments', [
             'attachable_type' => Block::class,
             'attachable_id' => app(BlockFactory::class)->create(['type' => 'file'])->id,
             'type' => 'invalid-type',
@@ -82,7 +82,7 @@ class AttachmentTest extends TestCase
     public function test_create_attachment_validation_failed_incorrect_attachable_type()
     {
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
-        $this->postJson('/api/admin/attachments', [
+        $this->postJson('/api/attachments', [
             'attachable_type' => 'invalid-type',
             'attachable_id' => app(BlockFactory::class)->create(['type' => 'file'])->id,
             'type' => 'file',
@@ -101,7 +101,7 @@ class AttachmentTest extends TestCase
     public function test_create_attachment_validation_failed_incorrect_attachable_id()
     {
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
-        $this->postJson('/api/admin/attachments', [
+        $this->postJson('/api/attachments', [
             'attachable_type' => Block::class,
             'attachable_id' => Block::max('id') + 1,
             'type' => 'file',
@@ -120,7 +120,7 @@ class AttachmentTest extends TestCase
     public function test_create_attachment_validation_failed_incorrect_file()
     {
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
-        $this->postJson('/api/admin/attachments', [
+        $this->postJson('/api/attachments', [
             'attachable_type' => Block::class,
             'attachable_id' => app(BlockFactory::class)->create(['type' => 'file'])->id,
             'type' => 'file',
@@ -139,7 +139,7 @@ class AttachmentTest extends TestCase
     public function test_create_attachment_validation_failed_incorrect_image()
     {
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
-        $this->postJson('/api/admin/attachments', [
+        $this->postJson('/api/attachments', [
             'attachable_type' => Block::class,
             'attachable_id' => app(BlockFactory::class)->create(['type' => 'image'])->id,
             'type' => 'image',
@@ -158,7 +158,7 @@ class AttachmentTest extends TestCase
     public function test_create_attachment_validation_failed_incorrect_video()
     {
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
-        $this->postJson('/api/admin/attachments', [
+        $this->postJson('/api/attachments', [
             'attachable_type' => Block::class,
             'attachable_id' => app(BlockFactory::class)->create(['type' => 'video'])->id,
             'type' => 'video',
@@ -185,7 +185,7 @@ class AttachmentTest extends TestCase
             'type' => 'file',
             'file' => $uploadedFile,
         ];
-        $this->postJson('/api/admin/attachments', $data)
+        $this->postJson('/api/attachments', $data)
             ->assertCreated()
             ->assertJson([
                 'status' => 'success',
@@ -218,7 +218,7 @@ class AttachmentTest extends TestCase
             'type' => 'image',
             'file' => $uploadedFile,
         ];
-        $this->postJson('/api/admin/attachments', $data)
+        $this->postJson('/api/attachments', $data)
             ->assertCreated()
             ->assertJson([
                 'status' => 'success',
@@ -251,7 +251,7 @@ class AttachmentTest extends TestCase
             'type' => 'video',
             'file' => $uploadedFile,
         ];
-        $this->postJson('/api/admin/attachments', $data)
+        $this->postJson('/api/attachments', $data)
             ->assertCreated()
             ->assertJson([
                 'status' => 'success',
@@ -276,7 +276,7 @@ class AttachmentTest extends TestCase
 
     public function test_delete_attachment_unauthorized()
     {
-        $this->deleteJson('/api/admin/attachments/' . app(AttachmentFactory::class)->create()->id)
+        $this->deleteJson('/api/attachments/' . app(AttachmentFactory::class)->create()->id)
             ->assertForbidden()
             ->assertJson([
                 'status' => 'error',
@@ -287,7 +287,7 @@ class AttachmentTest extends TestCase
     public function test_delete_attachment_permission_denied()
     {
         $this->actingAs(app(UserFactory::class)->create(), 'sanctum');
-        $this->deleteJson('/api/admin/attachments/' . app(AttachmentFactory::class)->create()->id)
+        $this->deleteJson('/api/attachments/' . app(AttachmentFactory::class)->create()->id)
             ->assertForbidden()
             ->assertJson([
                 'status' => 'error',
@@ -298,7 +298,7 @@ class AttachmentTest extends TestCase
     public function test_delete_attachment_not_found()
     {
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
-        $this->deleteJson('/api/admin/attachments/' . Attachment::max('id') + 1)
+        $this->deleteJson('/api/attachments/' . Attachment::max('id') + 1)
             ->assertNotFound()
             ->assertJson([
                 'status' => 'error',
@@ -310,7 +310,7 @@ class AttachmentTest extends TestCase
     {
         $attachment = app(AttachmentFactory::class)->create();
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
-        $this->deleteJson('/api/admin/attachments/' . $attachment->id)
+        $this->deleteJson('/api/attachments/' . $attachment->id)
             ->assertNoContent();
         $this->assertDatabaseMissing((new Attachment)->getTable(), [
             'id' => $attachment->id,

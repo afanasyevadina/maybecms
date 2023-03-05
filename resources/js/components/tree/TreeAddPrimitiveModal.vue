@@ -21,7 +21,7 @@
 
 <script>
 export default {
-    name: "AddPrimitive",
+    name: "TreeAddPrimitiveModal",
     props: {
         modalKey: {
             type: String
@@ -33,7 +33,7 @@ export default {
         }
     },
     mounted() {
-        this.getJson(`/api/admin/primitives`, json => this.primitives = json.data)
+        this.getJson(`/api/primitives`, json => this.primitives = json.data)
     }
 }
 </script>

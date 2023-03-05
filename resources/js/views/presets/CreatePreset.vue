@@ -28,7 +28,7 @@ export default {
     },
     methods: {
         save: function () {
-            this.postJson(`/api/admin/presets`, this.newPreset, json => this.$router.push(`/presets/${json.data.id}`))
+            this.postJson(`/api/presets`, this.newPreset, json => this.$router.push({ name: 'Preset', params: {id: json.data.id} }))
         }
     }
 }

@@ -59,14 +59,14 @@ export default {
                 let formData = new FormData()
                 formData.append('file', this.filePreview)
                 if(this.block.attachment?.id) {
-                    request.open('POST', `/api/admin/attachments/${this.block.attachment?.id}`)
+                    request.open('POST', `/api/attachments/${this.block.attachment?.id}`)
                 } else {
-                    request.open('POST', `/api/admin/attachments`)
+                    request.open('POST', `/api/attachments`)
                     formData.append('type', 'file')
                     formData.append('attachable_id', this.block.id)
                     formData.append('attachable_type', this.block.class_name)
                 }
-                request.setRequestHeader('Authorization', `Bearer ${this.$root.$data.user.token}`)
+                request.setRequestHeader('Authorization', `Bearer ${this.$store.getters.apiToken}`)
                 request.responseType = 'json'
                 request.send(formData)
                 request.onload = () => {
@@ -76,7 +76,7 @@ export default {
             }
         },
         remove: function () {
-            this.deleteRequest(`/api/admin/attachments/${this.block.attachment?.id}`, () => {
+            this.deleteRequest(`/api/attachments/${this.block.attachment?.id}`, () => {
                     this.block.attachment = null
                     document.querySelectorAll('.modal-backdrop').forEach(el => el.remove())
                 })

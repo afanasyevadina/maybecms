@@ -1,7 +1,7 @@
 <template>
     <div class="vh-100 editor-page bg-white" v-if="page.id">
         <div class="px-3 d-flex justify-content-between align-items-center border-bottom">
-            <router-link to="/pages" class="btn btn-sm btn-light">
+            <router-link :to="{name: 'Pages'}" class="btn btn-sm btn-light">
                 <i class="fas fa-chevron-left"></i>
                 Back to pages
             </router-link>
@@ -12,7 +12,7 @@
         </div>
         <div class="editor-wrapper">
             <div class="editor-tree border-end overflow-auto p-3">
-                <tree-section :block="page" :depth="0" :order="0" @activate="activate"></tree-section>
+                <tree-section :block="page" :depth="0" :order="0" :count="page.blocks.length" @activate="activate" @update="loadPage"></tree-section>
             </div>
             <div class="editor-preview overflow-auto p-3">
                 <preview-section :block="page"></preview-section>
@@ -62,11 +62,11 @@ export default {
     methods: {
         loadPage: function () {
             this.page = {}
-            this.getJson(`/api/admin/pages/${this.id}`, json => this.page = json.data)
+            this.getJson(`/api/pages/${this.id}`, json => this.page = json.data)
         },
         save: function () {
             this.saving = true
-            this.postJson(`/api/admin/pages/${this.id}`, this.page, json => {
+            this.postJson(`/api/pages/${this.id}`, this.page, json => {
                 this.page = json.data
                 this.saving = false
             })
@@ -80,17 +80,3 @@ export default {
     }
 }
 </script>
-<style scoped>
-.editor-page {
-    display: grid;
-    grid-template-rows: 42px calc(100vh - 42px);
-}
-.editor-wrapper {
-    display: grid;
-    grid-template-rows: 50% 50%;
-    grid-template-columns: 200px 1fr;
-}
-.editor-tree {
-    grid-row: 1 / 3;
-}
-</style>

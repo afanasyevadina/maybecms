@@ -28,7 +28,7 @@ export default {
     },
     methods: {
         save: function () {
-            this.postJson(`/api/admin/post-types`, this.newModel, () => location.reload())
+            this.postJson(`/api/post-types`, this.newModel, () => location.reload())
         }
     }
 }

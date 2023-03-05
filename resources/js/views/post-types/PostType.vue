@@ -70,7 +70,7 @@
                     </div>
                     <div class="col">
                         <label>Related model</label>
-                        <select v-model="relation.related_model_id" class="form-control">
+                        <select v-model="relation.related_post_type_id" class="form-control">
                             <option :value="relatedPostType.id" v-for="relatedPostType in models" :key="relatedPostType.id">{{ relatedPostType.title }}</option>
                         </select>
                     </div>
@@ -116,14 +116,14 @@
                                 </select>
                             </div>
                             <div class="mb-4">
-                                <select v-model="newRelation.related_model_id" class="form-control">
+                                <select v-model="newRelation.related_post_type_id" class="form-control">
                                     <option :value="null">Choose related post type</option>
                                     <option :value="relatedPostType.id" v-for="relatedPostType in models" :key="relatedPostType.id">{{ relatedPostType.title }}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button class="btn btn-success" data-bs-dismiss="modal" :disabled="!newRelation.type || !newRelation.related_model_id">Save</button>
+                            <button class="btn btn-success" data-bs-dismiss="modal" :disabled="!newRelation.type || !newRelation.related_post_type_id">Save</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         </div>
                     </form>
@@ -143,7 +143,7 @@
                     </thead>
                     <tbody>
                     <tr v-for="relation in model.inverse_relations" :key="relation.id">
-                        <td>{{ relation.postTypes?.title }}</td>
+                        <td>{{ relation.model?.title }}</td>
                         <td>{{ relation.title }}</td>
                         <td>{{ relation.type }}</td>
                     </tr>
@@ -169,14 +169,14 @@ export default {
             primitives: [],
             relations: [],
             models: [],
-            newRelation: {type: null, related_model_id: null},
+            newRelation: {type: null, related_post_type_id: null},
             saving: false
         }
     },
     methods: {
         save: function () {
             this.saving = true
-            this.postJson(`/api/admin/post-types/${this.id}`, this.model, json => {
+            this.postJson(`/api/post-types/${this.id}`, this.model, json => {
                     this.model = json.data
                     this.saving = false
                 })
@@ -188,16 +188,16 @@ export default {
             })
         },
         addRelation: function () {
-            let model = this.models.find(v => v.id === this.newRelation.related_model_id)
+            let model = this.models.find(v => v.id === this.newRelation.related_post_type_id)
             this.model.relations.push({...this.newRelation, title: this.newRelation.type === 'has-one' ? model.title : model.plural_title})
             this.newRelation = {type: null, related_post_type_id: null}
         }
     },
     mounted() {
-        this.getJson(`/api/admin/post-types/${this.id}`, json => this.model = json.data)
-        this.getJson(`/api/admin/primitives`, json => this.primitives = json.data)
-        this.getJson(`/api/admin/relations`, json => this.relations = json.data)
-        this.getJson(`/api/admin/post-types`, json => this.models = json.data)
+        this.getJson(`/api/post-types/${this.id}`, json => this.model = json.data)
+        this.getJson(`/api/primitives`, json => this.primitives = json.data)
+        this.getJson(`/api/relations`, json => this.relations = json.data)
+        this.getJson(`/api/post-types`, json => this.models = json.data)
     }
 }
 </script>

@@ -25,8 +25,8 @@ export default {
     props: ['id'],
     methods: {
         remove: function () {
-            this.deleteRequest(`/api/admin/posts/${this.id}`,() => {
-                    this.$router.push(`/${this.postType}`)
+            this.deleteRequest(`/api/posts/${this.id}`,() => {
+                    this.$router.push({ name: 'Posts', params: {postType: this.postType} })
                     location.reload()
                 })
         }

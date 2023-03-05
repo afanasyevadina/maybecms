@@ -24,22 +24,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('/api/admin')->middleware('api')->group(function() {
+Route::prefix('/api')->middleware('api')->group(function() {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::get('/pages', [PageController::class, 'index']);
+    Route::get('/pages/home', [PageController::class, 'home']);
+    Route::get('/pages/{pageId}', [PageController::class, 'show']);
+
+    Route::get('/posts/{postType}', [PostController::class, 'index']);
+    Route::get('/posts/{postType}/{post}', [PostController::class, 'show']);
 
     Route::middleware(['auth:sanctum', 'can:admin'])->group(function () {
         Route::get('/settings', [SettingController::class, 'index']);
         Route::post('/settings', [SettingController::class, 'update']);
-
-        Route::get('/pages', [PageController::class, 'index']);
-        Route::get('/pages/{page}', [PageController::class, 'show']);
         Route::post('/pages', [PageController::class, 'store']);
         Route::post('/pages/{page}', [PageController::class, 'update']);
         Route::delete('/pages/{page}', [PageController::class, 'destroy']);
 
         Route::post('/blocks', [BlockController::class, 'store']);
-        Route::post('/blocks/{block}', [BlockController::class, 'update']);
+        Route::post('/blocks/{block}/clone', [BlockController::class, 'clone']);
         Route::delete('/blocks/{block}', [BlockController::class, 'destroy']);
 
         Route::post('/attachments', [AttachmentController::class, 'store']);
@@ -66,11 +70,8 @@ Route::prefix('/api/admin')->middleware('api')->group(function() {
 
         Route::get('/primitives', [PrimitiveController::class, 'index']);
         Route::get('/relations', [RelationController::class, 'index']);
-
-        Route::get('/{postType}', [PostController::class, 'index']);
-        Route::get('/posts/{post}', [PostController::class, 'show']);
-        Route::post('/{postType}', [PostController::class, 'store']);
-        Route::post('/posts/{post}', [PostController::class, 'update']);
-        Route::delete('/posts/{post}', [PostController::class, 'destroy']);
+        Route::post('/posts/{postType}', [PostController::class, 'store']);
+        Route::post('/posts/{postType}/{post}', [PostController::class, 'update']);
+        Route::delete('/posts/{postType}/{post}', [PostController::class, 'destroy']);
     });
 });

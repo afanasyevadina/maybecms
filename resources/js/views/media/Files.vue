@@ -5,13 +5,13 @@
                 <div class="col mb-4">
                     <ul class="nav nav-tabs">
                         <li class="nav-item">
-                            <router-link to="/media/images" class="nav-link">Images</router-link>
+                            <router-link :to="{name: 'Images'}" class="nav-link">Images</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/media/video" class="nav-link">Video</router-link>
+                            <router-link :to="{name: 'Video'}" class="nav-link">Video</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/media/files" class="nav-link active">Files</router-link>
+                            <router-link :to="{name: 'Files'}" class="nav-link active">Files</router-link>
                         </li>
                     </ul>
                 </div>
@@ -67,7 +67,7 @@ export default {
         }
     },
     mounted() {
-        this.getJson(`/api/admin/files?type=file`,json => {
+        this.getJson(`/api/files?type=file`,json => {
                 this.files = json
                 this.loading = false
             })

@@ -7,6 +7,7 @@
 import './bootstrap';
 import {createApp} from 'vue';
 import router from './router'
+import store from './store'
 
 import App from "./App.vue";
 
@@ -19,9 +20,7 @@ import App from "./App.vue";
 window.app = createApp(App);
 
 app.use(router)
-
-import PresetField from "./components/preset/PresetField.vue";
-import PresetSection from "./components/preset/PresetSection.vue";
+app.use(store)
 
 import Text from './components/primitives/Text.vue';
 import Markdown from "./components/primitives/Markdown.vue";
@@ -48,15 +47,13 @@ import PreviewVideo from "./components/preview/primitives/PreviewVideo.vue";
 import TreeItem from "./components/tree/TreeItem.vue";
 import TreeSection from "./components/tree/TreeSection.vue";
 import TreePrimitive from "./components/tree/TreePrimitive.vue";
+import TreeDropdown from "./components/tree/TreeDropdown.vue";
 
 import PreviewItem from "./components/preview/PreviewItem.vue";
 import PreviewSection from "./components/preview/PreviewSection.vue";
 import PreviewPrimitive from "./components/preview/PreviewPrimitive.vue";
 
 import AddControls from "./components/AddControls.vue";
-
-app.component('preset-field', PresetField);
-app.component('preset-section', PresetSection);
 
 app.component('text', Text);
 app.component('markdown', Markdown);
@@ -83,6 +80,7 @@ app.component('has-many', HasMany);
 app.component('tree-item', TreeItem);
 app.component('tree-section', TreeSection);
 app.component('tree-primitive', TreePrimitive);
+app.component('tree-dropdown', TreeDropdown);
 
 app.component('preview-item', PreviewItem);
 app.component('preview-section', PreviewSection);

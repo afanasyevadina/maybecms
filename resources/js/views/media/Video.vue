@@ -5,13 +5,13 @@
                 <div class="col mb-4">
                     <ul class="nav nav-tabs">
                         <li class="nav-item">
-                            <router-link to="/media/images" class="nav-link">Images</router-link>
+                            <router-link :to="{name: 'Images'}" class="nav-link">Images</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/media/video" class="nav-link active">Video</router-link>
+                            <router-link :to="{name: 'Video'}" class="nav-link active">Video</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/media/files" class="nav-link">Files</router-link>
+                            <router-link :to="{name: 'Files'}" class="nav-link">Files</router-link>
                         </li>
                     </ul>
                 </div>
@@ -46,7 +46,7 @@
                             <div class="card-body">
                                 <video class="preview-img img-fluid mb-3 border bg-light" :src="activeMedia.path" controls></video>
                                 <div>Size: {{ formatSize(activeMedia.size) }}</div>
-                                <div>Uploaded at: {{ activeMedia.created_at }}</div>
+                                <div>Uploaded at: {{ formatDate(activeMedia.created_at) }}</div>
                                 <div class="text-end">
                                     <a href="#" class="btn btn-light" data-bs-toggle="modal" :data-bs-target="`#delete-file-${activeMedia.id}`">
                                         <i class="fas fa-trash"></i>
@@ -87,7 +87,7 @@ export default {
         }
     },
     mounted() {
-        this.getJson(`/api/admin/files?type=video`,json => {
+        this.getJson(`/api/files?type=video`,json => {
                 this.videos = json
                 this.loading = false
             })

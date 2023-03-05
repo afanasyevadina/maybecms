@@ -14,12 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
-Auth::routes();
-
-Route::any('/cms/{any}', function () {
-    return view('cms.index');
-})->where('any', '.*');
+//Auth::routes();

@@ -65,9 +65,9 @@ export default {
                 let request = new XMLHttpRequest()
                 let formData = new FormData()
                 formData.append('file', this.filePreview)
-                request.open('POST', `/api/admin/files`)
+                request.open('POST', `/api/files`)
                 formData.append('type', 'file')
-                request.setRequestHeader('Authorization', `Bearer ${this.$root.$data.user.token}`)
+                request.setRequestHeader('Authorization', `Bearer ${this.$store.getters.apiToken}`)
                 request.responseType = 'json'
                 request.send(formData)
                 request.onload = () => {

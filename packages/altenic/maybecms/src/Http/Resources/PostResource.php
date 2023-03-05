@@ -27,7 +27,7 @@ class PostResource extends JsonResource
             'class_name' => get_class($this->resource),
             'blocks' => BlockResource::collection($this->blocks),
             'fields' => BlockResource::collection(collect($this->postType->structure['fields'] ?? [])->map(function ($field) {
-                return $this->fields()->firstOrCreate([
+                return $this->fields()->updateOrCreate([
                     'slug' => $field['slug'],
                 ], [
                     'title' => $field['title'],

@@ -18,7 +18,6 @@ return new class extends Migration
             $table->integer('user_id')->nullable();
             $table->string('slug', 255)->nullable();
             $table->string('title', 255)->nullable();
-            $table->text('blocks')->nullable();
             $table->timestamps();
         });
     }

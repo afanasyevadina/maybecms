@@ -56,13 +56,13 @@
                     <h4 class="mb-3">Used in relations</h4>
                     <div class="border p-4 pb-2 bg-white mb-5" v-for="relation in post.inverse_relations"
                          :key="relation.id">
-                        <div class="mb-2">Post type: {{ relation.postType?.title }}</div>
+                        <div class="mb-2">Post type: {{ relation.model?.title }}</div>
                         <div class="mb-2">Relation name: {{ relation.title }}</div>
                         <div class="mb-3">Relation type: {{ relation.type }}</div>
                         <div class="btn-group w-100 border mb-3" v-for="relatedPost in relation.related_posts"
                              :key="relatedPost.id">
                             <div class="w-100 px-3 align-self-center">{{ relatedPost?.title }}</div>
-                            <router-link :to="`/${relation.postType?.plural_slug}/${relatedPost?.id}`" target="_blank"
+                            <router-link :to="{name: 'Post', params: {postType: relation.postType?.slug, id: relatedPost?.id}}" target="_blank"
                                          type="button" class="btn btn-light">
                                 <i class="fa-sharp fa-solid fa-arrow-up-right-from-square"></i>
                             </router-link>
@@ -101,14 +101,14 @@ export default {
     methods: {
         save: function () {
             this.saving = true
-            this.postJson(`/api/admin/posts/${this.id}`, this.post, json => {
+            this.postJson(`/api/posts/${this.postType}/${this.id}`, this.post, json => {
                 this.post = json.data
                 this.saving = false
             })
         }
     },
     mounted() {
-        this.getJson(`/api/admin/posts/${this.id}`, json => this.post = json.data)
+        this.getJson(`/api/posts/${this.postType}/${this.id}`, json => this.post = json.data)
         if (location.hash) this.tab = location.hash.replace('#', '')
     }
 }

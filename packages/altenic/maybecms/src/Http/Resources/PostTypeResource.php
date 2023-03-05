@@ -4,7 +4,6 @@ namespace Altenic\MaybeCms\Http\Resources;
 
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Str;
 
 class PostTypeResource extends JsonResource
 {
@@ -18,10 +17,9 @@ class PostTypeResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'plural_slug' => $this->plural_slug,
             'slug' => $this->slug,
             'title' => $this->title,
-            'plural_title' => Str::plural($this->title),
+            'plural_title' => $this->plural_title,
             'structure' => [
                 'fields' => $this->structure['fields'] ?? [],
                 'supports' => $this->structure['supports'] ?? [],

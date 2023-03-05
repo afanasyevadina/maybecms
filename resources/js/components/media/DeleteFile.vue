@@ -24,7 +24,7 @@ export default {
     props: ['modalKey'],
     methods: {
         remove: function () {
-            this.deleteRequest(`/api/admin/files/${this.id}`,() => {
+            this.deleteRequest(`/api/files/${this.id}`,() => {
                 this.hideModal()
                 this.$emit('remove')
             })

@@ -1,6 +1,6 @@
 <template>
     <div :class="block.content?.wrapperClass">
-        <video v-if="block.attachment?.file?.path" :src="block.attachment?.file?.path" alt="" :poster="block.attachment?.poster?.file?.path" :class="block.content?.class" controls preload="auto" width="300"></video>
+        <video v-if="block.attachment?.file?.path" :src="block.attachment?.file?.path" :poster="block.attachment?.poster?.file?.path" :class="block.content?.class" controls preload="auto" width="300"></video>
     </div>
 </template>
 

@@ -34,7 +34,7 @@
                                     <div class="card-body">
                                         <video class="preview-img img-fluid mb-3 border bg-light" :src="activeMedia.path" controls></video>
                                         <div>Size: {{ formatSize(activeMedia.size) }}</div>
-                                        <div>Uploaded at: {{ activeMedia.created_at }}</div>
+                                        <div>Uploaded at: {{ formatDate(activeMedia.created_at) }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -64,7 +64,7 @@ export default {
         }
     },
     mounted() {
-        this.getJson(`/api/admin/files?type=video`,json => {
+        this.getJson(`/api/files?type=video`,json => {
                 this.videos = json
                 this.loading = false
             })

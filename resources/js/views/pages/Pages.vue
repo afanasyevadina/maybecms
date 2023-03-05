@@ -27,9 +27,12 @@
                             <td>{{ page.id }}</td>
                             <td>{{ page.title }}</td>
                             <td>{{ page.user.name }}</td>
-                            <td>{{ page.updated_at }}</td>
+                            <td>{{ formatDate(page.updated_at) }}</td>
                             <td class="text-end text-nowrap">
-                                <router-link :to="`/pages/${page.id}`" class="btn btn-light me-2">
+                                <router-link :to="{name: 'SitePage', params: {id: page.slug}}" class="btn btn-light me-2" target="_blank">
+                                    <i class="fas fa-eye"></i>
+                                </router-link>
+                                <router-link :to="{name: 'Page', params: {id: page.id}}" class="btn btn-light me-2">
                                     <i class="fas fa-pen"></i>
                                 </router-link>
                                 <a href="#" class="btn btn-light" data-bs-toggle="modal" :data-bs-target="`#delete-page-${page.id}`">
@@ -74,7 +77,7 @@ export default {
         }
     },
     mounted() {
-        this.getJson(`/api/admin/pages`,json => {
+        this.getJson(`/api/pages`,json => {
                 this.pages = json
                 this.loading = false
             })

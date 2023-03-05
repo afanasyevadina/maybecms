@@ -5,7 +5,7 @@
                 <h1>Post types</h1>
                 <a href="#" data-bs-toggle="modal" data-bs-target="#add-model" class="btn btn-success">Create model</a>
             </div>
-            <div class="text-center" v-if="$root.$data.loading">
+            <div class="text-center" v-if="!postTypesInitialized">
                 <div class="spinner-grow text-secondary" role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
@@ -20,14 +20,14 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <template v-for="model in $root.$data.postTypes" :key="model.id">
+                    <template v-for="model in postTypes" :key="model.id">
                         <tr>
                             <td>{{ model.id }}</td>
                             <td>
-                                <router-link :to="`/${model.plural_slug}`">{{ model.plural_title }}</router-link>
+                                <router-link :to="{name: 'Posts', params: {postType: model.slug}}">{{ model.plural_title }}</router-link>
                             </td>
                             <td class="text-end text-nowrap">
-                                <router-link :to="`/post-types/${model.id}`" class="btn btn-light me-2">
+                                <router-link :to="{name: 'PostType', params: {id: model.id}}" class="btn btn-light me-2">
                                     <i class="fas fa-pen"></i>
                                 </router-link>
                                 <a href="#" class="btn btn-light" data-bs-toggle="modal" :data-bs-target="`#delete-model-${model.id}`">
@@ -37,7 +37,7 @@
                         </tr>
                         <delete-model :id="model.id"></delete-model>
                     </template>
-                    <tr v-if="!$root.$data.postTypes.length">
+                    <tr v-if="!postTypes.length">
                         <td colspan="5" class="text-center py-3">
                             No models yet
                             <br>
@@ -57,11 +57,19 @@
 <script>
 import CreatePostType from "./CreatePostType.vue";
 import DeletePostType from "./DeletePostType.vue";
+import {mapState} from "vuex";
+
 export default {
     name: 'PostTypes',
     components: {
         'create-model': CreatePostType,
         'delete-model': DeletePostType
+    },
+    computed: {
+        ...mapState([
+            'postTypes',
+            'postTypesInitialized',
+        ])
     }
 }
 </script>

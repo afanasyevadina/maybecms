@@ -39,7 +39,7 @@ class Page extends Model
 
     public function blocks(): MorphMany
     {
-        return $this->morphMany(Block::class, 'attachable');
+        return $this->morphMany(Block::class, 'attachable')->orderBy('order');
     }
 
     public function meta(): MorphOne

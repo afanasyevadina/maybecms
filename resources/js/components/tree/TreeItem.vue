@@ -1,6 +1,6 @@
 <template>
-    <tree-section :block="block" :depth="depth" :order="order" v-if="block.type === 'section'" @activate="activate" @remove="$emit('remove')"></tree-section>
-    <tree-primitive v-else :block="block" :depth="depth" :order="order" @activate="activate" @remove="$emit('remove')"></tree-primitive>
+    <tree-section :block="block" :depth="depth" :order="order" :count="count" v-if="block.type === 'section'" @activate="activate" @update="$emit('update')"></tree-section>
+    <tree-primitive v-else :block="block" :depth="depth" :order="order" :count="count" @activate="activate" @update="$emit('update')" @moveUp="$emit('moveUp')" @moveDown="$emit('moveDown')"></tree-primitive>
 </template>
 
 <script>
@@ -14,6 +14,9 @@ export default {
             type: Number
         },
         order: {
+            type: Number
+        },
+        count: {
             type: Number
         }
     },

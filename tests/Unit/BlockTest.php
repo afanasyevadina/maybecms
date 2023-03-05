@@ -17,7 +17,7 @@ class BlockTest extends TestCase
 
     public function test_create_block_unauthorized()
     {
-        $this->postJson('/api/admin/blocks')
+        $this->postJson('/api/blocks')
             ->assertForbidden()
             ->assertJson([
                 'status' => 'error',
@@ -28,7 +28,7 @@ class BlockTest extends TestCase
     public function test_create_block_permission_denied()
     {
         $this->actingAs(app(UserFactory::class)->create(), 'sanctum');
-        $this->postJson('/api/admin/blocks')
+        $this->postJson('/api/blocks')
             ->assertForbidden()
             ->assertJson([
                 'status' => 'error',
@@ -39,7 +39,7 @@ class BlockTest extends TestCase
     public function test_create_block_validation_failed_empty_body()
     {
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
-        $this->postJson('/api/admin/blocks')
+        $this->postJson('/api/blocks')
             ->assertStatus(422)
             ->assertJson([
                 'status' => 'error',
@@ -55,7 +55,7 @@ class BlockTest extends TestCase
     public function test_create_block_validation_failed_incorrect_type()
     {
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
-        $this->postJson('/api/admin/blocks', [
+        $this->postJson('/api/blocks', [
             'attachable_type' => Block::class,
             'attachable_id' => app(BlockFactory::class)->create(['type' => 'section'])->id,
             'type' => 'invalid-type',
@@ -73,7 +73,7 @@ class BlockTest extends TestCase
     public function test_create_block_validation_failed_incorrect_attachable_type()
     {
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
-        $this->postJson('/api/admin/blocks', [
+        $this->postJson('/api/blocks', [
             'attachable_type' => 'invalid-type',
             'attachable_id' => app(BlockFactory::class)->create(['type' => 'section'])->id,
             'type' => 'section',
@@ -91,7 +91,7 @@ class BlockTest extends TestCase
     public function test_create_block_validation_failed_incorrect_attachable_id()
     {
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
-        $this->postJson('/api/admin/blocks', [
+        $this->postJson('/api/blocks', [
             'attachable_type' => Block::class,
             'attachable_id' => Block::max('id') + 1,
             'type' => 'section',
@@ -115,7 +115,7 @@ class BlockTest extends TestCase
             'attachable_id' => app(BlockFactory::class)->create(['type' => 'section'])->id,
             'type' => 'section',
         ];
-        $this->postJson('/api/admin/blocks', $data)
+        $this->postJson('/api/blocks', $data)
             ->assertCreated()
             ->assertJson([
                 'status' => 'success',
@@ -147,7 +147,7 @@ class BlockTest extends TestCase
             'attachable_id' => app(PageFactory::class)->create()->id,
             'type' => 'section',
         ];
-        $this->postJson('/api/admin/blocks', $data)
+        $this->postJson('/api/blocks', $data)
             ->assertCreated()
             ->assertJson([
                 'status' => 'success',
@@ -169,7 +169,7 @@ class BlockTest extends TestCase
 
     public function test_update_block_unauthorized()
     {
-        $this->postJson('/api/admin/blocks/' . app(BlockFactory::class)->create()->id)
+        $this->postJson('/api/blocks/' . app(BlockFactory::class)->create()->id)
             ->assertForbidden()
             ->assertJson([
                 'status' => 'error',
@@ -180,7 +180,7 @@ class BlockTest extends TestCase
     public function test_update_block_permission_denied()
     {
         $this->actingAs(app(UserFactory::class)->create(), 'sanctum');
-        $this->postJson('/api/admin/blocks/' . app(BlockFactory::class)->create()->id)
+        $this->postJson('/api/blocks/' . app(BlockFactory::class)->create()->id)
             ->assertForbidden()
             ->assertJson([
                 'status' => 'error',
@@ -191,7 +191,7 @@ class BlockTest extends TestCase
     public function test_update_block_not_found()
     {
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
-        $this->postJson('/api/admin/blocks/' . Block::max('id') + 1)
+        $this->postJson('/api/blocks/' . Block::max('id') + 1)
             ->assertNotFound()
             ->assertJson([
                 'status' => 'error',
@@ -202,7 +202,7 @@ class BlockTest extends TestCase
     public function test_update_block_validation_failed()
     {
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
-        $this->postJson('/api/admin/blocks/' . app(BlockFactory::class)->create()->id, [
+        $this->postJson('/api/blocks/' . app(BlockFactory::class)->create()->id, [
             'active' => 123,
         ])
             ->assertStatus(422)
@@ -225,7 +225,7 @@ class BlockTest extends TestCase
             ],
             'active' => false,
         ];
-        $this->postJson('/api/admin/blocks/' . $block->id, $data)
+        $this->postJson('/api/blocks/' . $block->id, $data)
             ->assertSuccessful()
             ->assertJson([
                 'status' => 'success',
@@ -257,7 +257,7 @@ class BlockTest extends TestCase
             ],
             'active' => false,
         ];
-        $this->postJson('/api/admin/blocks/' . $block->id, $data)
+        $this->postJson('/api/blocks/' . $block->id, $data)
             ->assertSuccessful()
             ->assertJson([
                 'status' => 'success',
@@ -280,7 +280,7 @@ class BlockTest extends TestCase
 
     public function test_delete_block_unauthorized()
     {
-        $this->deleteJson('/api/admin/blocks/' . app(BlockFactory::class)->create()->id)
+        $this->deleteJson('/api/blocks/' . app(BlockFactory::class)->create()->id)
             ->assertForbidden()
             ->assertJson([
                 'status' => 'error',
@@ -291,7 +291,7 @@ class BlockTest extends TestCase
     public function test_delete_block_permission_denied()
     {
         $this->actingAs(app(UserFactory::class)->create(), 'sanctum');
-        $this->deleteJson('/api/admin/blocks/' . app(BlockFactory::class)->create()->id)
+        $this->deleteJson('/api/blocks/' . app(BlockFactory::class)->create()->id)
             ->assertForbidden()
             ->assertJson([
                 'status' => 'error',
@@ -302,7 +302,7 @@ class BlockTest extends TestCase
     public function test_delete_block_not_found()
     {
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
-        $this->deleteJson('/api/admin/blocks/' . Block::max('id') + 1)
+        $this->deleteJson('/api/blocks/' . Block::max('id') + 1)
             ->assertNotFound()
             ->assertJson([
                 'status' => 'error',
@@ -314,7 +314,7 @@ class BlockTest extends TestCase
     {
         $block = app(BlockFactory::class)->create();
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
-        $this->deleteJson('/api/admin/blocks/' . $block->id)
+        $this->deleteJson('/api/blocks/' . $block->id)
             ->assertNoContent();
         $this->assertDatabaseMissing((new Block)->getTable(), [
             'id' => $block->id,

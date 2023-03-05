@@ -20,7 +20,7 @@
 
 <script>
 export default {
-    name: "DeleteModal",
+    name: "TreeDeleteModal",
     props: {
         block: {
             type: Object
@@ -29,23 +29,13 @@ export default {
             type: String
         }
     },
-    data() {
-        return {
-            primitives: [],
-            presets: []
-        }
-    },
     methods: {
         remove: function () {
-            this.deleteRequest(`/api/admin/blocks/${this.block.id}`, () => {
+            this.deleteRequest(`/api/blocks/${this.block.id}`, () => {
                 this.hideModal()
-                this.$emit('remove')
+                this.$emit('update')
             })
         }
-    },
-    mounted() {
-        this.getJson(`/api/admin/primitives`, json => this.primitives = json.data)
-        this.getJson(`/api/admin/presets`, json => this.presets = json.data)
     }
 }
 </script>

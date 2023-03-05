@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id')->nullable();
             $table->string('slug', 255)->nullable();
-            $table->string('plural_slug', 255)->nullable();
             $table->string('title', 255)->nullable();
             $table->string('plural_title', 255)->nullable();
             $table->text('structure')->nullable();

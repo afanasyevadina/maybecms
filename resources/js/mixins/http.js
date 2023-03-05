@@ -3,16 +3,15 @@ export default {
         getJson: function (url, callback) {
             fetch(url, {
                 headers: {
-                    'Authorization': `Bearer ${this.$root.$data.user.token}`
+                    'Authorization': `Bearer ${this.$store.getters.apiToken}`
                 }
             })
                 .then(response => {
                     if (response.status === 403) {
-                        this.$root.$data.user = null
-                        localStorage.removeItem('_cms_user')
-                        this.$router.push('/login')
+                        this.$store.commit('unsetUser')
+                        this.$router.push({ name: 'Login' })
                     } else if (response.status === 404) {
-                        this.$router.push('/404')
+                        this.$router.push({ name: 'NotFound' })
                     } else {
                         return response.text()
                     }
@@ -25,14 +24,13 @@ export default {
                 body: JSON.stringify(body),
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${this.$root.$data.user.token}`
+                    'Authorization': `Bearer ${this.$store.getters.apiToken}`
                 }
             })
                 .then(response => {
                     if (response.status === 403) {
-                        this.$root.$data.user = null
-                        localStorage.removeItem('_cms_user')
-                        this.$router.push('/login')
+                        this.$store.commit('unsetUser')
+                        this.$router.push({ name: 'Login' })
                     } else {
                         return response.text()
                     }
@@ -43,14 +41,13 @@ export default {
             fetch(url, {
                 method: 'DELETE',
                 headers: {
-                    'Authorization': `Bearer ${this.$root.$data.user.token}`
+                    'Authorization': `Bearer ${this.$store.getters.apiToken}`
                 }
             })
                 .then(response => {
                     if (response.status === 403) {
-                        this.$root.$data.user = null
-                        localStorage.removeItem('_cms_user')
-                        this.$router.push('/login')
+                        this.$store.commit('unsetUser')
+                        this.$router.push({ name: 'Login' })
                     } else {
                         return callback()
                     }

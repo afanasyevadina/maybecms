@@ -19,18 +19,18 @@ class PostController extends Controller
 
     public function index(string $postType)
     {
-        $model = PostType::where('plural_slug', $postType)->firstOrFail();
+        $model = PostType::query()->where('slug', $postType)->firstOrFail();
         return PostListResource::collection(Post::byType($model->id)->paginate(20));
     }
 
-    public function show(Post $post)
+    public function show(string $postType, Post $post)
     {
         return PostResource::make($post);
     }
 
     public function store($postType, PostCreateRequest $request)
     {
-        $model = PostType::where('plural_slug', $postType)->firstOrFail();
+        $model = PostType::query()->where('slug', $postType)->firstOrFail();
         $post = $model->posts()->create($request->validated());
         return response()->json([
             'status' => 'success',
@@ -38,7 +38,7 @@ class PostController extends Controller
         ], 201);
     }
 
-    public function update(Post $post, PostUpdateRequest $request)
+    public function update(string $postType, Post $post, PostUpdateRequest $request)
     {
         $post->update($request->safe()->except(['blocks', 'meta', 'fields', 'relations']));
         $this->updateBlocks($post, $request->input('blocks') ?? []);
@@ -65,7 +65,7 @@ class PostController extends Controller
         ]);
     }
 
-    public function destroy(Page $post)
+    public function destroy(string $postType, Page $post)
     {
         $post->delete();
         return response()->noContent();

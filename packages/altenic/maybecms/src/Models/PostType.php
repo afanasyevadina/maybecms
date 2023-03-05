@@ -23,14 +23,9 @@ class PostType extends Model
         static::created(function (PostType $model) {
             $model->update([
                 'user_id' => auth()->id(),
+                'slug' => Str::plural(create_slug($model)),
+                'plural_title' => Str::plural($model->title),
             ]);
-        });
-
-        static::saved(function (PostType $model) {
-            static::withoutEvents(function () use ($model) {
-                create_slug($model);
-                $model->update(['plural_slug' => Str::plural($model->slug)]);
-            });
         });
     }
 

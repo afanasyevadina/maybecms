@@ -7,7 +7,6 @@ use Altenic\MaybeCms\Http\Requests\PostTypeCreateRequest;
 use Altenic\MaybeCms\Http\Requests\PostTypeUpdateRequest;
 use Altenic\MaybeCms\Http\Resources\PostTypeResource;
 use Altenic\MaybeCms\Models\PostType;
-use Illuminate\Support\Str;
 
 class PostTypeController extends Controller
 {
@@ -19,8 +18,7 @@ class PostTypeController extends Controller
                     'id' => $model->id,
                     'slug' => $model->slug,
                     'title' => $model->title,
-                    'plural_slug' => $model->plural_slug,
-                    'plural_title' => Str::plural($model->title),
+                    'plural_title' => $model->plural_title,
                 ];
             }),
         ]);
@@ -44,7 +42,7 @@ class PostTypeController extends Controller
     {
         $postType->update($request->safe()->except('relations'));
         $relations = collect($request->input('relations') ?? [])->map(function ($item) use($postType) {
-            $item = collect($item)->only(['id', 'title', 'type', 'related_model_id'])->toArray();
+            $item = collect($item)->only(['id', 'title', 'type', 'related_post_type_id'])->toArray();
             if (isset($item['id'])) {
                 $relation = $postType->relations()->findOrFail($item['id']);
                 $relation->update($item);

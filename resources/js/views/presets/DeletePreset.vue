@@ -25,8 +25,8 @@ export default {
     props: ['id'],
     methods: {
         remove: function () {
-            this.deleteRequest(`/api/admin/presets/${this.id}`,() => {
-                    this.$router.push('/presets')
+            this.deleteRequest(`/api/presets/${this.id}`,() => {
+                    this.$router.push({ name: 'Presets' })
                     location.reload()
                 })
         }

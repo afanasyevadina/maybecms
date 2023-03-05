@@ -35,7 +35,7 @@ export default {
     methods: {
         login: function () {
             this.error = null
-            fetch(`/api/admin/login`, {
+            fetch(`/api/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -47,9 +47,9 @@ export default {
                     if (json.status === 'error') {
                         this.error = json.message
                     } else {
-                        this.$root.$data.user = json.data
+                        this.$store.commit('setUser', json.data)
                         localStorage.setItem('_cms_user', JSON.stringify(json.data))
-                        this.$router.push('/pages')
+                        this.$router.push({ name: 'Pages' })
                     }
                 })
                 .catch(err => console.log(err))

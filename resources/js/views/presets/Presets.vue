@@ -12,32 +12,8 @@
             </div>
             <template v-else>
                 <table class="table table-striped mb-4">
-                    <thead>
+                    <tbody v-if="!presets.data.length">
                     <tr>
-                        <th>#</th>
-                        <th>Title</th>
-                        <th>Last update</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <template v-for="preset in presets.data" :key="preset.id">
-                        <tr>
-                            <td>{{ preset.id }}</td>
-                            <td>{{ preset.title }}</td>
-                            <td>{{ preset.updated_at }}</td>
-                            <td class="text-end text-nowrap">
-                                <router-link :to="`/presets/${preset.id}`" class="btn btn-light me-2">
-                                    <i class="fas fa-pen"></i>
-                                </router-link>
-                                <a href="#" class="btn btn-light" data-bs-toggle="modal" :data-bs-target="`#delete-preset-${preset.id}`">
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <DeletePreset :id="preset.id"></DeletePreset>
-                    </template>
-                    <tr v-if="!presets.data.length">
                         <td colspan="5" class="text-center py-3">
                             No presets yet
                             <br>
@@ -47,6 +23,34 @@
                         </td>
                     </tr>
                     </tbody>
+                    <template v-else>
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Last update</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <template v-for="preset in presets.data" :key="preset.id">
+                            <tr>
+                                <td>{{ preset.id }}</td>
+                                <td>{{ preset.title }}</td>
+                                <td>{{ formatDate(preset.updated_at) }}</td>
+                                <td class="text-end text-nowrap">
+                                    <router-link :to="{name: 'Preset', params: {id: preset.id}}" class="btn btn-light me-2">
+                                        <i class="fas fa-pen"></i>
+                                    </router-link>
+                                    <a href="#" class="btn btn-light" data-bs-toggle="modal" :data-bs-target="`#delete-preset-${preset.id}`">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <DeletePreset :id="preset.id"></DeletePreset>
+                        </template>
+                        </tbody>
+                    </template>
                 </table>
             </template>
         </div>
@@ -73,7 +77,7 @@ export default {
         }
     },
     mounted() {
-        this.getJson(`/api/admin/presets`,json => {
+        this.getJson(`/api/presets`,json => {
             this.presets = json
             this.loading = false
         })

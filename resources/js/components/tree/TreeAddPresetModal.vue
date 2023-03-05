@@ -17,7 +17,7 @@
                     </template>
                     <div class="text-center text-muted" v-else>
                         No presets yet.<br>
-                        <router-link to="/presets" target="_blank">Manage presets</router-link>
+                        <router-link :to="{name: 'Presets'}" target="_blank">Manage presets</router-link>
                     </div>
                 </div>
             </div>
@@ -27,7 +27,7 @@
 
 <script>
 export default {
-    name: "AddPreset",
+    name: "TreeAddPresetModal",
     props: {
         modalKey: {
             type: String
@@ -39,7 +39,7 @@ export default {
         }
     },
     mounted() {
-        this.getJson(`/api/admin/presets`, json => this.presets = json.data)
+        this.getJson(`/api/presets`, json => this.presets = json.data)
     }
 }
 </script>

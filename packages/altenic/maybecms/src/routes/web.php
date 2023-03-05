@@ -15,9 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::any('/maybecms/{any?}', function () {
+Route::any('/{any?}', function () {
     return view('maybecms::index');
 })->where('any', '.*');
-
-Route::get('/', [SiteController::class, 'index']);
-Route::get('/{slug}', [SiteController::class, 'page']);

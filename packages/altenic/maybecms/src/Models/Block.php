@@ -65,12 +65,11 @@ class Block extends Model
     protected static function booted()
     {
         static::created(function (Block $block) {
-            $content = $block->structure;
             $block->update([
                 'user_id' => auth()->id(),
                 'active' => 1,
                 'order' => $block->attachable?->blocks()->count(),
-                'content' => $content,
+                'content' => $block->content ?? $block->structure,
             ]);
         });
 
@@ -81,6 +80,15 @@ class Block extends Model
         static::deleting(function (Block $block) {
             foreach ($block->blocks as $subBlock) $subBlock->delete();
             $block->attachment()->delete();
+        });
+
+        static::deleted(function (Block $block) {
+            static::withoutEvents(function () use($block) {
+                foreach ($block->attachable->blocks as $key => $relatedBlock) {
+                    $relatedBlock->order = $key + 1;
+                    $relatedBlock->save();
+                };
+            });
         });
     }
 

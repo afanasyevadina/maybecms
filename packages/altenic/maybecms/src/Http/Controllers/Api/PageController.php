@@ -9,6 +9,7 @@ use Altenic\MaybeCms\Http\Resources\PageListResource;
 use Altenic\MaybeCms\Http\Resources\PageResource;
 use Altenic\MaybeCms\Models\File;
 use Altenic\MaybeCms\Models\Page;
+use Altenic\MaybeCms\Models\Setting;
 
 class PageController extends Controller
 {
@@ -16,17 +17,22 @@ class PageController extends Controller
 
     public function index()
     {
-        return PageListResource::collection(Page::paginate(20));
+        return PageListResource::collection(Page::query()->paginate(20));
     }
 
-    public function show(Page $page)
+    public function home()
     {
-        return PageResource::make($page);
+        return PageResource::make(Page::query()->findOrFail(Setting::query()->where('slug', 'home_page')->firstOrFail()->value));
+    }
+
+    public function show($pageId)
+    {
+        return PageResource::make(Page::query()->where('id', $pageId)->orWhere('slug', $pageId)->firstOrFail());
     }
 
     public function store(PageCreateRequest $request)
     {
-        $page = Page::create($request->validated());
+        $page = Page::query()->create($request->validated());
         return response()->json([
             'status' => 'success',
             'data' => PageResource::make($page),

@@ -27,6 +27,9 @@ class PostTypeUpdateRequest extends JsonRequest
     public function rules()
     {
         return [
+            'plural_title' => 'required',
+            'title' => 'required',
+            'slug' => 'required|regex:/^[\w-]*$/i',
             'structure' => 'sometimes|array',
             'structure.relations' => 'sometimes|array',
             'structure.fields.*.type' => 'required|in:' . collect(Block::PRIMITIVES)->pluck('type')->implode(','),
@@ -37,7 +40,7 @@ class PostTypeUpdateRequest extends JsonRequest
             'relations.*.id' => 'sometimes|exists:relations,id',
             'relations.*.type' => 'required|in:' . collect(Relation::TYPES)->pluck('type')->implode(','),
             'relations.*.title' => 'required',
-            'relations.*.related_model_id' => 'required|in:' . PostType::pluck('id')->implode(','),
+            'relations.*.related_post_type_id' => 'required|in:' . PostType::pluck('id')->implode(','),
         ];
     }
 

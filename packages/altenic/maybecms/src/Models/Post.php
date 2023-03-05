@@ -48,7 +48,7 @@ class Post extends Model
 
     public function blocks(): MorphMany
     {
-        return $this->morphMany(Block::class, 'attachable');
+        return $this->morphMany(Block::class, 'attachable')->orderBy('order');
     }
 
     public function meta(): MorphOne
@@ -73,12 +73,12 @@ class Post extends Model
 
     public function relations()
     {
-        return $this->hasManyThrough(Relation::class, \Altenic\MaybeCms\Models\PostType::class, 'slug', 'model_id', 'post_type', 'id');
+        return $this->hasManyThrough(Relation::class, \Altenic\MaybeCms\Models\PostType::class, 'id', 'post_type_id', 'related_post_type_id', 'id');
     }
 
     public function inverseRelations()
     {
-        return $this->hasManyThrough(Relation::class, \Altenic\MaybeCms\Models\PostType::class, 'slug', 'related_model_id', 'post_type', 'id');
+        return $this->hasManyThrough(Relation::class, \Altenic\MaybeCms\Models\PostType::class, 'id', 'related_post_type_id', 'post_type_id', 'id');
     }
 
     public function posts(): BelongsToMany

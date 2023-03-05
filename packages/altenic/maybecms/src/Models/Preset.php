@@ -4,6 +4,7 @@ namespace Altenic\MaybeCms\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Str;
 
 class Preset extends Model
@@ -22,13 +23,18 @@ class Preset extends Model
         static::saved(function (Preset $preset) {
             static::withoutEvents(fn() => create_slug($preset));
         });
+
+        static::deleting(function (Preset $preset) {
+            foreach ($preset->blocks as $block) $block->delete();
+        });
     }
 
     protected $guarded = [];
 
-    protected $casts = [
-        'blocks' => 'array',
-    ];
+    public function blocks(): MorphMany
+    {
+        return $this->morphMany(Block::class, 'attachable')->orderBy('order');
+    }
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

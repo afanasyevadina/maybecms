@@ -24,6 +24,9 @@ class PresetUpdateRequest extends JsonRequest
         return [
             'title' => 'sometimes|filled',
             'blocks' => 'sometimes|array',
+            'blocks.*.id' => 'required',
+            'blocks.*.attachment' => 'sometimes|array|nullable',
+            'blocks.*.blocks' => 'sometimes|array',
         ];
     }
 }

@@ -36,7 +36,7 @@ export default {
     methods: {
         save: function () {
             this.saving = true
-            this.postJson(`/api/admin/settings`, {
+            this.postJson(`/api/settings`, {
                 settings: this.settings.map(setting => ({slug: setting.slug, value: setting.value}))
             },() => {
                 this.saving = false
@@ -44,7 +44,7 @@ export default {
         }
     },
     mounted() {
-        this.getJson(`/api/admin/settings`,json => {
+        this.getJson(`/api/settings`,json => {
             this.settings = json.data
             this.loading = false
         })
