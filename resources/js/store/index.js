@@ -5,16 +5,13 @@ const store = createStore({
     state () {
         return {
             user: null,
-            postTypes: [],
-            postTypesInitialized: false
+            activeElement: null,
+            postTypes: []
         }
     },
     getters: {
         apiToken (state) {
             return state.user?.token
-        },
-        getPostTypeBySlug: (state) => (slug) => {
-            return state.postTypes.find(v => v.slug === slug) || {}
         }
     },
     mutations: {
@@ -25,9 +22,11 @@ const store = createStore({
             state.user = null
             localStorage.removeItem('_cms_user')
         },
+        setActiveElement (state, element) {
+            state.activeElement = element
+        },
         setPostTypes (state, postTypes) {
             state.postTypes = postTypes
-            state.postTypesInitialized = true
         }
     }
 })

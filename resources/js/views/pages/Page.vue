@@ -3,19 +3,20 @@
         <div class="px-3 d-flex justify-content-between align-items-center border-bottom">
             <router-link :to="{name: 'Pages'}" class="btn btn-sm btn-light">
                 <i class="fas fa-chevron-left"></i>
-                Back to pages
+                Назад
             </router-link>
             <button type="button" class="btn btn-sm btn-success" @click="save()">
                 <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" v-if="saving"></span>
-                Save
+                Сохранить
             </button>
         </div>
         <div class="editor-wrapper">
             <div class="editor-tree border-end overflow-auto p-3">
-                <tree-section :block="page" :depth="0" :order="0" :count="page.blocks.length" @activate="activate" @update="loadPage"></tree-section>
+                <tree-item :block="page" :depth="0" :order="0" :count="page.blocks.length"
+                           @update="loadPage"></tree-item>
             </div>
             <div class="editor-preview overflow-auto p-3">
-                <preview-section :block="page"></preview-section>
+                <preview-item :block="page"></preview-item>
             </div>
             <div class="editor-fields p-3 border-top overflow-auto">
                 <template v-if="activeElement">
@@ -24,13 +25,13 @@
                 </template>
                 <template v-else>
                     <div class="mb-4">
-                        <label>Page title</label>
+                        <label>Название страницы</label>
                         <input type="text" class="form-control" v-model="page.title" placeholder="Page title">
                     </div>
                     <div class="mb-4">
                         <label>
                             <input type="checkbox" v-model="page.active">
-                            Active
+                            Активная
                         </label>
                     </div>
                     <MetaFields :meta="page.meta"></MetaFields>
@@ -47,6 +48,8 @@
 
 <script>
 import MetaFields from "../../components/MetaFields.vue";
+import {mapState} from "vuex";
+import {mapMutations} from "vuex";
 
 export default {
     name: "Page",
@@ -55,9 +58,13 @@ export default {
     data() {
         return {
             page: {},
-            activeElement: null,
             saving: false
         }
+    },
+    computed: {
+        ...mapState([
+            'activeElement'
+        ])
     },
     methods: {
         loadPage: function () {
@@ -71,12 +78,13 @@ export default {
                 this.saving = false
             })
         },
-        activate: function (block) {
-            this.activeElement = block.type ? block : null
-        }
+        ...mapMutations([
+            'setPostTypes'
+        ])
     },
     mounted() {
         this.loadPage()
+        this.getJson(`/api/post-types`, json => this.setPostTypes(json.data))
     }
 }
 </script>

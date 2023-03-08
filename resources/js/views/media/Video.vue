@@ -5,17 +5,17 @@
                 <div class="col mb-4">
                     <ul class="nav nav-tabs">
                         <li class="nav-item">
-                            <router-link :to="{name: 'Images'}" class="nav-link">Images</router-link>
+                            <router-link :to="{name: 'Images'}" class="nav-link">Изображения</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link :to="{name: 'Video'}" class="nav-link active">Video</router-link>
+                            <router-link :to="{name: 'Video'}" class="nav-link active">Видео</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link :to="{name: 'Files'}" class="nav-link">Files</router-link>
+                            <router-link :to="{name: 'Files'}" class="nav-link">Файлы</router-link>
                         </li>
                     </ul>
                 </div>
-                <div class="col-auto mb-4">
+                <div class="col-auto mb-4" v-if="videos.data.length">
                     <a href="#" data-bs-toggle="modal" data-bs-target="#upload-video" class="btn btn-success">Upload video</a>
                 </div>
             </div>
@@ -24,7 +24,7 @@
                     <span class="sr-only">Loading...</span>
                 </div>
             </div>
-            <template v-else>
+            <template v-else-if="videos.data.length">
                 <div class="row">
                     <div class="col">
                         <div class="row">
@@ -54,12 +54,24 @@
                                 </div>
                             </div>
                         </div>
-                        <DeleteFile :modal-key="`delete-file-${activeMedia.id}`" @remove="videos.data.splice(videos.data.findIndex(v => v.id === activeMedia.id), 1)"></DeleteFile>
+                        <DeleteFile :modal-key="`delete-file-${activeMedia.id}`" :id="activeMedia.id" @remove="videos.data.splice(videos.data.findIndex(v => v.id === activeMedia.id), 1)"></DeleteFile>
                     </div>
                 </div>
-                <UploadVideo :modal-key="'upload-video'" @upload="upload"></UploadVideo>
             </template>
+            <table class="table table-striped" v-else>
+                <tbody>
+                <tr>
+                    <td class="text-center py-3">
+                        Пока нет видео
+                        <br>
+                        <br>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#upload-video" class="btn btn-outline-dark">Загрузить первое видео</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
+        <UploadVideo :modal-key="'upload-video'" @upload="upload"></UploadVideo>
     </div>
 </template>
 

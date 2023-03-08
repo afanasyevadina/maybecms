@@ -5,18 +5,18 @@
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
                         <a class="nav-link active" data-bs-toggle="tab"
-                           href="#tab-general">General</a>
+                           href="#tab-general">Основное</a>
                     </li>
                     <li class="nav-item" v-if="post.relations.length || post.inverse_relations?.length">
                         <a class="nav-link" data-bs-toggle="tab"
-                           href="#tab-relations">Relations</a>
+                           href="#tab-relations">Отношения</a>
                     </li>
                 </ul>
             </div>
             <div class="col-auto mb-4">
                 <button type="button" class="btn btn-success w-100" @click="save()">
                     <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" v-if="saving"></span>
-                    Save
+                    Сохранить
                 </button>
             </div>
         </div>
@@ -29,11 +29,11 @@
                               :placeholder="`${post.postType?.title} description`"></textarea>
                     <label>
                         <input type="checkbox" v-model="post.active">
-                        Active
+                        Активная
                     </label>
                 </div>
                 <template v-if="post.fields.length">
-                    <h4 class="mb-3">{{ post.postType?.title }} fields</h4>
+                    <h4 class="mb-3">Поля модели</h4>
                     <div class="border p-4 pb-2 bg-white mb-5">
                         <div class="border p-4 mb-4" v-for="field in post.fields" :key="field.slug">
                             <div class="mb-2">{{ field.title }}</div>
@@ -45,7 +45,7 @@
             <div class="tab-pane fade" id="tab-relations"
                  v-if="post.relations.length || post.inverse_relations?.length">
                 <template v-if="post.relations.length">
-                    <h4 class="mb-3">{{ post.postType?.title }} relations</h4>
+                    <h4 class="mb-3">Отношения модели</h4>
                     <div class="border p-4 pb-2 bg-white mb-5">
                         <component v-for="relation in post.relations" :key="relation.id" :model="post"
                                    :relation="relation"
@@ -53,12 +53,12 @@
                     </div>
                 </template>
                 <template v-if="post.inverse_relations?.length">
-                    <h4 class="mb-3">Used in relations</h4>
+                    <h4 class="mb-3">Используется в отношениях</h4>
                     <div class="border p-4 pb-2 bg-white mb-5" v-for="relation in post.inverse_relations"
                          :key="relation.id">
-                        <div class="mb-2">Post type: {{ relation.model?.title }}</div>
-                        <div class="mb-2">Relation name: {{ relation.title }}</div>
-                        <div class="mb-3">Relation type: {{ relation.type }}</div>
+                        <div class="mb-2">Модель: {{ relation.model?.title }}</div>
+                        <div class="mb-2">Название: {{ relation.title }}</div>
+                        <div class="mb-3">Тип отношения: {{ relation.type }}</div>
                         <div class="btn-group w-100 border mb-3" v-for="relatedPost in relation.related_posts"
                              :key="relatedPost.id">
                             <div class="w-100 px-3 align-self-center">{{ relatedPost?.title }}</div>

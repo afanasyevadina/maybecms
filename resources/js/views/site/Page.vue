@@ -1,5 +1,5 @@
 <template>
-    <preview-section :block="page"></preview-section>
+    <preview-item :block="page"></preview-item>
 </template>
 
 <script>

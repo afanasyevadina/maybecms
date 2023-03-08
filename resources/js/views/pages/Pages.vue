@@ -2,8 +2,8 @@
     <div class="p-4">
         <div>
             <div class="d-flex mb-4 justify-content-between align-items-center">
-                <h1>Pages</h1>
-                <a href="#" data-bs-toggle="modal" data-bs-target="#add-page" class="btn btn-success">Create page</a>
+                <h1>Все страницы</h1>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#add-page" class="btn btn-success" v-if="pages.data.length">Добавить еще одну</a>
             </div>
             <div class="text-center" v-if="loading">
                 <div class="spinner-grow text-secondary" role="status">
@@ -15,9 +15,9 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Title</th>
-                        <th>Author</th>
-                        <th>Last update</th>
+                        <th>Название</th>
+                        <th>Автор</th>
+                        <th>Последнее обновление</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -44,11 +44,10 @@
                     </template>
                     <tr v-if="!pages.data.length">
                         <td colspan="5" class="text-center py-3">
-                            No pages yet
+                            Пока нет страниц
                             <br>
                             <br>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#add-page" class="btn btn-outline-dark">Create
-                                page</a>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#add-page" class="btn btn-outline-dark">Создать первую страницу</a>
                         </td>
                     </tr>
                     </tbody>

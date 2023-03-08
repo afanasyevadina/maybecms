@@ -4,18 +4,18 @@
             <div class="col mb-4">
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <router-link :to="{name: 'Images'}" class="nav-link active">Images</router-link>
+                        <router-link :to="{name: 'Images'}" class="nav-link active">Изображения</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link :to="{name: 'Video'}" class="nav-link">Video</router-link>
+                        <router-link :to="{name: 'Video'}" class="nav-link">Видео</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link :to="{name: 'Files'}" class="nav-link">Files</router-link>
+                        <router-link :to="{name: 'Files'}" class="nav-link">Файлы</router-link>
                     </li>
                 </ul>
             </div>
-            <div class="col-auto mb-4">
-                <a href="#" data-bs-toggle="modal" data-bs-target="#upload-image" class="btn btn-success">Upload image</a>
+            <div class="col-auto mb-4" v-if="images.data.length">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#upload-image" class="btn btn-success">Загрузить изображение</a>
             </div>
         </div>
         <div class="text-center" v-if="loading">
@@ -23,7 +23,7 @@
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
-        <template v-else>
+        <template v-else-if="images.data.length">
             <div class="row">
                 <div class="col">
                     <div class="row">
@@ -54,11 +54,23 @@
                             </div>
                         </div>
                     </div>
-                    <DeleteFile :modal-key="`delete-file-${activeMedia.id}`" @remove="images.data.splice(images.data.findIndex(v => v.id === activeMedia.id), 1)"></DeleteFile>
+                    <DeleteFile :modal-key="`delete-file-${activeMedia.id}`" :id="activeMedia.id" @remove="images.data.splice(images.data.findIndex(v => v.id === activeMedia.id), 1)"></DeleteFile>
                 </div>
             </div>
-            <UploadImage :modal-key="'upload-image'" @upload="upload"></UploadImage>
         </template>
+        <table class="table table-striped" v-else>
+            <tbody>
+            <tr>
+                <td class="text-center py-3">
+                    Пока нет изображений
+                    <br>
+                    <br>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#upload-image" class="btn btn-outline-dark">Загрузить первое изображение</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <UploadImage :modal-key="'upload-image'" @upload="upload"></UploadImage>
     </div>
 </template>
 

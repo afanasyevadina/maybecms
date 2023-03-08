@@ -3,7 +3,7 @@
         <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top" v-if="!$route.meta?.hideNav">
             <div class="container-fluid px-4">
                 <router-link class="navbar-brand" :to="{name: 'Pages'}">
-                    CMS maybe
+                    CMS вроде
                 </router-link>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -15,19 +15,19 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <router-link :to="{name: 'Pages'}" class="nav-link">Pages</router-link>
+                            <router-link :to="{name: 'Pages'}" class="nav-link">Страницы</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link :to="{name: 'Presets'}" class="nav-link">Presets</router-link>
+                            <router-link :to="{name: 'Presets'}" class="nav-link">Шаблоны</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link :to="{name: 'PostTypes'}" class="nav-link">Post types</router-link>
+                            <router-link :to="{name: 'PostTypes'}" class="nav-link">Модели</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link :to="{name: 'Images'}" class="nav-link">Media</router-link>
+                            <router-link :to="{name: 'Images'}" class="nav-link">Медиа</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link :to="{name: 'Settings'}" class="nav-link">Settings</router-link>
+                            <router-link :to="{name: 'Settings'}" class="nav-link">Настройки</router-link>
                         </li>
                     </ul>
 
@@ -41,7 +41,7 @@
 
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="#" @click.prevent="logout">
-                                    Logout
+                                    Выйти отсюда
                                 </a>
                             </div>
                         </li>
@@ -75,21 +75,14 @@ export default {
                     this.$router.push({ name: 'Login' })
                 })
         },
-        loadModels: function () {
-            this.getJson(`/api/post-types`, json => {
-                this.setPostTypes(json.data)
-            })
-        },
         ...mapMutations([
             'unsetUser',
             'setUser',
-            'setPostTypes'
         ]),
     },
-    mounted() {
+    created() {
         if (localStorage.getItem('_cms_user')) {
             this.setUser(JSON.parse(localStorage.getItem('_cms_user')))
-            this.loadModels()
         }
     }
 }

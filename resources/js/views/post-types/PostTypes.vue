@@ -2,10 +2,10 @@
     <div class="p-4">
         <div>
             <div class="d-flex mb-4 justify-content-between align-items-center">
-                <h1>Post types</h1>
-                <a href="#" data-bs-toggle="modal" data-bs-target="#add-model" class="btn btn-success">Create model</a>
+                <h1>Модели</h1>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#add-model" class="btn btn-success" v-if="postTypes.length">Добавить еще одну</a>
             </div>
-            <div class="text-center" v-if="!postTypesInitialized">
+            <div class="text-center" v-if="loading">
                 <div class="spinner-grow text-secondary" role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
@@ -15,7 +15,7 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Title</th>
+                        <th>Название</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -24,9 +24,12 @@
                         <tr>
                             <td>{{ model.id }}</td>
                             <td>
-                                <router-link :to="{name: 'Posts', params: {postType: model.slug}}">{{ model.plural_title }}</router-link>
+                                {{ model.title }}
                             </td>
                             <td class="text-end text-nowrap">
+                                <router-link :to="{name: 'Posts', params: {postType: model.slug}}" class="btn btn-light me-2">
+                                    <i class="fas fa-list"></i>
+                                </router-link>
                                 <router-link :to="{name: 'PostType', params: {id: model.id}}" class="btn btn-light me-2">
                                     <i class="fas fa-pen"></i>
                                 </router-link>
@@ -39,11 +42,10 @@
                     </template>
                     <tr v-if="!postTypes.length">
                         <td colspan="5" class="text-center py-3">
-                            No models yet
+                            Пока нет моделей
                             <br>
                             <br>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#add-model" class="btn btn-outline-dark">Create
-                                model</a>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#add-model" class="btn btn-outline-dark">Создать первую модель</a>
                         </td>
                     </tr>
                     </tbody>
@@ -65,11 +67,17 @@ export default {
         'create-model': CreatePostType,
         'delete-model': DeletePostType
     },
-    computed: {
-        ...mapState([
-            'postTypes',
-            'postTypesInitialized',
-        ])
+    data() {
+        return {
+            postTypes: [],
+            loading: true
+        }
+    },
+    mounted() {
+        this.getJson(`/api/post-types`, json => {
+            this.postTypes = json.data
+            this.loading = false
+        })
     }
 }
 </script>

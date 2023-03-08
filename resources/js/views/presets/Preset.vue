@@ -3,19 +3,19 @@
         <div class="px-3 d-flex justify-content-between align-items-center border-bottom">
             <router-link :to="{name: 'Presets'}" class="btn btn-sm btn-light">
                 <i class="fas fa-chevron-left"></i>
-                Back to presets
+                Назад
             </router-link>
             <button type="button" class="btn btn-sm btn-success" @click="save()">
                 <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" v-if="saving"></span>
-                Save
+                Сохранить
             </button>
         </div>
         <div class="editor-wrapper">
             <div class="editor-tree border-end overflow-auto p-3">
-                <tree-section :block="preset" :depth="0" :order="0" :count="preset.blocks.length" @activate="activate"></tree-section>
+                <tree-item :block="preset" :depth="0" :order="0" :count="preset.blocks.length"></tree-item>
             </div>
             <div class="editor-preview overflow-auto p-3">
-                <preview-section :block="preset"></preview-section>
+                <preview-item :block="preset"></preview-item>
             </div>
             <div class="editor-fields p-3 border-top overflow-auto">
                 <template v-if="activeElement">
@@ -24,8 +24,8 @@
                 </template>
                 <template v-else>
                     <div class="mb-4">
-                        <label>Preset title</label>
-                        <input type="text" class="form-control" v-model="preset.title" placeholder="Page title">
+                        <label>Название</label>
+                        <input type="text" class="form-control" v-model="preset.title">
                     </div>
                 </template>
             </div>
@@ -39,15 +39,21 @@
 </template>
 
 <script>
+import {mapState} from "vuex";
+
 export default {
     name: "Preset",
     props: ['id'],
     data() {
         return {
             preset: {},
-            activeElement: null,
             saving: false
         }
+    },
+    computed: {
+        ...mapState([
+            'activeElement'
+        ])
     },
     methods: {
         loadPreset: function () {
@@ -60,9 +66,6 @@ export default {
                     this.preset = json.data
                     this.saving = false
                 })
-        },
-        activate: function (block) {
-            this.activeElement = block.type ? block : null
         }
     },
     mounted() {

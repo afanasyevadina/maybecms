@@ -5,18 +5,18 @@
                 <div class="col mb-4">
                     <ul class="nav nav-tabs">
                         <li class="nav-item">
-                            <router-link :to="{name: 'Images'}" class="nav-link">Images</router-link>
+                            <router-link :to="{name: 'Images'}" class="nav-link">Изображения</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link :to="{name: 'Video'}" class="nav-link">Video</router-link>
+                            <router-link :to="{name: 'Video'}" class="nav-link">Видео</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link :to="{name: 'Files'}" class="nav-link active">Files</router-link>
+                            <router-link :to="{name: 'Files'}" class="nav-link active">Файлы</router-link>
                         </li>
                     </ul>
                 </div>
-                <div class="col-auto mb-4">
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#upload-file" class="btn btn-success">Upload file</a>
+                <div class="col-auto mb-4" v-if="files.data.length">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#upload-file" class="btn btn-success">Загрузить файл</a>
                 </div>
             </div>
             <div class="text-center" v-if="loading">
@@ -24,7 +24,7 @@
                     <span class="sr-only">Loading...</span>
                 </div>
             </div>
-            <template v-else>
+            <template v-else-if="files.data.length">
                 <div class="row">
                     <div class="col-lg-4 col-md-6 mb-4" v-for="(file, fileIndex) in files.data" :key="file.id">
                         <div class="card">
@@ -34,13 +34,25 @@
                                     <i class="fas fa-trash"></i>
                                 </a>
                             </div>
-                            <DeleteFile :modal-key="`delete-file-${file.id}`" @remove="files.data.splice(fileIndex, 1)"></DeleteFile>
+                            <DeleteFile :modal-key="`delete-file-${file.id}`" :id="file.id" @remove="files.data.splice(fileIndex, 1)"></DeleteFile>
                         </div>
                     </div>
                 </div>
-                <UploadFile :modal-key="'upload-file'" @upload="upload"></UploadFile>
             </template>
+            <table class="table table-striped" v-else>
+                <tbody>
+                <tr>
+                    <td class="text-center py-3">
+                        Пока нет файлов
+                        <br>
+                        <br>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#upload-file" class="btn btn-outline-dark">Загрузить первый файл</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
+        <UploadFile :modal-key="'upload-file'" @upload="upload"></UploadFile>
     </div>
 </template>
 

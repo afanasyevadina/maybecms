@@ -4,7 +4,6 @@ namespace Altenic\MaybeCms\Http\Controllers\Api;
 
 use Altenic\MaybeCms\Http\Controllers\Controller;
 use Altenic\MaybeCms\Http\Requests\BlockCreateRequest;
-use Altenic\MaybeCms\Http\Requests\BlockUpdateRequest;
 use Altenic\MaybeCms\Http\Resources\BlockResource;
 use Altenic\MaybeCms\Models\Block;
 

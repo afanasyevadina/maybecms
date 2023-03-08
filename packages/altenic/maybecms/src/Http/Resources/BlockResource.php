@@ -24,6 +24,7 @@ class BlockResource extends JsonResource
             'class_name' => get_class($this->resource),
             'attachable_id' => $this->attachable_id,
             'attachable_type' => $this->attachable_type,
+            'post_type_id' => $this->post_type_id,
             'active' => $this->active,
             'order' => $this->order,
             'created_at' => Carbon::create($this->created_at)->toIso8601ZuluString(),

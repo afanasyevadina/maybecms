@@ -2,8 +2,8 @@
     <div class="p-4">
         <div>
             <div class="d-flex mb-4 justify-content-between align-items-center">
-                <h1>Presets</h1>
-                <a href="#" data-bs-toggle="modal" data-bs-target="#add-preset" class="btn btn-success">Create preset</a>
+                <h1>Шаблоны</h1>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#add-preset" class="btn btn-success" v-if="presets.data.length">Создать еще шаблон</a>
             </div>
             <div class="text-center" v-if="loading">
                 <div class="spinner-grow text-secondary" role="status">
@@ -15,11 +15,10 @@
                     <tbody v-if="!presets.data.length">
                     <tr>
                         <td colspan="5" class="text-center py-3">
-                            No presets yet
+                            Пока нет шаблонов
                             <br>
                             <br>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#add-preset" class="btn btn-outline-dark">Create
-                                preset</a>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#add-preset" class="btn btn-outline-dark">Создать первый шаблон</a>
                         </td>
                     </tr>
                     </tbody>
@@ -27,8 +26,8 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Title</th>
-                            <th>Last update</th>
+                            <th>Название</th>
+                            <th>Последнее обновление</th>
                             <th></th>
                         </tr>
                         </thead>

@@ -2,6 +2,7 @@
 
 namespace Altenic\MaybeCms\Http\Controllers\Api;
 
+use Altenic\MaybeCms\Models\Block;
 use Altenic\MaybeCms\Models\File;
 
 trait Blockable
@@ -10,7 +11,7 @@ trait Blockable
     {
         foreach ($data ?? [] as $item) {
             $block = $model->blocks()->findOrFail($item['id']);
-            $block->update(collect($item)->only(['title', 'content', 'order'])->toArray());
+            $block->update(collect($item)->only(['title', 'content', 'order', 'post_type_id'])->toArray());
             if (@$item['attachment']['file']['id']) {
                 $attachment = $block->attachment()->updateOrCreate([], ['file_id' => File::query()->findOrFail($item['attachment']['file']['id'])->id]);
                 if (@$item['attachment']['poster']['file']['id']) {
@@ -27,12 +28,20 @@ trait Blockable
 
     private function appendBlocks($attachable, $blocks): \Illuminate\Support\Collection
     {
-        return collect($blocks ?? [])->map(function ($item) use ($attachable) {
+        return collect($blocks ?? [])->map(function (Block $item) use ($attachable) {
             $childBlock = $attachable->blocks()->create([
-                'type' => $item['type'] ?? '',
-                'title' => $item['title'] ?? '',
-                'content' => $item['content'] ?? [],
+                'type' => $item->type ?? '',
+                'title' => $item->title ?? '',
+                'content' => $item->content ?? [],
+                'post_type_id' => $item->post_type_id ?? [],
             ]);
+            if ($attachment = $item->attachment()->first()) {
+                $childBlock->attachment()->create([
+                    'file_id' => $attachment->file_id,
+                    'role' => $attachment->role,
+                    'alt' => $attachment->alt,
+                ]);
+            }
             if ($item->type == 'section') $this->appendBlocks($childBlock, $item->blocks ?? []);
             return $childBlock;
         });

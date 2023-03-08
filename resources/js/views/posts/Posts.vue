@@ -3,7 +3,7 @@
         <div>
             <div class="d-flex mb-4 justify-content-between align-items-center">
                 <h1>{{ model.plural_title }}</h1>
-                <a href="#" data-bs-toggle="modal" data-bs-target="#add-post" class="btn btn-success">Create {{ (model.title || '').toLowerCase() }}</a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#add-post" class="btn btn-success" v-if="posts.data.length">Добавить еще запись</a>
             </div>
             <div class="text-center" v-if="loading">
                 <div class="spinner-grow text-secondary" role="status">
@@ -15,11 +15,10 @@
                     <tbody v-if="!posts.data.length">
                     <tr>
                         <td colspan="5" class="text-center py-3">
-                            No {{ (model.plural_title || '').toLowerCase() }} yet
+                            Пока нет ни одной записи
                             <br>
                             <br>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#add-post" class="btn btn-outline-dark">Create
-                                {{ (model.title || '').toLowerCase() }}</a>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#add-post" class="btn btn-outline-dark">Создать первую запись</a>
                         </td>
                     </tr>
                     </tbody>
@@ -27,8 +26,9 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Title</th>
-                            <th>Last update</th>
+                            <th>Название</th>
+                            <th>Автор</th>
+                            <th>Последнее обновление</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -37,6 +37,7 @@
                             <tr>
                                 <td>{{ post.id }}</td>
                                 <td>{{ post.title }}</td>
+                                <td>{{ post.user.name }}</td>
                                 <td>{{ formatDate(post.updated_at) }}</td>
                                 <td class="text-end text-nowrap">
                                     <router-link :to="{name: 'Post', params: {postType: postType, id: post.id}}" class="btn btn-light me-2">
@@ -61,7 +62,6 @@
 <script>
 import CreatePost from "./CreatePost.vue";
 import DeletePost from "./DeletePost.vue";
-import {mapGetters} from 'vuex';
 
 export default {
     name: 'Posts',
@@ -75,18 +75,17 @@ export default {
             posts: {
                 data: []
             },
+            postTypes: [],
             loading: true
         }
     },
     computed: {
-        ...mapGetters([
-            'getPostTypeBySlug'
-        ]),
         model: function () {
-            return this.getPostTypeBySlug(this.postType)
+            return this.postTypes.find(v => v.slug === this.postType) || {}
         }
     },
     mounted() {
+        this.getJson(`/api/post-types`, json => this.postTypes = json.data)
         this.getJson(`/api/posts/${this.postType}`, json => {
             this.posts = json
             this.loading = false

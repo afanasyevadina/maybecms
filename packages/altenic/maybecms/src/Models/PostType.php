@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Str;
 
 class PostType extends Model
@@ -27,6 +28,10 @@ class PostType extends Model
                 'plural_title' => Str::plural($model->title),
             ]);
         });
+
+        static::deleting(function (PostType $model) {
+            foreach ($model->blocks as $block) $block->delete();
+        });
     }
 
     public function user(): BelongsTo
@@ -37,6 +42,11 @@ class PostType extends Model
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function blocks(): MorphMany
+    {
+        return $this->morphMany(Block::class, 'attachable')->orderBy('order');
     }
 
     public function relations(): HasMany

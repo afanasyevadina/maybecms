@@ -1,7 +1,7 @@
 <template>
     <div class="mb-4">
         <div class="mb-4">
-            <input type="text" v-model="(block.content || {}).text" class="form-control" :readonly="readonly" placeholder="Link text">
+            <input type="text" v-model="(block.content || {}).text" class="form-control" :readonly="readonly" placeholder="Текст ссылки">
         </div>
         <div class="mb-4">
             <input type="url" v-model="(block.content || {}).link" class="form-control" :readonly="readonly" placeholder="Link URL">
@@ -19,15 +19,15 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <form action="#" @submit.prevent="remove" class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Confirmation</h5>
+                            <h5 class="modal-title">Подтверждение</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <p>This attachment will be deleted.</p>
+                            <p>Сейчас удалим иконку</p>
                         </div>
                         <div class="modal-footer">
-                            <button class="btn btn-danger">Delete</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button class="btn btn-danger">Да, удалите</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Не надо</button>
                         </div>
                     </form>
                 </div>
@@ -41,15 +41,15 @@
                     <i class="fas fa-trash"></i>
                 </button>
                 <button type="button" class="btn btn-success" @click.prevent="upload">
-                    Upload
+                    Загрузить
                 </button>
             </div>
         </template>
         <template v-else>
-            <input type="file" :id="`link-icon-${block.id}`" class="d-none" accept="image/*" @change="preview" :readonly="readonly">
+            <input type="file" :id="`link-icon-${block.id}`" class="d-none" accept="image/svg+xml" @change="preview" :readonly="readonly">
             <label :for="`link-icon-${block.id}`" class="btn btn-light">
                 <i class="fas fa-image"></i>
-                Add icon
+                Добавить иконку
             </label>
         </template>
     </div>

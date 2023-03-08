@@ -3,15 +3,15 @@
         <div class="modal-dialog modal-dialog-centered">
             <form action="#" method="POST" class="modal-content" @submit.prevent="save">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add model</h5>
+                    <h5 class="modal-title">Новая модель</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <label>Title</label>
+                    <label>Название</label>
                     <input type="text" required class="form-control" v-model="newModel.title">
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" data-bs-dismiss="modal" :disabled="!newModel.title">Save</button>
+                    <button class="btn btn-primary" data-bs-dismiss="modal" :disabled="!newModel.title">Создать</button>
                 </div>
             </form>
         </div>
@@ -28,7 +28,7 @@ export default {
     },
     methods: {
         save: function () {
-            this.postJson(`/api/post-types`, this.newModel, () => location.reload())
+            this.postJson(`/api/post-types`, this.newModel, json => this.$router.push({ name: 'PostType', params: {id: json.data.id} }))
         }
     }
 }

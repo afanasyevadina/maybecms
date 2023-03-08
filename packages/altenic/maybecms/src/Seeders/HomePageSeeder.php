@@ -18,11 +18,11 @@ class HomePageSeeder extends Seeder
         $userModel = config('maybecms.user_model');
         $admin = $userModel::whereHas('roles', fn($query) => $query->where('slug', 'admin'))->firstOrNew();
         $page = Page::firstOrCreate([
-            'title' => 'Home',
+            'title' => 'Главная',
         ]);
         $page->update(['user_id' => $admin->id]);
         $setting = Setting::query()->create([
-            'title' => 'Home page',
+            'title' => 'Главная страница',
             'slug' => 'home_page',
             'type' => 'select',
             'value' => $page->id,

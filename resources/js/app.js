@@ -22,12 +22,6 @@ window.app = createApp(App);
 app.use(router)
 app.use(store)
 
-import Text from './components/primitives/Text.vue';
-import Markdown from "./components/primitives/Markdown.vue";
-import Link from "./components/primitives/Link.vue";
-import Image from "./components/primitives/Image.vue";
-import Video from "./components/primitives/Video.vue";
-
 import HasOne from "./components/relations/HasOne.vue";
 import HasMany from "./components/relations/HasMany.vue";
 
@@ -45,21 +39,10 @@ import PreviewImage from "./components/preview/primitives/PreviewImage.vue";
 import PreviewVideo from "./components/preview/primitives/PreviewVideo.vue";
 
 import TreeItem from "./components/tree/TreeItem.vue";
-import TreeSection from "./components/tree/TreeSection.vue";
-import TreePrimitive from "./components/tree/TreePrimitive.vue";
-import TreeDropdown from "./components/tree/TreeDropdown.vue";
 
 import PreviewItem from "./components/preview/PreviewItem.vue";
-import PreviewSection from "./components/preview/PreviewSection.vue";
-import PreviewPrimitive from "./components/preview/PreviewPrimitive.vue";
 
 import AddControls from "./components/AddControls.vue";
-
-app.component('text', Text);
-app.component('markdown', Markdown);
-app.component('link', Link);
-app.component('image', Image);
-app.component('video', Video);
 
 app.component('field', Field);
 app.component('text-field', TextField);
@@ -78,13 +61,8 @@ app.component('has-one', HasOne);
 app.component('has-many', HasMany);
 
 app.component('tree-item', TreeItem);
-app.component('tree-section', TreeSection);
-app.component('tree-primitive', TreePrimitive);
-app.component('tree-dropdown', TreeDropdown);
 
 app.component('preview-item', PreviewItem);
-app.component('preview-section', PreviewSection);
-app.component('preview-primitive', PreviewPrimitive);
 
 app.component('add-controls', AddControls);
 

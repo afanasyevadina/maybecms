@@ -20,8 +20,8 @@
 
 <script>
 export default {
-    name: 'DeletePage',
-    props: ['modalKey'],
+    name: 'DeleteFile',
+    props: ['modalKey', 'id'],
     methods: {
         remove: function () {
             this.deleteRequest(`/api/files/${this.id}`,() => {

@@ -1,6 +1,6 @@
 <template>
     <div class="p-4">
-        <h1 class="mb-4">Settings</h1>
+        <h1 class="mb-4">Настройки</h1>
         <div class="text-center" v-if="loading">
             <div class="spinner-grow text-secondary" role="status">
                 <span class="sr-only">Loading...</span>
@@ -17,7 +17,7 @@
                 </div>
             </div>
             <button class="btn btn-success" @click="save">
-                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" v-if="saving"></span>Save
+                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" v-if="saving"></span>Сохранить
             </button>
         </template>
     </div>

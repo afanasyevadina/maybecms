@@ -1,6 +1,8 @@
 <template>
-    <preview-section :block="block" v-if="block.type == 'section'"></preview-section>
-    <preview-primitive v-else :block="block"></preview-primitive>
+    <div :class="block.content?.class" v-if="isSection">
+        <preview-item v-for="childBlock in (block.blocks || [])" :block="childBlock" :key="childBlock.id"></preview-item>
+    </div>
+    <component :is="`preview-${block.type}`" :block="block" v-else></component>
 </template>
 
 <script>
@@ -9,6 +11,11 @@ export default {
     props: {
         block: {
             type: Object
+        }
+    },
+    computed: {
+        isSection: function () {
+            return this.block.type === 'section' || !this.block.type
         }
     }
 }

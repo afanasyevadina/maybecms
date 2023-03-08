@@ -1,7 +1,7 @@
 <template>
     <div class="modal fade" :id="modalKey" tabindex="-1">
-        <div class="modal-dialog modal-fullscreen-xxl-down modal-dialog-centered">
-            <form action="#" method="POST" class="modal-content" @submit.prevent="$emit('choose', activeMedia)">
+        <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+            <form action="#" method="POST" class="modal-content" @submit.prevent="choose">
                 <div class="modal-header">
                     <h5 class="modal-title">Choose video</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -12,7 +12,7 @@
                             <span class="sr-only">Loading...</span>
                         </div>
                     </div>
-                    <template v-else>
+                    <template v-else-if="videos.data.length">
                         <div class="row">
                             <div class="col">
                                 <div class="row">
@@ -40,20 +40,41 @@
                             </div>
                         </div>
                     </template>
+                    <table class="table table-striped" v-else>
+                        <tbody>
+                        <tr>
+                            <td class="text-center py-3">
+                                Пока нет видео
+                                <br>
+                                <br>
+                                <a href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#upload-video" class="btn btn-outline-dark">Загрузить первое видео</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                    <button class="btn btn-success" :disabled="!activeMedia">Choose</button>
+                <div class="modal-footer d-flex justify-content-between">
+                    <div>
+                        Нет нужного видео?
+                        <a href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#upload-video">Загрузи</a>
+                    </div>
+                    <div>
+                        <button class="btn btn-success" :disabled="!activeMedia">Выбрать</button>
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Отмена</button>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
+    <UploadVideo :modal-key="'upload-video'" @upload="upload"></UploadVideo>
 </template>
 
 <script>
+import UploadVideo from "../../components/media/UploadVideo.vue";
 export default {
     name: 'ChooseVideo',
     props: ['modalKey'],
+    components: {UploadVideo},
     data() {
         return {
             videos: {
@@ -61,6 +82,15 @@ export default {
             },
             loading: true,
             activeMedia: null
+        }
+    },
+    methods: {
+        upload: function (media) {
+            this.activeMedia = media
+            this.choose()
+        },
+        choose: function () {
+            this.$emit('choose', this.activeMedia)
         }
     },
     mounted() {

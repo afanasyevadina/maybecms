@@ -4,7 +4,7 @@
             <img :src="block.attachment?.file?.path" alt="" class="img-fluid mb-3 preview-img border bg-light" width="200">
             <div class="btn-group w-100 border">
                 <a :href="block.attachment?.file?.path" target="_blank"
-                   class="btn btn-light text-start w-100o overflow-hidden">{{ block.attachment?.file?.original_name }}</a>
+                   class="btn btn-light text-start w-100 overflow-hidden">{{ block.attachment?.file?.original_name }}</a>
                 <button type="button" class="btn btn-light" @click.prevent="block.attachment = null">
                     <i class="fas fa-trash"></i>
                 </button>
@@ -12,7 +12,7 @@
         </template>
         <template v-else>
             <button type="button" class="btn btn-light" data-bs-toggle="modal" :data-bs-target="`#choose-image-${block.id}`">
-                Choose image
+                Выберите изображение
             </button>
             <ChooseImage :modal-key="`choose-image-${block.id}`" @choose="chooseImage"></ChooseImage>
         </template>
