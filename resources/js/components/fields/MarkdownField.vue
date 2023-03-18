@@ -1,6 +1,6 @@
 <template>
     <div class="mb-4">
-        <quill-editor theme="snow" v-model:content="(block.content || {}).text" :read-only="readonly"></quill-editor>
+        <quill-editor theme="snow" v-model:content="(block.content || {}).text"></quill-editor>
     </div>
 </template>
 
@@ -15,10 +15,6 @@ export default {
     props: {
         block: {
             type: Object
-        },
-        readonly: {
-            type: Boolean,
-            default: false
         }
     },
     data() {

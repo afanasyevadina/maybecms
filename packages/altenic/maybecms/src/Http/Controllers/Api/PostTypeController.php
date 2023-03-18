@@ -12,16 +12,7 @@ class PostTypeController extends Controller
 {
     public function index()
     {
-        return response()->json([
-            'data' => PostType::all()->map(function ($model) {
-                return [
-                    'id' => $model->id,
-                    'slug' => $model->slug,
-                    'title' => $model->title,
-                    'plural_title' => $model->plural_title,
-                ];
-            }),
-        ]);
+        return PostTypeResource::collection(PostType::all());
     }
 
     public function show(PostType $postType)

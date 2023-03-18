@@ -42,8 +42,6 @@ import TreeItem from "./components/tree/TreeItem.vue";
 
 import PreviewItem from "./components/preview/PreviewItem.vue";
 
-import AddControls from "./components/AddControls.vue";
-
 app.component('field', Field);
 app.component('text-field', TextField);
 app.component('markdown-field', MarkdownField);
@@ -63,8 +61,6 @@ app.component('has-many', HasMany);
 app.component('tree-item', TreeItem);
 
 app.component('preview-item', PreviewItem);
-
-app.component('add-controls', AddControls);
 
 /**
  * The following block of code may be used to automatically register your

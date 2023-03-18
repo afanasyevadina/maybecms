@@ -1,6 +1,5 @@
 <?php
 
-use Altenic\MaybeCms\Http\Controllers\Api\AttachmentController;
 use Altenic\MaybeCms\Http\Controllers\Api\AuthController;
 use Altenic\MaybeCms\Http\Controllers\Api\BlockController;
 use Altenic\MaybeCms\Http\Controllers\Api\FileController;
@@ -45,10 +44,6 @@ Route::prefix('/api')->middleware('api')->group(function() {
         Route::post('/blocks', [BlockController::class, 'store']);
         Route::post('/blocks/{block}/clone', [BlockController::class, 'clone']);
         Route::delete('/blocks/{block}', [BlockController::class, 'destroy']);
-
-        Route::post('/attachments', [AttachmentController::class, 'store']);
-        Route::post('/attachments/{attachment}', [AttachmentController::class, 'update']);
-        Route::delete('/attachments/{attachment}', [AttachmentController::class, 'destroy']);
 
         Route::get('/files', [FileController::class, 'index']);
         Route::post('/files', [FileController::class, 'store']);

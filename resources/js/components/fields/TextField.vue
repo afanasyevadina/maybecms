@@ -1,6 +1,6 @@
 <template>
     <div class="mb-4">
-        <textarea v-model="(block.content || {}).text" class="form-control" :readonly="readonly" placeholder="Text"></textarea>
+        <textarea v-model="(block.content || {}).text" class="form-control" placeholder="Text"></textarea>
     </div>
 </template>
 
@@ -10,10 +10,6 @@ export default {
     props: {
         block: {
             type: Object
-        },
-        readonly: {
-            type: Boolean,
-            default: false
         }
     }
 }

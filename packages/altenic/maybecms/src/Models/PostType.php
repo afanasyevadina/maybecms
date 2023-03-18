@@ -28,10 +28,6 @@ class PostType extends Model
                 'plural_title' => Str::plural($model->title),
             ]);
         });
-
-        static::deleting(function (PostType $model) {
-            foreach ($model->blocks as $block) $block->delete();
-        });
     }
 
     public function user(): BelongsTo
@@ -42,11 +38,6 @@ class PostType extends Model
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
-    }
-
-    public function blocks(): MorphMany
-    {
-        return $this->morphMany(Block::class, 'attachable')->orderBy('order');
     }
 
     public function relations(): HasMany

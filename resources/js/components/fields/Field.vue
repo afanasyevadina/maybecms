@@ -9,7 +9,7 @@
             <label>Класс CSS</label>
             <input type="text" v-model="(block.content || {}).class" class="form-control">
         </div>
-        <div class="mb-4" v-if="!sourceModel">
+        <div class="mb-4">
             <a href="#" class="btn btn-light" @click.prevent="showSource = true" v-if="!showSource">
                 <i class="fas fa-plus"></i> Добавить источник
             </a>
@@ -32,10 +32,6 @@ export default {
     props: {
         block: {
             type: Object
-        },
-        sourceModel: {
-            type: Object,
-            default: null
         }
     },
     computed: {
@@ -48,19 +44,40 @@ export default {
     },
     data() {
         return {
-            showSource: false
+            showSource: false,
+            postType: null
+        }
+    },
+    methods: {
+        loadPostType: function () {
+            if (this.block.post_type_id) {
+                this.getJson(`/api/post-types/${this.block.post_type_id}`, json => this.postType = json.data)
+            } else {
+                this.postType = null
+            }
+        },
+        updatePostType: function () {
+            this.showSource = Boolean(this.block.post_type_id)
+            this.loadPostType()
+            this.setBlockPostType(this.block.blocks || [], this.block.post_type_id)
+        },
+        setBlockPostType: function (blocks, postTypeId) {
+            blocks.forEach(block => {
+                block.post_type_id = postTypeId
+                this.setBlockPostType(block.blocks || [])
+            })
         }
     },
     watch: {
         block: {
             deep: true,
             handler: function () {
-                this.showSource = Boolean(this.block.post_type_id)
+                this.updatePostType()
             }
         }
     },
     mounted() {
-        this.showSource = Boolean(this.block.post_type_id)
+        this.updatePostType()
     }
 }
 </script>
