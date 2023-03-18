@@ -59,7 +59,7 @@
 <script>
 import CreatePostType from "./CreatePostType.vue";
 import DeletePostType from "./DeletePostType.vue";
-import {mapState} from "vuex";
+import {mapState, mapMutations} from "vuex";
 
 export default {
     name: 'PostTypes',
@@ -69,13 +69,22 @@ export default {
     },
     data() {
         return {
-            postTypes: [],
             loading: true
         }
     },
+    computed: {
+        ...mapState([
+            'postTypes'
+        ])
+    },
+    methods: {
+        ...mapMutations([
+            'setPostTypes'
+        ])
+    },
     mounted() {
         this.getJson(`/api/post-types`, json => {
-            this.postTypes = json.data
+            this.setPostTypes(json.data)
             this.loading = false
         })
     }

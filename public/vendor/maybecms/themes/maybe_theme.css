@@ -1,7 +1,26 @@
 @import url(https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap);
 * {
     font-family: Nunito, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 .img {
     width: 100%;
+}
+.page > * {
+    padding-left: 10vw;
+    padding-right: 10vw;
+}
+.bg-dark {
+    background: #1a202c;
+    color: #ffffff;
+}
+.bg-light {
+    background: #dadada;
+    color: #000000;
+}
+.bg-blue {
+    background: #5185ea;
+    color: #000000;
 }

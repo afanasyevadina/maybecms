@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import {mapState} from "vuex";
+import {mapState, mapMutations} from "vuex";
 
 export default {
     name: "Preset",
@@ -49,7 +49,9 @@ export default {
     },
     computed: {
         ...mapState([
-            'activeElement'
+            'activeElement',
+            'primitives',
+            'postTypes',
         ])
     },
     methods: {
@@ -63,10 +65,16 @@ export default {
                     this.preset = json.data
                     this.saving = false
                 })
-        }
+        },
+        ...mapMutations([
+            'setPostTypes',
+            'setPrimitives',
+        ])
     },
     mounted() {
         this.loadPreset()
+        this.getJson(`/api/post-types`, json => this.setPostTypes(json.data))
+        this.getJson(`/api/primitives`, json => this.setPrimitives(json.data))
     }
 }
 </script>

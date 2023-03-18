@@ -3,7 +3,6 @@
 namespace Altenic\MaybeCms\Http\Requests;
 
 use Altenic\MaybeCms\Models\PostType;
-use Altenic\MaybeCms\Models\Relation;
 use Illuminate\Support\Str;
 
 class PostTypeUpdateRequest extends JsonRequest
@@ -26,18 +25,17 @@ class PostTypeUpdateRequest extends JsonRequest
     public function rules()
     {
         return [
-            'plural_title' => 'required',
             'title' => 'required',
             'slug' => 'required|regex:/^[\w-]*$/i',
             'structure' => 'sometimes|array',
             'structure.relations' => 'sometimes|array',
-            'structure.fields.*.type' => 'required|in:' . collect(maybe_field_types())->keys()->implode(','),
+            'structure.fields.*.type' => 'required|in:' . collect(maybe_field_types())->implode(','),
             'structure.fields.*.title' => 'required',
             'structure.fields.*.slug' => 'required',
             'structure.supports' => 'sometimes|array',
             'structure.supports.*' => 'required|in:content,meta',
             'relations.*.id' => 'sometimes|exists:relations,id',
-            'relations.*.type' => 'required|in:' . collect(Relation::TYPES)->pluck('type')->implode(','),
+            'relations.*.type' => 'required|in:' . collect(maybe_relation_types())->pluck('type')->implode(','),
             'relations.*.title' => 'required',
             'relations.*.related_post_type_id' => 'required|in:' . PostType::pluck('id')->implode(','),
         ];

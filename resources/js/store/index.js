@@ -6,7 +6,10 @@ const store = createStore({
         return {
             user: null,
             activeElement: null,
-            postTypes: []
+            postTypes: [],
+            primitives: [],
+            fieldTypes: [],
+            relationTypes: []
         }
     },
     getters: {
@@ -27,6 +30,15 @@ const store = createStore({
         },
         setPostTypes (state, postTypes) {
             state.postTypes = postTypes
+        },
+        setPrimitives (state, primitives) {
+            state.primitives = primitives
+        },
+        setFieldTypes (state, fieldTypes) {
+            state.fieldTypes = fieldTypes
+        },
+        setRelationTypes (state, relationTypes) {
+            state.relationTypes = relationTypes
         }
     }
 })

@@ -77,12 +77,14 @@ export default {
         },
         ...mapMutations([
             'setPostTypes',
+            'setPrimitives',
             'setActiveElement',
         ])
     },
     mounted() {
         this.loadPage()
         this.getJson(`/api/post-types`, json => this.setPostTypes(json.data))
+        this.getJson(`/api/primitives`, json => this.setPrimitives(json.data))
     }
 }
 </script>

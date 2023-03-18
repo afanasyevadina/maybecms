@@ -37,13 +37,26 @@ if(!function_exists('maybe_field_types')) {
     }
 }
 
+if(!function_exists('maybe_relation_types')) {
+    /**
+     * @return array
+     */
+    function maybe_relation_types() : array
+    {
+        return [
+            ['type' => 'has-one', 'title' => 'Has one'],
+            ['type' => 'has-many', 'title' => 'Has many'],
+        ];
+    }
+}
+
 if(!function_exists('maybe_primitives')) {
     /**
      * @return array
      */
     function maybe_primitives() : array
     {
-        return config('maybecms.primitives', []) + config(maybe_setting('active_theme') . '.primitives', []);
+        return config(maybe_setting('active_theme') . '.primitives', []);
     }
 }
 

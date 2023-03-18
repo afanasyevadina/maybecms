@@ -32,7 +32,7 @@
                     <div class="col">
                         <label>Тип поля</label>
                         <select v-model="field.type" class="form-control">
-                            <option :value="primitive.type" v-for="primitive in primitives" :key="primitive.type">{{ primitive.title }}</option>
+                            <option :value="fieldType" v-for="fieldType in fieldTypes" :key="fieldType">{{ fieldType }}</option>
                         </select>
                     </div>
                     <div class="col-auto ps-0">
@@ -64,7 +64,7 @@
                     <i class="fas fa-plus"></i> Добавить поле
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#" @click.prevent="addField(primitive)" v-for="primitive in primitives" :key="primitive.id">{{ primitive.title}}</a></li>
+                    <li><a class="dropdown-item" href="#" @click.prevent="addField(fieldType)" v-for="fieldType in fieldTypes" :key="fieldType">{{ fieldType }}</a></li>
                 </ul>
             </div>
         </div>
@@ -79,13 +79,13 @@
                     <div class="col">
                         <label>Тип отношения</label>
                         <select v-model="relation.type" class="form-control">
-                            <option :value="relationType.type" v-for="relationType in relations" :key="relationType.type">{{ relationType.title }}</option>
+                            <option :value="relationType.type" v-for="relationType in relationTypes" :key="relationType.type">{{ relationType.title }}</option>
                         </select>
                     </div>
                     <div class="col">
                         <label>Связанная модель</label>
                         <select v-model="relation.related_post_type_id" class="form-control">
-                            <option :value="relatedPostType.id" v-for="relatedPostType in models" :key="relatedPostType.id">{{ relatedPostType.title }}</option>
+                            <option :value="relatedPostType.id" v-for="relatedPostType in postTypes" :key="relatedPostType.id">{{ relatedPostType.title }}</option>
                         </select>
                     </div>
                     <div class="col-auto ps-0">
@@ -126,13 +126,13 @@
                             <div class="mb-4">
                                 <select v-model="newRelation.type" class="form-control">
                                     <option :value="null">Выберите тип отношения</option>
-                                    <option :value="relationType.type" v-for="relationType in relations" :key="relationType.type">{{ relationType.title }}</option>
+                                    <option :value="relationType.type" v-for="relationType in relationTypes" :key="relationType.type">{{ relationType.title }}</option>
                                 </select>
                             </div>
                             <div class="mb-4">
                                 <select v-model="newRelation.related_post_type_id" class="form-control">
                                     <option :value="null">Выберите связанную модель</option>
-                                    <option :value="relatedPostType.id" v-for="relatedPostType in models" :key="relatedPostType.id">{{ relatedPostType.title }}</option>
+                                    <option :value="relatedPostType.id" v-for="relatedPostType in postTypes" :key="relatedPostType.id">{{ relatedPostType.title }}</option>
                                 </select>
                             </div>
                         </div>
@@ -174,18 +174,24 @@
 </template>
 
 <script>
+import {mapMutations, mapState} from "vuex";
+
 export default {
     name: "Model",
     props: ['id'],
     data() {
         return {
             model: {},
-            primitives: [],
-            relations: [],
-            models: [],
             newRelation: {type: null, related_post_type_id: null},
             saving: false
         }
+    },
+    computed: {
+        ...mapState([
+            'fieldTypes',
+            'postTypes',
+            'relationTypes',
+        ])
     },
     methods: {
         save: function () {
@@ -195,23 +201,28 @@ export default {
                     this.saving = false
                 })
         },
-        addField: function (primitive) {
+        addField: function (fieldType) {
             this.model.structure.fields.push({
-                type: primitive.type,
+                type: fieldType,
                 title: `Field ${this.model.structure.fields.length + 1}`
             })
         },
         addRelation: function () {
-            let model = this.models.find(v => v.id === this.newRelation.related_post_type_id)
+            let model = this.postTypes.find(v => v.id === this.newRelation.related_post_type_id)
             this.model.relations.push({...this.newRelation, title: this.newRelation.type === 'has-one' ? model.title : model.plural_title})
             this.newRelation = {type: null, related_post_type_id: null}
-        }
+        },
+        ...mapMutations([
+            'setPostTypes',
+            'setRelationTypes',
+            'setFieldTypes',
+        ])
     },
     mounted() {
         this.getJson(`/api/post-types/${this.id}`, json => this.model = json.data)
-        this.getJson(`/api/primitives`, json => this.primitives = json.data)
-        this.getJson(`/api/relations`, json => this.relations = json.data)
-        this.getJson(`/api/post-types`, json => this.models = json.data)
+        this.getJson(`/api/field-types`, json => this.setFieldTypes(json.data))
+        this.getJson(`/api/relation-types`, json => this.setRelationTypes(json.data))
+        this.getJson(`/api/post-types`, json => this.setPostTypes(json.data))
     }
 }
 </script>

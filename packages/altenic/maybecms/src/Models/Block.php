@@ -29,7 +29,7 @@ class Block extends Model
                 'user_id' => auth()->id(),
                 'active' => 1,
                 'order' => $block->attachable?->blocks()->count(),
-                'content' => $block->content ?? collect($block->structure ?? [])->map(fn($item) => [$item['slug'] => ''])->collapse(),
+                'content' => $block->content ?? collect($block->structure ?? [])->map(fn($item) => [$item['slug'] => array_keys($item['options'] ?? [])[0] ?? ''])->collapse(),
             ]);
         });
 

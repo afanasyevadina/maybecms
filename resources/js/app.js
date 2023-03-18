@@ -31,6 +31,7 @@ import MarkdownField from "./components/fields/MarkdownField.vue";
 import LinkField from "./components/fields/LinkField.vue";
 import ImageField from "./components/fields/ImageField.vue";
 import VideoField from "./components/fields/VideoField.vue";
+import SelectField from "./components/fields/SelectField.vue";
 
 import TreeItem from "./components/tree/TreeItem.vue";
 
@@ -40,6 +41,7 @@ app.component('markdown-field', MarkdownField);
 app.component('link-field', LinkField);
 app.component('image-field', ImageField);
 app.component('video-field', VideoField);
+app.component('select-field', SelectField);
 
 app.component('has-one', HasOne);
 app.component('has-many', HasMany);

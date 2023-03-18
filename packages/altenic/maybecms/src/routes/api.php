@@ -2,13 +2,14 @@
 
 use Altenic\MaybeCms\Http\Controllers\Api\AuthController;
 use Altenic\MaybeCms\Http\Controllers\Api\BlockController;
+use Altenic\MaybeCms\Http\Controllers\Api\FieldTypeController;
 use Altenic\MaybeCms\Http\Controllers\Api\FileController;
 use Altenic\MaybeCms\Http\Controllers\Api\PostTypeController;
 use Altenic\MaybeCms\Http\Controllers\Api\PageController;
 use Altenic\MaybeCms\Http\Controllers\Api\PostController;
 use Altenic\MaybeCms\Http\Controllers\Api\PresetController;
 use Altenic\MaybeCms\Http\Controllers\Api\PrimitiveController;
-use Altenic\MaybeCms\Http\Controllers\Api\RelationController;
+use Altenic\MaybeCms\Http\Controllers\Api\RelationTypeController;
 use Altenic\MaybeCms\Http\Controllers\Api\SettingController;
 use Illuminate\Support\Facades\Route;
 
@@ -63,7 +64,8 @@ Route::prefix('/api')->middleware('api')->group(function() {
         Route::delete('/post-types/{postType}', [PostTypeController::class, 'destroy']);
 
         Route::get('/primitives', [PrimitiveController::class, 'index']);
-        Route::get('/relations', [RelationController::class, 'index']);
+        Route::get('/field-types', [FieldTypeController::class, 'index']);
+        Route::get('/relation-types', [RelationTypeController::class, 'index']);
         Route::post('/posts/{postType}', [PostController::class, 'store']);
         Route::post('/posts/{postType}/{post}', [PostController::class, 'update']);
         Route::delete('/posts/{postType}/{post}', [PostController::class, 'destroy']);

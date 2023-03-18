@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import {mapState} from "vuex";
+
 export default {
     name: "TreeAddPrimitiveModal",
     props: {
@@ -27,13 +29,10 @@ export default {
             type: String
         }
     },
-    data() {
-        return {
-            primitives: [],
-        }
-    },
-    mounted() {
-        this.getJson(`/api/primitives`, json => this.primitives = json.data)
+    computed: {
+        ...mapState([
+            'primitives'
+        ])
     }
 }
 </script>

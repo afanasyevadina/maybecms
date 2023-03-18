@@ -11,11 +11,6 @@ class Relation extends Model
 {
     use HasFactory;
 
-    public const TYPES = [
-        ['type' => 'has-one', 'title' => 'Has one'],
-        ['type' => 'has-many', 'title' => 'Has many'],
-    ];
-
     protected $guarded = [];
 
     protected static function booted()
