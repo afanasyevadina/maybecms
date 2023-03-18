@@ -11,14 +11,15 @@
                 </button>
                 <ul class="dropdown-menu py-0">
                     <template v-if="isSection">
-                        <li><a class="dropdown-item small px-2" href="#" @click.prevent="addBlock({type:'section', title: 'Section'})">Add section</a></li>
-                        <li><a class="dropdown-item small px-2" href="#" data-bs-toggle="modal" :data-bs-target="`#add-primitive-${collapseKey}`">Add primitive</a></li>
-                        <li><a class="dropdown-item small px-2" href="#" data-bs-toggle="modal" :data-bs-target="`#add-preset-${collapseKey}`">Add preset</a></li>
+                        <li><a class="dropdown-item small px-2" href="#" data-bs-toggle="modal" :data-bs-target="`#add-primitive-${collapseKey}`">Добавить примитив</a></li>
+                        <li><a class="dropdown-item small px-2" href="#" data-bs-toggle="modal" :data-bs-target="`#add-preset-${collapseKey}`">Вставить шаблон</a></li>
                     </template>
-                    <li><a class="dropdown-item small px-2" href="#" @click.prevent="cloneBlock">Clone</a></li>
-                    <li><a class="dropdown-item small px-2" href="#" @click.prevent="$emit('moveUp')" v-if="block.order > 1">Move up</a></li>
-                    <li><a class="dropdown-item small px-2" href="#" @click.prevent="$emit('moveDown')" v-if="block.order < count">Move down</a></li>
-                    <li><a class="dropdown-item small px-2" href="#" data-bs-toggle="modal" :data-bs-target="`#delete-modal-${collapseKey}`">Delete</a></li>
+                    <template v-if="block.class_name === 'block'">
+                        <li><a class="dropdown-item small px-2" href="#" @click.prevent="cloneBlock">Копировать</a></li>
+                        <li><a class="dropdown-item small px-2" href="#" @click.prevent="$emit('moveUp')" v-if="block.order > 1">Выше</a></li>
+                        <li><a class="dropdown-item small px-2" href="#" @click.prevent="$emit('moveDown')" v-if="block.order < count">Ниже</a></li>
+                        <li><a class="dropdown-item small px-2" href="#" data-bs-toggle="modal" :data-bs-target="`#delete-modal-${collapseKey}`">Удалить</a></li>
+                    </template>
                 </ul>
             </div>
             <div class="collapse" :class="{'show': !collapsed}" :id="`tree-item-${collapseKey}`">
@@ -65,7 +66,7 @@ export default {
             return this.depth * 10 + this.order
         },
         isSection: function () {
-            return this.block.type === 'section' || !this.block.type
+            return this.block.children?.length || this.block.class_name !== 'block'
         }
     },
     methods: {
@@ -74,10 +75,9 @@ export default {
                 this.$emit('update')
             })
         },
-        addBlock: function (block) {
+        addBlock: function (blockType) {
             this.postJson(`/api/blocks`, {
-                title: block.title,
-                type: block.type,
+                type: blockType,
                 attachable_id: this.block.id,
                 attachable_type: this.block.class_name,
             }, json => {

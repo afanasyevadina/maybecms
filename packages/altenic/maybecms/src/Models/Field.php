@@ -11,10 +11,6 @@ class Field extends Model
 
     protected $guarded = [];
 
-    protected $casts = [
-        'content' => 'array',
-    ];
-
     protected static function booted()
     {
         static::created(function (Field $field) {
@@ -42,19 +38,5 @@ class Field extends Model
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(config('maybecms.user_model'))->withDefault();
-    }
-
-    public function getStructureAttribute()
-    {
-        return collect(Block::PRIMITIVES)->where('type', $this->type)->pluck('structure')->first() ?? [];
-    }
-
-    public function transformContent(): array
-    {
-        $content = [];
-        foreach ($this->structure ?? [] as $key => $value) {
-            $content[$key] = $this->content[$key] ?? $value;
-        }
-        return $content;
     }
 }

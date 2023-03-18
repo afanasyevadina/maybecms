@@ -15,10 +15,7 @@
                 <tree-item :block="page" :depth="0" :order="0" :count="page.blocks.length"
                            @update="loadPage"></tree-item>
             </div>
-            <div class="editor-preview overflow-auto p-3">
-                <preview-item :block="page"></preview-item>
-            </div>
-            <div class="editor-fields p-3 border-top overflow-auto">
+            <div class="editor-fields p-3 overflow-auto">
                 <template v-if="activeElement">
                     <field :block="activeElement" @save="loadPage"
                            @remove="activeElement = null; loadPage()"></field>
@@ -79,7 +76,8 @@ export default {
             })
         },
         ...mapMutations([
-            'setPostTypes'
+            'setPostTypes',
+            'setActiveElement',
         ])
     },
     mounted() {

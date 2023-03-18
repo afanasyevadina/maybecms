@@ -15,46 +15,6 @@ class Block extends Model
 {
     use HasFactory;
 
-    public const PRIMITIVES = [
-        [
-            'type' => 'text',
-            'title' => 'Text',
-            'structure' => [
-                'text' => '',
-            ]
-        ],
-        [
-            'type' => 'markdown',
-            'title' => 'Markdown',
-            'structure' => [
-                'text' => '',
-            ],
-        ],
-        [
-            'type' => 'link',
-            'title' => 'Link',
-            'structure' => [
-                'text' => '',
-                'link' => '',
-            ],
-        ],
-        [
-            'type' => 'image',
-            'title' => 'Image',
-            'structure' => [
-                'alt' => '',
-                'wrapperClass' => '',
-            ],
-        ],
-        [
-            'type' => 'video',
-            'title' => 'Video',
-            'structure' => [
-                'wrapperClass' => '',
-            ],
-        ],
-    ];
-
     protected $guarded = [];
 
     protected $casts = [
@@ -69,7 +29,7 @@ class Block extends Model
                 'user_id' => auth()->id(),
                 'active' => 1,
                 'order' => $block->attachable?->blocks()->count(),
-                'content' => $block->content ?? $block->structure,
+                'content' => $block->content ?? collect($block->structure ?? [])->map(fn($item) => [$item['slug'] => ''])->collapse(),
             ]);
         });
 
@@ -79,7 +39,7 @@ class Block extends Model
 
         static::deleting(function (Block $block) {
             foreach ($block->blocks as $subBlock) $subBlock->delete();
-            $block->attachment()->delete();
+            foreach ($block->attachments as $attachment) $attachment->delete();
         });
 
         static::deleted(function (Block $block) {
@@ -97,9 +57,9 @@ class Block extends Model
         return $this->morphTo();
     }
 
-    public function attachment(): MorphOne
+    public function attachments(): MorphMany
     {
-        return $this->morphOne(Attachment::class, 'attachable');
+        return $this->morphMany(Attachment::class, 'attachable');
     }
 
     public function blocks(): MorphMany
@@ -114,16 +74,6 @@ class Block extends Model
 
     public function getStructureAttribute()
     {
-        return collect(static::PRIMITIVES)->where('type', $this->type)->pluck('structure')->first() ?? [];
-    }
-
-    public function transformContent(): array
-    {
-        $content = [];
-        foreach ($this->structure ?? [] as $key => $value) {
-            $content[$key] = $this->content[$key] ?? $value;
-        }
-        $content['class'] = $this->content['class'] ?? '';
-        return $content;
+        return maybe_primitives()[$this->type]['structure'] ?? [];
     }
 }

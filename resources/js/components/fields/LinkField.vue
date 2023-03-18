@@ -1,11 +1,6 @@
 <template>
     <div class="mb-4">
-        <div class="mb-4">
-            <input type="text" v-model="(block.content || {}).text" class="form-control" placeholder="Текст ссылки">
-        </div>
-        <div class="mb-4">
-            <input type="url" v-model="(block.content || {}).link" class="form-control" placeholder="Link URL">
-        </div>
+        <input type="url" v-model="field.value" class="form-control" :placeholder="field.title">
     </div>
 </template>
 
@@ -13,7 +8,7 @@
 export default {
     name: "LinkField",
     props: {
-        block: {
+        field: {
             type: Object
         }
     }

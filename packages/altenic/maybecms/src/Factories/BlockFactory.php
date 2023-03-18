@@ -23,7 +23,7 @@ class BlockFactory extends Factory
     {
         return [
             'title' => fake()->sentence(2),
-            'type' => fake()->randomElement(array_column(Block::PRIMITIVES, 'type')),
+            'type' => fake()->randomElement(collect(maybe_primitives())->keys()->toArray()),
             'attachable_type' => Page::class,
             'attachable_id' => app(PageFactory::class)->create()->id,
         ];

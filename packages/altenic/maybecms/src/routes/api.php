@@ -28,8 +28,7 @@ Route::prefix('/api')->middleware('api')->group(function() {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::get('/pages', [PageController::class, 'index']);
-    Route::get('/pages/home', [PageController::class, 'home']);
-    Route::get('/pages/{pageId}', [PageController::class, 'show']);
+    Route::get('/pages/{page}', [PageController::class, 'show']);
 
     Route::get('/posts/{postType}', [PostController::class, 'index']);
     Route::get('/posts/{postType}/{post}', [PostController::class, 'show']);

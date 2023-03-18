@@ -1,6 +1,6 @@
 <template>
     <div class="mb-4">
-        <quill-editor theme="snow" v-model:content="(block.content || {}).text"></quill-editor>
+        <quill-editor theme="snow" ref="quillEditor" @ready="ready" @textChange="textChange"></quill-editor>
     </div>
 </template>
 
@@ -13,13 +13,21 @@ export default {
         QuillEditor
     },
     props: {
-        block: {
+        field: {
             type: Object
         }
     },
     data() {
         return {
             text: '',
+        }
+    },
+    methods: {
+        ready: function () {
+            this.$refs.quillEditor.setHTML(this.field.value || '')
+        },
+        textChange: function () {
+            this.field.value = this.$refs.quillEditor.getHTML()
         }
     }
 }

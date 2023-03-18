@@ -14,10 +14,7 @@
             <div class="editor-tree border-end overflow-auto p-3">
                 <tree-item :block="preset" :depth="0" :order="0" :count="preset.blocks.length"></tree-item>
             </div>
-            <div class="editor-preview overflow-auto p-3">
-                <preview-item :block="preset"></preview-item>
-            </div>
-            <div class="editor-fields p-3 border-top overflow-auto">
+            <div class="editor-fields p-3 overflow-auto">
                 <template v-if="activeElement">
                     <field :block="activeElement" @save="loadPreset"
                            @remove="activeElement = null; loadPreset()"></field>

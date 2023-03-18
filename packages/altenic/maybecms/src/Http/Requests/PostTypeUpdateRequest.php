@@ -2,7 +2,6 @@
 
 namespace Altenic\MaybeCms\Http\Requests;
 
-use Altenic\MaybeCms\Models\Block;
 use Altenic\MaybeCms\Models\PostType;
 use Altenic\MaybeCms\Models\Relation;
 use Illuminate\Support\Str;
@@ -32,7 +31,7 @@ class PostTypeUpdateRequest extends JsonRequest
             'slug' => 'required|regex:/^[\w-]*$/i',
             'structure' => 'sometimes|array',
             'structure.relations' => 'sometimes|array',
-            'structure.fields.*.type' => 'required|in:' . collect(Block::PRIMITIVES)->pluck('type')->implode(','),
+            'structure.fields.*.type' => 'required|in:' . collect(maybe_field_types())->keys()->implode(','),
             'structure.fields.*.title' => 'required',
             'structure.fields.*.slug' => 'required',
             'structure.supports' => 'sometimes|array',

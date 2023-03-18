@@ -11,17 +11,34 @@ trait Blockable
     {
         foreach ($data ?? [] as $item) {
             $block = $model->blocks()->findOrFail($item['id']);
-            $block->update(collect($item)->only(['title', 'content', 'order', 'post_type_id'])->toArray());
-            if (@$item['attachment']['file']['id']) {
-                $attachment = $block->attachment()->updateOrCreate([], ['file_id' => File::query()->findOrFail($item['attachment']['file']['id'])->id]);
-                if (@$item['attachment']['poster']['file']['id']) {
-                    $attachment->poster()->updateOrCreate([], ['file_id' => File::query()->findOrFail($item['attachment']['poster']['file']['id'])->id, 'role' => 'poster']);
-                } else {
-                    $attachment->poster()->delete();
+            $dataToUpdate = collect($item)->only(['title', 'order', 'post_type_id'])->toArray();
+            $attachmentIds = [];
+            foreach($item['content'] ?? [] as $contentItem) {
+                $dataToUpdate['content'][$contentItem['slug']] = $contentItem['value'];
+                if (@$contentItem['attachment']['file']['id']) {
+                    $attachment = $block->attachments()->updateOrCreate(['role' => $contentItem['slug']], ['file_id' => File::query()->findOrFail($contentItem['attachment']['file']['id'])->id]);
+                    if (@$contentItem['attachment']['poster']['file']['id']) {
+                        $attachment->poster()->updateOrCreate([], ['file_id' => File::query()->findOrFail($contentItem['attachment']['poster']['file']['id'])->id, 'role' => 'poster']);
+                    } else {
+                        $attachment->poster()->delete();
+                    }
+                    $attachmentIds[] = $attachment->id;
                 }
-            } else {
-                $block->attachment()->delete();
             }
+            foreach ($block->attachments()->whereNotIn('id', $attachmentIds)->get() as $unusedAttachment) {
+                $unusedAttachment->delete();
+            }
+            $block->update($dataToUpdate);
+//            if (@$item['attachment']['file']['id']) {
+//                $attachment = $block->attachment()->updateOrCreate([], ['file_id' => File::query()->findOrFail($item['attachment']['file']['id'])->id]);
+//                if (@$item['attachment']['poster']['file']['id']) {
+//                    $attachment->poster()->updateOrCreate([], ['file_id' => File::query()->findOrFail($item['attachment']['poster']['file']['id'])->id, 'role' => 'poster']);
+//                } else {
+//                    $attachment->poster()->delete();
+//                }
+//            } else {
+//                $block->attachment()->delete();
+//            }
             $this->updateBlocks($block, $item['blocks'] ?? []);
         }
     }
@@ -42,7 +59,7 @@ trait Blockable
                     'alt' => $attachment->alt,
                 ]);
             }
-            if ($item->type == 'section') $this->appendBlocks($childBlock, $item->blocks ?? []);
+            $this->appendBlocks($childBlock, $item->blocks ?? []);
             return $childBlock;
         });
     }

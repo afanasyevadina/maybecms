@@ -1,7 +1,6 @@
 <?php
 
-use Altenic\MaybeCms\Http\Controllers\SiteController;
-use Illuminate\Support\Facades\Auth;
+use Altenic\MaybeCms\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::any('/{any?}', function () {
-    return view('maybecms::index');
+Route::get('/', [PageController::class, 'index']);
+Route::any('/admin/{any?}', function () {
+    return view('maybecms::admin.index');
 })->where('any', '.*');

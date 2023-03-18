@@ -2,6 +2,9 @@
 
 namespace Altenic\MaybeCms\Http\Requests;
 
+use Altenic\MaybeCms\Models\Block;
+use Altenic\MaybeCms\Models\Meta;
+
 class AttachmentCreateRequest extends JsonRequest
 {
     /**
@@ -17,7 +20,7 @@ class AttachmentCreateRequest extends JsonRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'attachable_type' => str_replace("\\\\", "\\", $this->input('attachable_type')),
+            'attachable_type' => maybe_attachable_class($this->input('attachable_type')),
         ]);
     }
 
@@ -30,23 +33,11 @@ class AttachmentCreateRequest extends JsonRequest
     {
         $rules = [
             'attachable_id' => 'required',
-            'attachable_type' => 'required',
+            'attachable_type' => 'required|in:' . implode(',', [Block::class, Meta::class]),
             'type' => 'required|in:image,video,file',
             'file' => 'required|file' . ($this->input('type') == 'image' ? '|image' : '') . ($this->input('type') == 'video' ? '|mimetypes:video/*' : ''),
         ];
         if($this->input('type') == 'image') $rules['alt'] = 'sometimes';
         return $rules;
-    }
-
-    public function withValidator($validator)
-    {
-        $validator->after(function ($validator) {
-            $className = $this->input('attachable_type');
-            if (!class_exists($className)) {
-                $validator->errors()->add('attachable_type', 'Attachable class not exists.');
-            } elseif(!$className::find($this->input('attachable_id'))) {
-                $validator->errors()->add('attachable_id', 'Attachable model not found.');
-            }
-        });
     }
 }

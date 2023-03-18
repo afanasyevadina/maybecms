@@ -20,14 +20,9 @@ class PageController extends Controller
         return PageListResource::collection(Page::query()->paginate(20));
     }
 
-    public function home()
+    public function show(Page $page)
     {
-        return PageResource::make(Page::query()->findOrFail(Setting::query()->where('slug', 'home_page')->firstOrFail()->value));
-    }
-
-    public function show($pageId)
-    {
-        return PageResource::make(Page::query()->where('id', $pageId)->orWhere('slug', $pageId)->firstOrFail());
+        return PageResource::make($page);
     }
 
     public function store(PageCreateRequest $request)

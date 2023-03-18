@@ -20,20 +20,20 @@ class BlockResource extends JsonResource
             'type' => $this->type,
             'slug' => $this->slug,
             'title' => $this->title,
-            'content' => $this->resource->transformContent(),
-            'class_name' => get_class($this->resource),
-            'attachable_id' => $this->attachable_id,
-            'attachable_type' => $this->attachable_type,
+            'content' => collect($this->structure ?? [])->map(function($item) {
+                $item['value'] = $this->content[$item['slug']] ?? '';
+                $item['attachment'] = AttachmentResource::make($this->attachments()->where(['role' => $item['slug']])->first());
+                return $item;
+            })->toArray(),
+            'children' => maybe_primitives()[$this->type]['children'] ?? [],
+            'class_name' => 'block',
             'post_type_id' => $this->post_type_id,
             'active' => $this->active,
             'order' => $this->order,
+            'blocks' => BlockResource::collection($this->blocks),
             'created_at' => Carbon::create($this->created_at)->toIso8601ZuluString(),
             'updated_at' => Carbon::create($this->updated_at)->toIso8601ZuluString(),
         ];
-        if (in_array($this->type, ['video', 'image', 'link']))
-            $data['attachment'] = AttachmentResource::make($this->attachment);
-        if ($this->type == 'section')
-            $data['blocks'] = BlockResource::collection($this->blocks);
         return $data;
     }
 }

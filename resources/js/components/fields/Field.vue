@@ -4,11 +4,10 @@
             <label>Название блока</label>
             <input type="text" v-model="block.title" required class="form-control">
         </div>
-        <component v-if="!isSection" :is="`${block.type}-field`" :block="block"></component>
-        <div class="mb-4">
-            <label>Класс CSS</label>
-            <input type="text" v-model="(block.content || {}).class" class="form-control">
-        </div>
+        <template v-for="field in block.content">
+            <label>{{ field.title }}</label>
+            <component :is="`${field.field_type}-field`" :field="field"></component>
+        </template>
         <div class="mb-4">
             <a href="#" class="btn btn-light" @click.prevent="showSource = true" v-if="!showSource">
                 <i class="fas fa-plus"></i> Добавить источник
@@ -36,7 +35,7 @@ export default {
     },
     computed: {
         isSection: function () {
-            return this.block.type === 'section' || !this.block.type
+            return this.block.children?.length
         },
         ...mapState([
             'postTypes'

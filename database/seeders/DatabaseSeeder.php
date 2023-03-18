@@ -3,9 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Altenic\MaybeCms\Seeders\AdminSeeder;
-use Altenic\MaybeCms\Seeders\HomePageSeeder;
-use Altenic\MaybeCms\Seeders\RolesSeeder;
+use Altenic\MaybeCms\Seeders\MaybeSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,9 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            RolesSeeder::class,
-            AdminSeeder::class,
-            HomePageSeeder::class,
+            MaybeSeeder::class,
         ]);
         // \App\Models\User::factory(10)->create();
 

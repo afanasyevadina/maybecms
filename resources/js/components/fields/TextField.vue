@@ -1,6 +1,6 @@
 <template>
     <div class="mb-4">
-        <textarea v-model="(block.content || {}).text" class="form-control" placeholder="Text"></textarea>
+        <textarea v-model="field.value" class="form-control" :placeholder="field.title"></textarea>
     </div>
 </template>
 
@@ -8,7 +8,7 @@
 export default {
     name: "TextField",
     props: {
-        block: {
+        field: {
             type: Object
         }
     }

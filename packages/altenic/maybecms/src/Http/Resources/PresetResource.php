@@ -22,7 +22,7 @@ class PresetResource extends JsonResource
             'blocks' => BlockResource::collection($this->blocks),
             'created_at' => Carbon::create($this->created_at)->toIso8601ZuluString(),
             'updated_at' => Carbon::create($this->updated_at)->toIso8601ZuluString(),
-            'class_name' => get_class($this->resource),
+            'class_name' => 'preset',
         ];
     }
 }

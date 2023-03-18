@@ -40,6 +40,7 @@ class MaybeCmsServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/config/maybecms.php' => config_path('maybecms.php'),
+            __DIR__ . '/config/maybe_theme.php' => config_path('maybe_theme.php'),
         ], 'maybecms-config');
 
         $this->publishes([

@@ -3,6 +3,8 @@
 namespace Altenic\MaybeCms\Http\Resources;
 
 use Carbon\Carbon;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class MetaResource extends JsonResource
@@ -10,8 +12,8 @@ class MetaResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @param Request $request
+     * @return array
      */
     public function toArray($request)
     {
@@ -20,9 +22,7 @@ class MetaResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'og_type' => $this->og_type,
-            'attachable_id' => $this->attachable_id,
-            'attachable_type' => $this->attachable_type,
-            'class_name' => get_class($this->resource),
+            'class_name' => 'meta',
             'attachment' => AttachmentResource::make($this->attachment),
             'created_at' => Carbon::create($this->created_at)->toIso8601ZuluString(),
             'updated_at' => Carbon::create($this->updated_at)->toIso8601ZuluString(),

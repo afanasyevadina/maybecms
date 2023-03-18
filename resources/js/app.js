@@ -32,15 +32,7 @@ import LinkField from "./components/fields/LinkField.vue";
 import ImageField from "./components/fields/ImageField.vue";
 import VideoField from "./components/fields/VideoField.vue";
 
-import PreviewText from './components/preview/primitives/PreviewText.vue';
-import PreviewMarkdown from "./components/preview/primitives/PreviewMarkdown.vue";
-import PreviewLink from "./components/preview/primitives/PreviewLink.vue";
-import PreviewImage from "./components/preview/primitives/PreviewImage.vue";
-import PreviewVideo from "./components/preview/primitives/PreviewVideo.vue";
-
 import TreeItem from "./components/tree/TreeItem.vue";
-
-import PreviewItem from "./components/preview/PreviewItem.vue";
 
 app.component('field', Field);
 app.component('text-field', TextField);
@@ -49,18 +41,10 @@ app.component('link-field', LinkField);
 app.component('image-field', ImageField);
 app.component('video-field', VideoField);
 
-app.component('preview-text', PreviewText);
-app.component('preview-markdown', PreviewMarkdown);
-app.component('preview-link', PreviewLink);
-app.component('preview-image', PreviewImage);
-app.component('preview-video', PreviewVideo);
-
 app.component('has-one', HasOne);
 app.component('has-many', HasMany);
 
 app.component('tree-item', TreeItem);
-
-app.component('preview-item', PreviewItem);
 
 /**
  * The following block of code may be used to automatically register your

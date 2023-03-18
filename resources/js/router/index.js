@@ -13,87 +13,70 @@ import Video from "../views/media/Video.vue";
 import Files from "../views/media/Files.vue";
 import Login from "../views/Login.vue";
 import NotFound from "../views/404.vue";
-import Admin from "../views/Admin.vue";
-
-import SitePage from "../views/site/Page.vue";
-import SiteHome from "../views/site/Home.vue";
 
 const routes = [{
-    path: '/admin',
-    component: Admin,
-    children: [{
-        path: '',
-        redirect: {name: 'Pages'}
-    }, {
-        path: 'login',
-        component: Login,
-        name: 'Login'
-    }, {
-        path: 'pages',
-        component: Pages,
-        name: 'Pages'
-    }, {
-        path: 'pages/:id',
-        component: Page,
-        name: 'Page',
-        props: true,
-        meta: {
-            hideNav: true
-        }
-    }, {
-        path: 'post-types',
-        component: PostTypes,
-        name: 'PostTypes'
-    }, {
-        path: 'post-types/:id',
-        component: PostType,
-        name: 'PostType',
-        props: true
-    }, {
-        path: 'presets',
-        component: Presets,
-        name: 'Presets'
-    }, {
-        path: 'presets/:id',
-        component: Preset,
-        name: 'Preset',
-        props: true
-    }, {
-        path: 'posts/:postType',
-        component: Posts,
-        name: 'Posts',
-        props: true
-    }, {
-        path: 'posts/:postType/:id',
-        component: Post,
-        name: 'Post',
-        props: true
-    }, {
-        path: 'settings',
-        component: Settings,
-        name: 'Settings'
-    }, {
-        path: 'media/images',
-        component: Images,
-        name: 'Images'
-    }, {
-        path: 'media/video',
-        component: Video,
-        name: 'Video'
-    }, {
-        path: 'media/files',
-        component: Files,
-        name: 'Files'
-    }]
+    path: '/',
+    redirect: {name: 'Pages'}
 }, {
-    path: '/:id',
-    component: SitePage,
-    name: 'SitePage',
+    path: '/login',
+    component: Login,
+    name: 'Login'
+}, {
+    path: '/pages',
+    component: Pages,
+    name: 'Pages'
+}, {
+    path: '/pages/:id',
+    component: Page,
+    name: 'Page',
+    props: true,
+    meta: {
+        hideNav: true
+    }
+}, {
+    path: '/post-types',
+    component: PostTypes,
+    name: 'PostTypes'
+}, {
+    path: '/post-types/:id',
+    component: PostType,
+    name: 'PostType',
     props: true
 }, {
-    path: '/',
-    component: SiteHome,
-    name: 'SiteHome'
+    path: '/presets',
+    component: Presets,
+    name: 'Presets'
+}, {
+    path: '/presets/:id',
+    component: Preset,
+    name: 'Preset',
+    props: true
+}, {
+    path: '/posts/:postType',
+    component: Posts,
+    name: 'Posts',
+    props: true
+}, {
+    path: '/posts/:postType/:id',
+    component: Post,
+    name: 'Post',
+    props: true
+}, {
+    path: '/settings',
+    component: Settings,
+    name: 'Settings'
+}, {
+    path: '/media/images',
+    component: Images,
+    name: 'Images'
+}, {
+    path: '/media/video',
+    component: Video,
+    name: 'Video'
+}, {
+    path: '/media/files',
+    component: Files,
+    name: 'Files'
 }, {
     path: '/404',
     component: NotFound,
@@ -102,11 +85,11 @@ const routes = [{
 
 const router = new createRouter({
     routes,
-    history: createWebHistory('/')
+    history: createWebHistory('/admin')
 })
 
 router.beforeEach((to, from, next) => {
-    if (to.path.startsWith('/admin/') && to.name !== 'Login' && !localStorage.getItem('_cms_user')) next({ name: 'Login' })
+    if (to.name !== 'Login' && !localStorage.getItem('_cms_user')) next({ name: 'Login' })
     else next()
 })
 

@@ -3,6 +3,9 @@
 namespace Altenic\MaybeCms\Http\Requests;
 
 use Altenic\MaybeCms\Models\Block;
+use Altenic\MaybeCms\Models\Page;
+use Altenic\MaybeCms\Models\Post;
+use Altenic\MaybeCms\Models\Preset;
 
 class BlockCreateRequest extends JsonRequest
 {
@@ -19,8 +22,8 @@ class BlockCreateRequest extends JsonRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'attachable_type' => str_replace("\\\\", "\\", $this->input('attachable_type')),
-            'title' => $this->input('title') ?? (collect(Block::PRIMITIVES)->where('type', $this->input('type'))->pluck('title')->first() ?? ucfirst($this->input('type'))),
+            'attachable_type' => maybe_attachable_class($this->input('attachable_type')),
+            'title' => maybe_primitives()[$this->input('type')]['title'] ?? 'Секция',
         ]);
     }
 
@@ -33,22 +36,10 @@ class BlockCreateRequest extends JsonRequest
     {
         return [
             'attachable_id' => 'required',
-            'attachable_type' => 'required',
+            'attachable_type' => 'required|in:' . implode(',', [Page::class, Post::class, Preset::class, Block::class]),
             'post_type' => 'sometimes',
-            'type' => 'required|in:section,' . collect(Block::PRIMITIVES)->pluck('type')->implode(','),
+            'type' => 'required|in:' . collect(maybe_primitives())->keys()->implode(','),
             'title' => 'sometimes',
         ];
-    }
-
-    public function withValidator($validator)
-    {
-        $validator->after(function ($validator) {
-            $className = $this->input('attachable_type');
-            if (!class_exists($className)) {
-                $validator->errors()->add('attachable_type', 'Attachable class not exists.');
-            } elseif(!$className::find($this->input('attachable_id'))) {
-                $validator->errors()->add('attachable_id', 'Attachable model not found.');
-            }
-        });
     }
 }

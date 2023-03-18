@@ -9,7 +9,7 @@
             <textarea rows="2" v-model="meta.description" class="form-control"></textarea>
         </div>
         <label>Open graph image</label>
-        <image-field :block="meta"></image-field>
+        <image-field :field="meta"></image-field>
     </div>
 </template>
 

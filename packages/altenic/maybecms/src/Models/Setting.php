@@ -37,6 +37,7 @@ class Setting extends Model
         if ($this->type != 'select') return [];
         return match ($this->slug) {
             'home_page' => Page::query()->where('active', true)->pluck('title', 'id'),
+            'active_theme' => collect(scandir(public_path('vendor/maybecms/themes')))->filter(fn($item) => !in_array($item, ['.', '..']))->map(fn($item) => [$item => $item])->collapse(),
             default => [],
         };
     }

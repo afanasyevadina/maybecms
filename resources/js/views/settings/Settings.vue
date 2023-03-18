@@ -15,6 +15,9 @@
                         <option :value="optionKey" v-for="(option, optionKey) in setting.options" :key="optionKey">{{ option }}</option>
                     </select>
                 </div>
+                <div class="col-sm col-lg-6 col-xl-4" v-if="setting.type === 'text'">
+                    <input type="text" class="form-control" autocomplete="off" v-model="setting.value">
+                </div>
             </div>
             <button class="btn btn-success" @click="save">
                 <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" v-if="saving"></span>Сохранить

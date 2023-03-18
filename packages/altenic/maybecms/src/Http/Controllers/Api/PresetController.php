@@ -45,7 +45,7 @@ class PresetController extends Controller
 
     public function apply(Preset $preset, PresetApplyRequest $request)
     {
-        $className = $request->input('attachable_type');
+        $className = maybe_attachable_class($request->input('attachable_type'));
         $attachable = $className::find($request->input('attachable_id'));
         return response()->json([
             'status' => 'success',

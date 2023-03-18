@@ -2,6 +2,11 @@
 
 namespace Altenic\MaybeCms\Http\Requests;
 
+use Altenic\MaybeCms\Models\Block;
+use Altenic\MaybeCms\Models\Page;
+use Altenic\MaybeCms\Models\Post;
+use Altenic\MaybeCms\Models\Preset;
+
 class PresetApplyRequest extends JsonRequest
 {
     /**
@@ -17,7 +22,7 @@ class PresetApplyRequest extends JsonRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'attachable_type' => str_replace("\\\\", "\\", $this->input('attachable_type')),
+            'attachable_type' => maybe_attachable_class($this->input('attachable_type')),
         ]);
     }
 
@@ -30,19 +35,7 @@ class PresetApplyRequest extends JsonRequest
     {
         return [
             'attachable_id' => 'required',
-            'attachable_type' => 'required',
+            'attachable_type' => 'required|in:' . implode(',', [Page::class, Post::class, Preset::class, Block::class]),
         ];
-    }
-
-    public function withValidator($validator)
-    {
-        $validator->after(function ($validator) {
-            $className = $this->input('attachable_type');
-            if (!class_exists($className)) {
-                $validator->errors()->add('attachable_type', 'Attachable class not exists.');
-            } elseif(!$className::find($this->input('attachable_id'))) {
-                $validator->errors()->add('attachable_id', 'Attachable model not found.');
-            }
-        });
     }
 }
