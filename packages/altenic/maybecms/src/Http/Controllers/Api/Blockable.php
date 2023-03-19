@@ -41,7 +41,8 @@ trait Blockable
     private function updateContent($model, array $data)
     {
         $attachmentIds = [];
-        foreach($data['content'] as $contentItem) {
+        $content = $data['content'] ?? [];
+        foreach($content as $contentItem) {
             if (@$contentItem['attachment']['file']['id']) {
                 $attachment = $model->attachments()->updateOrCreate(['role' => $contentItem['slug']], ['file_id' => File::query()->findOrFail($contentItem['attachment']['file']['id'])->id]);
                 if (@$contentItem['attachment']['poster']['file']['id']) {
@@ -55,7 +56,8 @@ trait Blockable
         foreach ($model->attachments()->whereNotIn('id', $attachmentIds)->get() as $unusedAttachment) {
             $unusedAttachment->delete();
         }
-        $data['content'] = collect($data['content'] ?? [])->map(fn($item) => [$item['slug'] => $item['value'] ?? ''])->collapse();
+        $data['content'] = collect($content)->map(fn($item) => [$item['slug'] => $item['value'] ?? ''])->collapse();
+        if (get_class($model) == Block::class) $data['query'] = collect($content)->map(fn($item) => [$item['slug'] => @$item['query']])->collapse();
         $model->update($data);
     }
 }

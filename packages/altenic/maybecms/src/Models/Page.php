@@ -19,10 +19,7 @@ class Page extends Model
                 'user_id' => auth()->id(),
                 'active' => 1,
             ]);
-        });
-
-        static::saved(function (Page $page) {
-            static::withoutEvents(fn() => create_slug($page));
+            create_slug($page);
         });
 
         static::deleting(function (Page $page) {

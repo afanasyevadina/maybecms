@@ -3,7 +3,7 @@
         <div class="modal-dialog modal-fullscreen modal-dialog-centered">
             <form action="#" method="POST" class="modal-content" @submit.prevent="choose">
                 <div class="modal-header">
-                    <h5 class="modal-title">Choose image</h5>
+                    <h5 class="modal-title">Выбрать картинку</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-0">
@@ -31,9 +31,9 @@
                             <div class="col-md-4 bg-white border-start" v-if="activeMedia">
                                 <div class="sticky-top py-3">
                                     <img class="preview-img img-fluid mb-3 border bg-light" :src="activeMedia.path" alt="">
-                                    <div>Original name: {{ activeMedia.original_name }}</div>
-                                    <div>Size: {{ formatSize(activeMedia.size) }}</div>
-                                    <div>Uploaded at: {{ formatDate(activeMedia.created_at) }}</div>
+                                    <div>Имя файла: {{ activeMedia.original_name }}</div>
+                                    <div>Размер: {{ formatSize(activeMedia.size) }}</div>
+                                    <div>Загружено: {{ formatDate(activeMedia.created_at) }}</div>
                                 </div>
                             </div>
                         </div>

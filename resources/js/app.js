@@ -27,6 +27,7 @@ import HasMany from "./components/relations/HasMany.vue";
 
 import Field from './components/fields/Field.vue';
 import TextField from './components/fields/TextField.vue';
+import SingleLineTextField from './components/fields/SingleLineTextField.vue';
 import MarkdownField from "./components/fields/MarkdownField.vue";
 import LinkField from "./components/fields/LinkField.vue";
 import ImageField from "./components/fields/ImageField.vue";
@@ -37,6 +38,7 @@ import TreeItem from "./components/tree/TreeItem.vue";
 
 app.component('field', Field);
 app.component('text-field', TextField);
+app.component('single-line-text-field', SingleLineTextField);
 app.component('markdown-field', MarkdownField);
 app.component('link-field', LinkField);
 app.component('image-field', ImageField);

@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex align-items-start">
-        <a href="#" data-bs-toggle="collapse" :data-bs-target="`#tree-item-${collapseKey}`" class="btn btn-sm border-0 px-0" :class="{'collapsed': collapsed}" @click="collapsed = !collapsed" v-if="isSection">
+        <a href="#" data-bs-toggle="collapse" :data-bs-target="`#tree-item-${collapseKey}`" class="btn btn-sm border-0 px-0" :class="{'collapsed': collapsed}" @click="collapsed = !collapsed" v-if="childrenAllowed">
             <i :class="`fas fa-chevron-${collapsed ? 'right' : 'down'}`"></i>
         </a>
         <div class="w-100">
@@ -10,8 +10,10 @@
                     <i class="fas fa-ellipsis-vertical"></i>
                 </button>
                 <ul class="dropdown-menu py-0">
-                    <template v-if="isSection">
+                    <template v-if="childrenAllowed">
                         <li><a class="dropdown-item small px-2" href="#" data-bs-toggle="modal" :data-bs-target="`#add-primitive-${collapseKey}`">Добавить примитив</a></li>
+                    </template>
+                    <template v-if="presetAllowed">
                         <li><a class="dropdown-item small px-2" href="#" data-bs-toggle="modal" :data-bs-target="`#add-preset-${collapseKey}`">Вставить шаблон</a></li>
                     </template>
                     <template v-if="block.class_name === 'block'">
@@ -28,8 +30,8 @@
             </div>
         </div>
         <TreeDeleteModal @update="$emit('update')" :modalKey="`delete-modal-${collapseKey}`" :block="block"></TreeDeleteModal>
-        <TreeAddPrimitiveModal @addBlock="addBlock" :modalKey="`add-primitive-${collapseKey}`"></TreeAddPrimitiveModal>
-        <TreeAddPresetModal @addPreset="addPreset" :modalKey="`add-preset-${collapseKey}`"></TreeAddPresetModal>
+        <TreeAddPrimitiveModal @addBlock="addBlock" :modalKey="`add-primitive-${collapseKey}`" :allowed-primitives="allowedPrimitives"></TreeAddPrimitiveModal>
+        <TreeAddPresetModal @addPreset="addPreset" :modalKey="`add-preset-${collapseKey}`" v-if="presetAllowed"></TreeAddPresetModal>
     </div>
 </template>
 
@@ -37,7 +39,7 @@
 import TreeDeleteModal from "./TreeDeleteModal.vue";
 import TreeAddPrimitiveModal from "./TreeAddPrimitiveModal.vue";
 import TreeAddPresetModal from "./TreeAddPresetModal.vue";
-import {mapMutations} from "vuex";
+import {mapMutations, mapState} from "vuex";
 
 export default {
     name: "TreeItem",
@@ -62,11 +64,29 @@ export default {
         }
     },
     computed: {
+        ...mapState([
+            'primitives'
+        ]),
         collapseKey: function () {
-            return this.depth * 10 + this.order
+            return `${this.block.class_name}-${this.block.id}`
         },
-        isSection: function () {
-            return this.block.children?.length || this.block.class_name !== 'block'
+        blockChildren: function () {
+            return (this.block.children || [])
+        },
+        childrenAllowed: function () {
+            return this.block.class_name !== 'block' || this.blockChildren.length
+        },
+        presetAllowed: function () {
+            return this.block.class_name !== 'block' || this.blockChildren.includes('preset')
+        },
+        allowedPrimitives: function () {
+            const primitives = {}
+            for (const primitiveKey in this.primitives) {
+                if (!!this.blockChildren.includes(primitiveKey) || this.block.class_name !== 'block' && this.primitives[primitiveKey].root) {
+                    primitives[primitiveKey] = this.primitives[primitiveKey]
+                }
+            }
+            return primitives
         }
     },
     methods: {

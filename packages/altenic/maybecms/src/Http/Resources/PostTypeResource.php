@@ -22,7 +22,6 @@ class PostTypeResource extends JsonResource
             'plural_title' => $this->plural_title,
             'structure' => [
                 'fields' => $this->structure['fields'] ?? [],
-                'supports' => $this->structure['supports'] ?? [],
             ],
             'relations' => RelationResource::collection($this->relations),
             'inverse_relations' => RelationResource::collection($this->inverseRelations),

@@ -27,10 +27,7 @@ class Post extends Model
                 'user_id' => auth()->id(),
                 'active' => 1,
             ]);
-        });
-
-        static::saved(function (Post $post) {
-            static::withoutEvents(fn() => create_slug($post));
+            create_slug($post);
         });
 
         static::deleting(function (Post $post) {

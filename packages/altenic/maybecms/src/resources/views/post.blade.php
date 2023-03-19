@@ -1,5 +1,5 @@
 @extends('maybecms::layouts.app', [
-    'metaTitle' => $post->meta?->title ?? $page->title,
+    'metaTitle' => $post->meta?->title ?? $post->title,
     'metaDescription' => $post->meta?->description,
     'ogImage' => $post->meta?->attachment?->file->assetPath,
 ])

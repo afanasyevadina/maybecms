@@ -21,6 +21,7 @@ class BlockResource extends JsonResource
             'title' => $this->title,
             'content' => collect($this->structure ?? [])->map(function($item) {
                 $item['value'] = $this->content[$item['slug']] ?? '';
+                $item['query'] = @$this->query[$item['slug']];
                 $item['attachment'] = AttachmentResource::make($this->attachments()->where(['role' => $item['slug']])->first());
                 return $item;
             })->toArray(),

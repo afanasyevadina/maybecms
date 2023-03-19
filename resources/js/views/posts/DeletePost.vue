@@ -21,11 +21,11 @@
 <script>
 
 export default {
-    name: 'DeletePage',
-    props: ['id'],
+    name: 'DeletePost',
+    props: ['id', 'postType'],
     methods: {
         remove: function () {
-            this.deleteRequest(`/api/posts/${this.id}`,() => {
+            this.deleteRequest(`/api/posts/${this.postType}/${this.id}`,() => {
                     this.$router.push({ name: 'Posts', params: {postType: this.postType} })
                     location.reload()
                 })

@@ -1,3 +1,165 @@
-.img {
+@import url(https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap);
+* {
+    font-family: Nunito, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    line-height: 1.5;
+}
+a {
+    color: #000000;
+    text-decoration: none;
+}
+.img, .img-wrapper {
     width: 100%;
+}
+h1 {
+    font-size: 3rem;
+    line-height: 1;
+    margin-bottom: 2rem;
+    margin-top: 1rem;
+}
+h2 {
+    font-size: 2.5rem;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    margin-top: 1rem;
+}
+h3 {
+    font-weight: normal;
+}
+h4 {
+    margin-top: .5rem;
+    margin-bottom: .75rem;
+}
+ol, ul {
+    padding-left: 1rem;
+}
+.section {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+.page > * {
+    padding-left: 7.5vw;
+    padding-right: 7.5vw;
+}
+.page > .section {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+.bg-dark {
+    background: #1a202c;
+    color: #ffffff;
+}
+.bg-light {
+    background: #dadada;
+    color: #000000;
+}
+.bg-white {
+    background: #ffffff;
+    color: #000000;
+}
+.bg-blue {
+    background: #dde8fc;
+    color: #000000;
+}
+.bg-dark a {
+    color: #ffffff;
+}
+.bg-white a,.bg-light a,.bg-blue a {
+    color: #000000;
+}
+.bg-white > .bg-light, .bg-white > .bg-blue, .bg-white > .bg-dark,
+.bg-light > .bg-white, .bg-light > .bg-blue, .bg-light > .bg-dark,
+.bg-blue > .bg-white, .bg-blue > .bg-light, .bg-blue > .bg-dark,
+.bg-dark > .bg-white, .bg-dark > .bg-blue, .bg-dark > .bg-light {
+    padding: 1rem;
+}
+.w-100 {
+    width: 100%;
+}
+.w-75 {
+    width: 75%;
+}
+.w-50 {
+    width: 50%;
+}
+.w-33 {
+    width: 33%;
+}
+.w-25 {
+    width: 25%;
+}
+.w-auto {
+    width: auto;
+}
+.d-row {
+    display: flex;
+    flex-direction: row;
+}
+.d-column {
+    display: block;
+}
+.align-v-center {
+    align-items: center;
+}
+.align-v-top {
+    align-items: start;
+}
+.align-v-bottom {
+    align-items: end;
+}
+.align-v-stretch {
+    align-items: stretch;
+}
+.align-h-center {
+    justify-content: center;
+}
+.align-h-left {
+    justify-content: start;
+}
+.align-h-right {
+    justify-content: end;
+}
+.align-h-between {
+    justify-content: space-between;
+}
+.align-h-around {
+    justify-content: space-around;
+}
+.shape-circle {
+    border-radius: 50%;
+}
+.shape-rounded {
+    border-radius: 2rem;
+}
+.shape-scale {
+    aspect-ratio: 2;
+}
+.link.button {
+    display: inline-block;
+    padding: .5rem;
+    border-radius: .5rem;
+    background: #dde8fc;
+    margin-top: .75rem;
+}
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 7.5vw;
+}
+.navbar-nav, .navbar-brand {
+    display: flex;
+    align-items: center;
+}
+.navbar-nav .link {
+    margin-left: 2rem;
+}
+.navbar-title {
+    font-size: 1.5rem;
+}
+.navbar-logo {
+    width: 50px;
+    margin-right: .5rem;
 }

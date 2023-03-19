@@ -1,6 +1,6 @@
 <template>
     <div class="mb-4">
-        <textarea v-model="field.value" class="form-control" :placeholder="field.title" :disabled="field.query"></textarea>
+        <input type="text" v-model="field.value" class="form-control" :placeholder="field.title" autocomplete="off" :disabled="field.query">
     </div>
     <div class="mb-4" v-if="postType">
         <label>Источник</label>
@@ -13,7 +13,7 @@
 
 <script>
 export default {
-    name: "TextField",
+    name: "SingleLineTextField",
     props: {
         field: {
             type: Object

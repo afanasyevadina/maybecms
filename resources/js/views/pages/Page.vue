@@ -28,7 +28,11 @@
                 <template v-else>
                     <div class="mb-4">
                         <label>Название страницы</label>
-                        <input type="text" class="form-control" v-model="page.title" placeholder="Page title">
+                        <input type="text" class="form-control" v-model="page.title" placeholder="Название страницы">
+                    </div>
+                    <div class="mb-4">
+                        <label>Фрагмент урла</label>
+                        <input type="text" class="form-control" v-model="page.slug" placeholder="Латинские буквы, цифры и дефис">
                     </div>
                     <MetaFields :meta="page.meta"></MetaFields>
                 </template>

@@ -2,6 +2,8 @@
 
 namespace Altenic\MaybeCms\Http\Requests;
 
+use Illuminate\Support\Str;
+
 class PostUpdateRequest extends JsonRequest
 {
     /**
@@ -23,11 +25,19 @@ class PostUpdateRequest extends JsonRequest
     {
         return [
             'title' => 'sometimes|filled',
+            'slug' => 'required',
             'description' => 'sometimes|present',
             'content' => 'sometimes|array',
             'blocks' => 'sometimes|array',
             'blocks.*.id' => 'required',
             'blocks.*.blocks' => 'sometimes|array',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'slug' => Str::slug($this->input('slug')),
+        ]);
     }
 }

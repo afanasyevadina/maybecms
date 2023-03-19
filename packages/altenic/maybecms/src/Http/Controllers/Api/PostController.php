@@ -7,12 +7,8 @@ use Altenic\MaybeCms\Http\Requests\PostCreateRequest;
 use Altenic\MaybeCms\Http\Requests\PostUpdateRequest;
 use Altenic\MaybeCms\Http\Resources\PostListResource;
 use Altenic\MaybeCms\Http\Resources\PostResource;
-use Altenic\MaybeCms\Models\File;
 use Altenic\MaybeCms\Models\PostType;
-use Altenic\MaybeCms\Models\Page;
 use Altenic\MaybeCms\Models\Post;
-use Carbon\Carbon;
-use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -57,7 +53,7 @@ class PostController extends Controller
         ]);
     }
 
-    public function destroy(string $postType, Page $post)
+    public function destroy(string $postType, Post $post)
     {
         $post->delete();
         return response()->noContent();

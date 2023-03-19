@@ -26,14 +26,13 @@ class PostTypeUpdateRequest extends JsonRequest
     {
         return [
             'title' => 'required',
+            'plural_title' => 'required',
             'slug' => 'required|regex:/^[\w-]*$/i',
             'structure' => 'sometimes|array',
             'structure.relations' => 'sometimes|array',
             'structure.fields.*.type' => 'required|in:' . collect(maybe_field_types())->implode(','),
             'structure.fields.*.title' => 'required',
             'structure.fields.*.slug' => 'required',
-            'structure.supports' => 'sometimes|array',
-            'structure.supports.*' => 'required|in:content,meta',
             'relations.*.id' => 'sometimes|exists:relations,id',
             'relations.*.type' => 'required|in:' . collect(maybe_relation_types())->pluck('type')->implode(','),
             'relations.*.title' => 'required',

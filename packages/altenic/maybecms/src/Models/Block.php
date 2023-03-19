@@ -20,6 +20,7 @@ class Block extends Model
     protected $casts = [
         'active' => 'boolean',
         'content' => 'array',
+        'query' => 'array',
     ];
 
     protected static function booted()
@@ -66,6 +67,11 @@ class Block extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(config('maybecms.user_model'))->withDefault();
+    }
+
+    public function postType(): BelongsTo
+    {
+        return $this->belongsTo(PostType::class);
     }
 
     public function getStructureAttribute()

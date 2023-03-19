@@ -30,6 +30,10 @@
                         <label>Название</label>
                         <input type="text" class="form-control" v-model="post.title" placeholder="Название">
                     </div>
+                    <div class="mb-4">
+                        <label>Фрагмент урла</label>
+                        <input type="text" class="form-control" v-model="post.slug" placeholder="Латинские буквы, цифры и дефис">
+                    </div>
                     <template v-for="field in post.content">
                         <label>{{ field.title }}</label>
                         <component :is="`${field.type}-field`" :field="field"></component>

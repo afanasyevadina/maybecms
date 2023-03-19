@@ -33,8 +33,8 @@
                                     </div>
                                     <div class="card-body">
                                         <video class="preview-img img-fluid mb-3 border bg-light" :src="activeMedia.path" controls></video>
-                                        <div>Size: {{ formatSize(activeMedia.size) }}</div>
-                                        <div>Uploaded at: {{ formatDate(activeMedia.created_at) }}</div>
+                                        <div>Размер: {{ formatSize(activeMedia.size) }}</div>
+                                        <div>Загружено: {{ formatDate(activeMedia.created_at) }}</div>
                                     </div>
                                 </div>
                             </div>

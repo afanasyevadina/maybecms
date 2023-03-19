@@ -25,7 +25,7 @@
                     </template>
                     <template v-else>
                         <button type="button" class="btn btn-light" data-bs-toggle="modal" :data-bs-target="`#choose-image-${field.id}`">
-                            Choose poster
+                            Выбрать постер
                         </button>
                         <ChooseImage :modal-key="`choose-image-${field.id}`" @choose="choosePoster"></ChooseImage>
                     </template>
@@ -34,7 +34,7 @@
         </template>
         <template v-else>
             <button type="button" class="btn btn-light" data-bs-toggle="modal" :data-bs-target="`#choose-video-${field.id}`">
-                Choose video
+                Выбрать видео
             </button>
             <ChooseVideo :modal-key="`choose-video-${field.id}`" @choose="chooseVideo"></ChooseVideo>
         </template>

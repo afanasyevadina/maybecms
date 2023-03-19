@@ -8,7 +8,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-4 mb-3" v-for="(primitive, primitiveKey) in primitives" :key="primitiveKey">
+                        <div class="col-4 mb-3" v-for="(primitive, primitiveKey) in allowedPrimitives" :key="primitiveKey">
                             <a href="#" class="btn btn-outline-dark w-100 h-100" data-bs-dismiss="modal"
                                @click.prevent="$emit('addBlock', primitiveKey)">{{ primitive.title }}</a>
                         </div>
@@ -20,19 +20,15 @@
 </template>
 
 <script>
-import {mapState} from "vuex";
-
 export default {
     name: "TreeAddPrimitiveModal",
     props: {
         modalKey: {
             type: String
+        },
+        allowedPrimitives: {
+            type: Object
         }
-    },
-    computed: {
-        ...mapState([
-            'primitives'
-        ])
     }
 }
 </script>

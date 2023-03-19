@@ -6,19 +6,14 @@
         </div>
         <template v-for="field in block.content">
             <label>{{ field.title }}</label>
-            <component :is="`${field.field_type}-field`" :field="field"></component>
+            <component :is="`${field.field_type}-field`" :field="field" :post-type="block.postType"></component>
         </template>
-        <div class="mb-4">
-            <a href="#" class="btn btn-light" @click.prevent="showSource = true" v-if="!showSource">
-                <i class="fas fa-plus"></i> Добавить источник
-            </a>
-            <template v-else>
-                <label>Модель</label>
-                <select v-model="block.post_type_id" class="form-control">
-                    <option :value="null">-</option>
-                    <option :value="postType.id" v-for="postType in postTypes" :key="postType.id">{{ postType.title }}</option>
-                </select>
-            </template>
+        <div class="mb-4" v-if="block.type === 'section'">
+            <label>Источник</label>
+            <select v-model="block.post_type_id" class="form-control">
+                <option :value="null">-</option>
+                <option :value="postType.id" v-for="postType in postTypes" :key="postType.id">{{ postType.title }}</option>
+            </select>
         </div>
     </div>
 </template>
@@ -34,36 +29,22 @@ export default {
         }
     },
     computed: {
-        isSection: function () {
-            return this.block.children?.length
-        },
         ...mapState([
             'postTypes'
         ])
     },
-    data() {
-        return {
-            showSource: false,
-            postType: null
-        }
-    },
     methods: {
         loadPostType: function () {
             if (this.block.post_type_id) {
-                this.getJson(`/api/post-types/${this.block.post_type_id}`, json => this.postType = json.data)
+                this.getJson(`/api/post-types/${this.block.post_type_id}`, json => this.setBlockPostType(this.block.blocks || [], json.data))
             } else {
                 this.postType = null
             }
         },
-        updatePostType: function () {
-            this.showSource = Boolean(this.block.post_type_id)
-            this.loadPostType()
-            this.setBlockPostType(this.block.blocks || [], this.block.post_type_id)
-        },
-        setBlockPostType: function (blocks, postTypeId) {
+        setBlockPostType: function (blocks, postType) {
             blocks.forEach(block => {
-                block.post_type_id = postTypeId
-                this.setBlockPostType(block.blocks || [])
+                block.postType = postType
+                this.setBlockPostType(block.blocks || [], postType)
             })
         }
     },
@@ -71,12 +52,12 @@ export default {
         block: {
             deep: true,
             handler: function () {
-                this.updatePostType()
+                this.loadPostType()
             }
         }
     },
     mounted() {
-        this.updatePostType()
+        this.loadPostType()
     }
 }
 </script>

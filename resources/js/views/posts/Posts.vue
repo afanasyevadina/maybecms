@@ -51,7 +51,7 @@
                                     </a>
                                 </td>
                             </tr>
-                            <DeletePost :id="post.id"></DeletePost>
+                            <DeletePost :id="post.id" :post-type="postType"></DeletePost>
                         </template>
                         </tbody>
                     </template>
