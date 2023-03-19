@@ -24,11 +24,4 @@ class PresetFactory extends Factory
             'title' => fake()->sentence(2),
         ];
     }
-
-    public function configure()
-    {
-        return $this->afterMaking(function (Preset $page) {
-            $page->slug = Str::slug($page->title);
-        });
-    }
 }

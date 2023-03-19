@@ -40,6 +40,9 @@
                                 <td>{{ post.user.name }}</td>
                                 <td>{{ formatDate(post.updated_at) }}</td>
                                 <td class="text-end text-nowrap">
+                                    <a :href="`/${postType}/${post.slug}`" class="btn btn-light me-2" target="_blank">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
                                     <router-link :to="{name: 'Post', params: {postType: postType, id: post.id}}" class="btn btn-light me-2">
                                         <i class="fas fa-pen"></i>
                                     </router-link>

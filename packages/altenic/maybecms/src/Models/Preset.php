@@ -16,12 +16,7 @@ class Preset extends Model
         static::created(function(Preset $preset) {
             $preset->update([
                 'user_id' => auth()->id(),
-                'slug' => Str::slug($preset->title ?? $preset->id),
             ]);
-        });
-
-        static::saved(function (Preset $preset) {
-            static::withoutEvents(fn() => create_slug($preset));
         });
 
         static::deleting(function (Preset $preset) {

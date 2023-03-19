@@ -7,6 +7,7 @@ use Altenic\MaybeCms\Http\Requests\PostCreateRequest;
 use Altenic\MaybeCms\Http\Requests\PostUpdateRequest;
 use Altenic\MaybeCms\Http\Resources\PostListResource;
 use Altenic\MaybeCms\Http\Resources\PostResource;
+use Altenic\MaybeCms\Models\File;
 use Altenic\MaybeCms\Models\PostType;
 use Altenic\MaybeCms\Models\Page;
 use Altenic\MaybeCms\Models\Post;
@@ -40,17 +41,8 @@ class PostController extends Controller
 
     public function update(string $postType, Post $post, PostUpdateRequest $request)
     {
-        $post->update($request->safe()->except(['blocks', 'meta', 'fields', 'relations']));
+        $this->updateContent($post, $request->safe()->except(['blocks', 'meta', 'relations']));
         $this->updateBlocks($post, $request->input('blocks') ?? []);
-        foreach ($request->input('fields') ?? [] as $field) {
-            $post->fields()->updateOrCreate([
-                'slug' => $field['slug'],
-            ], [
-                'type' => $field['type'],
-                'title' => $field['title'],
-                'content' => $field['content'],
-            ]);
-        }
         foreach ($request->input('relations') as $relation) {
             $modelRelation = $post->relations()->find($relation['id']);
             $relatedPosts = $modelRelation?->type == 'has-one' ? [$relation['related_post']] : ($relation['related_posts'] ?? []);

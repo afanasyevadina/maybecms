@@ -28,11 +28,4 @@ class BlockFactory extends Factory
             'attachable_id' => app(PageFactory::class)->create()->id,
         ];
     }
-
-    public function configure()
-    {
-        return $this->afterMaking(function (Block $block) {
-            $block->slug = Str::slug($block->title);
-        });
-    }
 }

@@ -32,7 +32,7 @@ class MaybeSeeder extends Seeder
         ]);
         $user->roles()->attach(Role::where('slug', 'admin')->first());
         $page = Page::firstOrCreate([
-            'title' => 'Главная',
+            'title' => env('APP_NAME', 'Главная'),
         ]);
         $page->update(['user_id' => $user->id]);
         Setting::query()->insert([

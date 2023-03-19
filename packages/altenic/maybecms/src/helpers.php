@@ -13,15 +13,14 @@ if(!function_exists('create_slug')) {
     /**
      * @param Model $model
      * @param string $field
-     * @param $separator
      * @return string
      */
-    function create_slug(Model $model, string $field = 'title', $separator = '-') : string
+    function create_slug(Model $model, string $field = 'title') : string
     {
-        $model->slug = Str::slug($model[$field] ?? $model->id, $separator);
+        $model->slug = Str::slug($model[$field] ?? $model->id);
         $count = 0;
         while(get_class($model)::where('slug', $model->slug)->where('id', '<>', $model->id)->exists())
-            $model->slug = Str::slug($model[$field] ?? $model->id, $separator) . $separator . ++$count;
+            $model->slug = Str::slug($model[$field] ?? $model->id) . '-' . ++$count;
         $model->save();
         return $model->slug;
     }

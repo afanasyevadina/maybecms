@@ -35,6 +35,7 @@ class Post extends Model
 
         static::deleting(function (Post $post) {
             foreach ($post->blocks as $block) $block->delete();
+            foreach ($post->attachments as $attachment) $attachment->delete();
             if ($meta = $post->meta()->first()) $meta->delete();
             $post->posts()->detach();
             $post->inversePosts()->detach();
@@ -51,14 +52,14 @@ class Post extends Model
         return $this->morphMany(Block::class, 'attachable')->orderBy('order');
     }
 
+    public function attachments(): MorphMany
+    {
+        return $this->morphMany(Attachment::class, 'attachable');
+    }
+
     public function meta(): MorphOne
     {
         return $this->morphOne(Meta::class, 'attachable');
-    }
-
-    public function fields(): MorphMany
-    {
-        return $this->morphMany(Field::class, 'attachable');
     }
 
     public function user(): BelongsTo

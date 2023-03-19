@@ -5,10 +5,15 @@
                 <i class="fas fa-chevron-left"></i>
                 Назад
             </router-link>
-            <button type="button" class="btn btn-sm btn-success" @click="save()">
-                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" v-if="saving"></span>
-                Сохранить
-            </button>
+            <div>
+                <a :href="`/${page.slug}`" class="btn btn-sm btn-light me-2" target="_blank">
+                    Посмотреть, что получилось
+                </a>
+                <button type="button" class="btn btn-sm btn-success" @click="save()">
+                    <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" v-if="saving"></span>
+                    Сохранить
+                </button>
+            </div>
         </div>
         <div class="editor-wrapper">
             <div class="editor-tree border-end overflow-auto p-3">
@@ -24,12 +29,6 @@
                     <div class="mb-4">
                         <label>Название страницы</label>
                         <input type="text" class="form-control" v-model="page.title" placeholder="Page title">
-                    </div>
-                    <div class="mb-4">
-                        <label>
-                            <input type="checkbox" v-model="page.active">
-                            Активная
-                        </label>
                     </div>
                     <MetaFields :meta="page.meta"></MetaFields>
                 </template>
@@ -78,7 +77,6 @@ export default {
         ...mapMutations([
             'setPostTypes',
             'setPrimitives',
-            'setActiveElement',
         ])
     },
     mounted() {

@@ -18,7 +18,6 @@ class BlockResource extends JsonResource
         $data = [
             'id' => $this->id,
             'type' => $this->type,
-            'slug' => $this->slug,
             'title' => $this->title,
             'content' => collect($this->structure ?? [])->map(function($item) {
                 $item['value'] = $this->content[$item['slug']] ?? '';

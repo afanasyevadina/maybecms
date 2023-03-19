@@ -23,7 +23,6 @@ class PageUpdateRequest extends JsonRequest
     {
         return [
             'title' => 'sometimes|filled',
-            'active' => 'sometimes|boolean',
             'blocks' => 'sometimes|array',
             'blocks.*.id' => 'required',
             'blocks.*.attachment' => 'sometimes|array|nullable',

@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('presets', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id')->nullable();
-            $table->string('slug', 255)->nullable();
             $table->string('title', 255)->nullable();
             $table->timestamps();
         });

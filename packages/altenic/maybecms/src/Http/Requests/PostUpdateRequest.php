@@ -25,8 +25,6 @@ class PostUpdateRequest extends JsonRequest
             'title' => 'sometimes|filled',
             'description' => 'sometimes|present',
             'content' => 'sometimes|array',
-            'fields' => 'sometimes|array',
-            'active' => 'sometimes|boolean',
             'blocks' => 'sometimes|array',
             'blocks.*.id' => 'required',
             'blocks.*.blocks' => 'sometimes|array',

@@ -33,10 +33,6 @@ class Block extends Model
             ]);
         });
 
-        static::saved(function (Block $block) {
-            static::withoutEvents(fn() => create_slug($block, 'title', '_'));
-        });
-
         static::deleting(function (Block $block) {
             foreach ($block->blocks as $subBlock) $subBlock->delete();
             foreach ($block->attachments as $attachment) $attachment->delete();

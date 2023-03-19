@@ -45,8 +45,9 @@ class PresetController extends Controller
 
     public function apply(Preset $preset, PresetApplyRequest $request)
     {
-        $className = maybe_attachable_class($request->input('attachable_type'));
+        $className = $request->input('attachable_type');
         $attachable = $className::find($request->input('attachable_id'));
+        info($attachable);
         return response()->json([
             'status' => 'success',
             'data' => BlockResource::collection($this->appendBlocks($attachable, $preset->blocks)),

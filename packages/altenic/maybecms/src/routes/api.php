@@ -26,7 +26,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('/api')->middleware('api')->group(function() {
     Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::get('/pages', [PageController::class, 'index']);
     Route::get('/pages/{page}', [PageController::class, 'show']);
@@ -35,6 +34,8 @@ Route::prefix('/api')->middleware('api')->group(function() {
     Route::get('/posts/{postType}/{post}', [PostController::class, 'show']);
 
     Route::middleware(['auth:sanctum', 'can:admin'])->group(function () {
+        Route::post('/logout', [AuthController::class, 'logout']);
+
         Route::get('/settings', [SettingController::class, 'index']);
         Route::post('/settings', [SettingController::class, 'update']);
         Route::post('/pages', [PageController::class, 'store']);

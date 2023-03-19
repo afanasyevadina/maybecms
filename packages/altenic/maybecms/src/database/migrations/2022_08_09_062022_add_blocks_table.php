@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('attachable_type', 255)->nullable();
             $table->foreignIdFor(PostType::class)->nullable()->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('type', 255)->nullable();
-            $table->string('slug', 255)->nullable();
             $table->string('title', 255)->nullable();
             $table->text('content')->nullable();
             $table->text('query')->nullable();

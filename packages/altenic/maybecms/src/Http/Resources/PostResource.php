@@ -20,20 +20,16 @@ class PostResource extends JsonResource
             'slug' => $this->slug,
             'title' => $this->title,
             'description' => $this->description,
-            'content' => $this->content ?? [],
+            'content' => collect($this->postType->structure['fields'])->map(function($item) {
+                $item['value'] = $this->content[$item['slug']] ?? '';
+                $item['attachment'] = AttachmentResource::make($this->attachments()->where(['role' => $item['slug']])->first());
+                return $item;
+            })->toArray(),
             'active' => $this->active,
             'created_at' => Carbon::create($this->created_at)->toIso8601ZuluString(),
             'updated_at' => Carbon::create($this->updated_at)->toIso8601ZuluString(),
             'class_name' => 'post',
             'blocks' => BlockResource::collection($this->blocks),
-            'fields' => BlockResource::collection(collect($this->postType->structure['fields'] ?? [])->map(function ($field) {
-                return $this->fields()->updateOrCreate([
-                    'slug' => $field['slug'],
-                ], [
-                    'title' => $field['title'],
-                    'type' => $field['type'],
-                ]);
-            })),
             'relations' => $this->relations->map(function ($relation) {
                 $posts = $this->posts()->wherePivot('relation_id', $relation->id)->pluck('related_post_id');
                 return array_merge(RelationResource::make($relation)->toArray(request()), $relation->type == 'has-one' ? [
@@ -49,7 +45,6 @@ class PostResource extends JsonResource
                 ]);
             }),
             'meta' => MetaResource::make($this->meta()->firstOrCreate([])),
-            'postType' => PostTypeResource::make($this->postType),
         ];
     }
 }

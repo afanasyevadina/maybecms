@@ -1,73 +1,65 @@
 <template>
-    <div class="p-4" v-if="post.id">
-        <div class="row align-items-end">
-            <div class="col mb-4">
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link active" data-bs-toggle="tab"
-                           href="#tab-general">Основное</a>
-                    </li>
-                    <li class="nav-item" v-if="post.relations.length || post.inverse_relations?.length">
-                        <a class="nav-link" data-bs-toggle="tab"
-                           href="#tab-relations">Отношения</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-auto mb-4">
-                <button type="button" class="btn btn-success w-100" @click="save()">
+    <div class="vh-100 editor-page bg-white" v-if="post.id">
+        <div class="px-3 d-flex justify-content-between align-items-center border-bottom">
+            <router-link :to="{name: 'Posts', params: {postType: postType}}" class="btn btn-sm btn-light">
+                <i class="fas fa-chevron-left"></i>
+                Назад
+            </router-link>
+            <div>
+                <a :href="`/${postType}/${post.slug}`" class="btn btn-sm btn-light me-2" target="_blank">
+                    Посмотреть, что получилось
+                </a>
+                <button type="button" class="btn btn-sm btn-success" @click="save()">
                     <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" v-if="saving"></span>
                     Сохранить
                 </button>
             </div>
         </div>
-        <div class="tab-content">
-            <div class="tab-pane fade show active" id="tab-general">
-                <div class="border p-4 bg-white mb-5">
-                    <input type="text" class="form-control form-control-lg mb-4" v-model="post.title"
-                           :placeholder="`${post.postType?.title} title`">
-                    <textarea rows="3" v-model="post.description" class="form-control mb-4"
-                              :placeholder="`${post.postType?.title} description`"></textarea>
-                    <label>
-                        <input type="checkbox" v-model="post.active">
-                        Активная
-                    </label>
-                </div>
-                <template v-if="post.fields.length">
-                    <h4 class="mb-3">Поля модели</h4>
-                    <div class="border p-4 pb-2 bg-white mb-5">
-                        <div class="border p-4 mb-4" v-for="field in post.fields" :key="field.slug">
-                            <div class="mb-2">{{ field.title }}</div>
-                            <component :is="`${field.type}-field`" :block="field"></component>
-                        </div>
-                    </div>
-                </template>
+        <div class="editor-wrapper">
+            <div class="editor-tree border-end overflow-auto p-3">
+                <tree-item :block="post" :depth="0" :order="0" :count="post.blocks.length"
+                           @update="loadPost"></tree-item>
             </div>
-            <div class="tab-pane fade" id="tab-relations"
-                 v-if="post.relations.length || post.inverse_relations?.length">
-                <template v-if="post.relations.length">
-                    <h4 class="mb-3">Отношения модели</h4>
-                    <div class="border p-4 pb-2 bg-white mb-5">
-                        <component v-for="relation in post.relations" :key="relation.id" :model="post"
-                                   :relation="relation"
-                                   :is="relation.type"></component>
-                    </div>
+            <div class="editor-fields p-3 overflow-auto">
+                <template v-if="activeElement">
+                    <field :block="activeElement" @save="loadPost"
+                           @remove="activeElement = null; loadPost()"></field>
                 </template>
-                <template v-if="post.inverse_relations?.length">
-                    <h4 class="mb-3">Используется в отношениях</h4>
-                    <div class="border p-4 pb-2 bg-white mb-5" v-for="relation in post.inverse_relations"
-                         :key="relation.id">
-                        <div class="mb-2">Модель: {{ relation.model?.title }}</div>
-                        <div class="mb-2">Название: {{ relation.title }}</div>
-                        <div class="mb-3">Тип отношения: {{ relation.type }}</div>
-                        <div class="btn-group w-100 border mb-3" v-for="relatedPost in relation.related_posts"
-                             :key="relatedPost.id">
-                            <div class="w-100 px-3 align-self-center">{{ relatedPost?.title }}</div>
-                            <router-link :to="{name: 'Post', params: {postType: relation.postType?.slug, id: relatedPost?.id}}" target="_blank"
-                                         type="button" class="btn btn-light">
-                                <i class="fa-sharp fa-solid fa-arrow-up-right-from-square"></i>
-                            </router-link>
-                        </div>
+                <template v-else>
+                    <div class="mb-4">
+                        <label>Название</label>
+                        <input type="text" class="form-control" v-model="post.title" placeholder="Название">
                     </div>
+                    <template v-for="field in post.content">
+                        <label>{{ field.title }}</label>
+                        <component :is="`${field.type}-field`" :field="field"></component>
+                    </template>
+                    <template v-if="post.relations.length">
+                        <h4 class="mb-3">Отношения модели</h4>
+                        <div class="border p-4 pb-2 bg-white mb-5">
+                            <component v-for="relation in post.relations" :key="relation.id" :model="post"
+                                       :relation="relation"
+                                       :is="relation.type"></component>
+                        </div>
+                    </template>
+                    <template v-if="post.inverse_relations?.length">
+                        <h4 class="mb-3">Используется в отношениях</h4>
+                        <div class="border p-4 pb-2 bg-white mb-5" v-for="relation in post.inverse_relations"
+                             :key="relation.id">
+                            <div class="mb-2">Модель: {{ relation.model?.title }}</div>
+                            <div class="mb-2">Название: {{ relation.title }}</div>
+                            <div class="mb-3">Тип отношения: {{ relation.type }}</div>
+                            <div class="btn-group w-100 border mb-3" v-for="relatedPost in relation.related_posts"
+                                 :key="relatedPost.id">
+                                <div class="w-100 px-3 align-self-center">{{ relatedPost?.title }}</div>
+                                <router-link :to="{name: 'Post', params: {postType: relation.postType?.slug, id: relatedPost?.id}}" target="_blank"
+                                             type="button" class="btn btn-light">
+                                    <i class="fa-sharp fa-solid fa-arrow-up-right-from-square"></i>
+                                </router-link>
+                            </div>
+                        </div>
+                    </template>
+                    <MetaFields :meta="post.meta"></MetaFields>
                 </template>
             </div>
         </div>
@@ -81,11 +73,17 @@
 
 <script>
 import MetaFields from "../../components/MetaFields.vue";
+import {mapState, mapMutations} from "vuex";
 
 export default {
     name: "Post",
     props: ['id', 'postType'],
     components: {MetaFields},
+    computed: {
+        ...mapState([
+            'activeElement'
+        ])
+    },
     data() {
         return {
             post: {},
@@ -105,11 +103,19 @@ export default {
                 this.post = json.data
                 this.saving = false
             })
-        }
+        },
+        loadPost: function () {
+            this.getJson(`/api/posts/${this.postType}/${this.id}`, json => this.post = json.data)
+        },
+        ...mapMutations([
+            'setPostTypes',
+            'setPrimitives',
+        ])
     },
     mounted() {
-        this.getJson(`/api/posts/${this.postType}/${this.id}`, json => this.post = json.data)
-        if (location.hash) this.tab = location.hash.replace('#', '')
+        this.loadPost()
+        this.getJson(`/api/post-types`, json => this.setPostTypes(json.data))
+        this.getJson(`/api/primitives`, json => this.setPrimitives(json.data))
     }
 }
 </script>

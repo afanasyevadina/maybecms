@@ -1,6 +1,8 @@
 <?php
 
 use Altenic\MaybeCms\Http\Controllers\PageController;
+use Altenic\MaybeCms\Http\Controllers\PostController;
+use Altenic\MaybeCms\Http\Controllers\PresetController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,7 +15,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', [PageController::class, 'index']);
 Route::any('/admin/{any?}', function () {
     return view('maybecms::admin.index');
 })->where('any', '.*');
+Route::get('/', [PageController::class, 'index']);
+Route::get('/presets/{id}', [PresetController::class, 'show']);
+Route::get('/{slug}', [PageController::class, 'show']);
+Route::get('/{postType}/{slug}', [PostController::class, 'show']);

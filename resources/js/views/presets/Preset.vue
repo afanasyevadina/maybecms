@@ -5,10 +5,15 @@
                 <i class="fas fa-chevron-left"></i>
                 Назад
             </router-link>
-            <button type="button" class="btn btn-sm btn-success" @click="save()">
-                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" v-if="saving"></span>
-                Сохранить
-            </button>
+            <div>
+                <a :href="`/presets/${preset.id}`" class="btn btn-sm btn-light me-2" target="_blank">
+                    Посмотреть, что получилось
+                </a>
+                <button type="button" class="btn btn-sm btn-success" @click="save()">
+                    <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" v-if="saving"></span>
+                    Сохранить
+                </button>
+            </div>
         </div>
         <div class="editor-wrapper">
             <div class="editor-tree border-end overflow-auto p-3">

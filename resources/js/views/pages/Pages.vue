@@ -29,7 +29,7 @@
                             <td>{{ page.user.name }}</td>
                             <td>{{ formatDate(page.updated_at) }}</td>
                             <td class="text-end text-nowrap">
-                                <a href="#" class="btn btn-light me-2" target="_blank">
+                                <a :href="`/${page.slug}`" class="btn btn-light me-2" target="_blank">
                                     <i class="fas fa-eye"></i>
                                 </a>
                                 <router-link :to="{name: 'Page', params: {id: page.id}}" class="btn btn-light me-2">

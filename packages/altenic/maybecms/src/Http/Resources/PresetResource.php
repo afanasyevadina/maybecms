@@ -17,7 +17,6 @@ class PresetResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'slug' => $this->slug,
             'title' => $this->title,
             'blocks' => BlockResource::collection($this->blocks),
             'created_at' => Carbon::create($this->created_at)->toIso8601ZuluString(),
