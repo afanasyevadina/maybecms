@@ -7,9 +7,9 @@
             {!! @$source?->description !!}
         @endif
         @if($fieldName = str_replace('field.', '', $block->query['text']))
-            {!! @$source->content[$fieldName] !!}
+            {!! nl2br(@$source->content[$fieldName]) !!}
         @endif
     @else
-        {!! $block->content['text'] ?? '' !!}
+        {!! nl2br($block->content['text'] ?? '') !!}
     @endif
 </div>
