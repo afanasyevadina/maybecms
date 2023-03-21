@@ -5,15 +5,11 @@ namespace Altenic\MaybeCms\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Block extends Model
 {
-    use HasFactory;
+    use HasFactory, HasBlocks, HasAttachments, HasUser;
 
     protected $guarded = [];
 
@@ -30,7 +26,11 @@ class Block extends Model
                 'user_id' => auth()->id(),
                 'active' => 1,
                 'order' => $block->attachable?->blocks()->count(),
-                'content' => $block->content ?? collect($block->structure ?? [])->map(fn($item) => [$item['slug'] => array_keys($item['options'] ?? [])[0] ?? ''])->collapse(),
+                'content' => $block->content ?? collect($block->structure ?? [])->map(fn($item) => [
+                        $item['slug'] => [
+                            'value' => array_keys($item['options'] ?? [])[0] ?? '',
+                        ],
+                    ])->collapse(),
             ]);
         });
 
@@ -40,7 +40,7 @@ class Block extends Model
         });
 
         static::deleted(function (Block $block) {
-            static::withoutEvents(function () use($block) {
+            static::withoutEvents(function () use ($block) {
                 foreach ($block->attachable->blocks as $key => $relatedBlock) {
                     $relatedBlock->order = $key + 1;
                     $relatedBlock->save();
@@ -54,21 +54,6 @@ class Block extends Model
         return $this->morphTo();
     }
 
-    public function attachments(): MorphMany
-    {
-        return $this->morphMany(Attachment::class, 'attachable');
-    }
-
-    public function blocks(): MorphMany
-    {
-        return $this->morphMany(Block::class, 'attachable')->orderBy('order');
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(config('maybecms.user_model'))->withDefault();
-    }
-
     public function postType(): BelongsTo
     {
         return $this->belongsTo(PostType::class);
@@ -77,5 +62,27 @@ class Block extends Model
     public function getStructureAttribute()
     {
         return maybe_primitives()[$this->type]['structure'] ?? [];
+    }
+
+    public function getProperty(string $slug, $source = null)
+    {
+        if (!@$this->content[$slug]['source'])
+            return $this->content[$slug]['value'] ?? '';
+        if(@$this->content[$slug]['source'] == 'title')
+            return $source?->title ?? '';
+        if(@$this->content[$slug]['source'] == 'link')
+            return url('/' . $source?->postType->slug . '/' . $source?->slug);
+        if($fieldName = str_replace('field.', '', $this->content[$slug]['source'])) {
+            return $source?->content[$fieldName]['value'] ?? '';
+        }
+    }
+
+    public function getAttachment(string $slug, $source = null)
+    {
+        if (!@$this->content[$slug]['source'])
+            return $this->attachments()->where('role', $slug)->first();
+        if($fieldName = str_replace('field.', '', $this->content[$slug]['query'])) {
+            return $source?->attachments()->where('role', $fieldName)->first();
+        }
     }
 }

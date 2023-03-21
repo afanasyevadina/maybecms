@@ -2,6 +2,7 @@
 
 namespace Altenic\MaybeCms\Factories;
 
+use Altenic\MaybeCms\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -12,7 +13,7 @@ class UserFactory extends Factory
 {
     public function modelName()
     {
-        return config('maybecms.user_model');
+        return User::class;
     }
 
     /**

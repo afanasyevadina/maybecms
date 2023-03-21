@@ -20,8 +20,8 @@ class PostResource extends JsonResource
             'slug' => $this->slug,
             'title' => $this->title,
             'description' => $this->description,
-            'content' => collect($this->postType->structure['fields'])->map(function($item) {
-                $item['value'] = $this->content[$item['slug']] ?? '';
+            'content' => collect($this->postType->structure['fields'] ?? [])->map(function($item) {
+                $item['value'] = $this->content[$item['slug']]['value'] ?? '';
                 $item['attachment'] = AttachmentResource::make($this->attachments()->where(['role' => $item['slug']])->first());
                 return $item;
             })->toArray(),

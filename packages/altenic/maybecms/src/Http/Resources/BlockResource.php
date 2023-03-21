@@ -20,8 +20,8 @@ class BlockResource extends JsonResource
             'type' => $this->type,
             'title' => $this->title,
             'content' => collect($this->structure ?? [])->map(function($item) {
-                $item['value'] = $this->content[$item['slug']] ?? '';
-                $item['query'] = @$this->query[$item['slug']];
+                $item['value'] = $this->content[$item['slug']]['value'] ?? '';
+                $item['source'] = $this->content[$item['slug']]['source'] ?? null;
                 $item['attachment'] = AttachmentResource::make($this->attachments()->where(['role' => $item['slug']])->first());
                 return $item;
             })->toArray(),

@@ -6,12 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory, HasBlocks, HasAttachments, HasMeta, HasUser;
 
     protected $guarded = [];
 
@@ -42,26 +40,6 @@ class Post extends Model
     public function scopeByType($query, $type)
     {
         return $query->where('post_type_id', $type);
-    }
-
-    public function blocks(): MorphMany
-    {
-        return $this->morphMany(Block::class, 'attachable')->orderBy('order');
-    }
-
-    public function attachments(): MorphMany
-    {
-        return $this->morphMany(Attachment::class, 'attachable');
-    }
-
-    public function meta(): MorphOne
-    {
-        return $this->morphOne(Meta::class, 'attachable');
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(config('maybecms.user_model'))->withDefault();
     }
 
     public function postType(): BelongsTo

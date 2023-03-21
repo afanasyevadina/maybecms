@@ -11,7 +11,7 @@
             </div>
         </template>
         <template v-else>
-            <button type="button" class="btn btn-light" data-bs-toggle="modal" :data-bs-target="`#choose-image-${field.id}`" :disabled="field.query">
+            <button type="button" class="btn btn-light" data-bs-toggle="modal" :data-bs-target="`#choose-image-${field.id}`" :disabled="field.source">
                 Выберите изображение
             </button>
             <ChooseImage :modal-key="`choose-image-${field.id}`" @choose="chooseImage"></ChooseImage>
@@ -19,7 +19,7 @@
     </div>
     <div class="mb-4" v-if="postType">
         <label>Источник</label>
-        <select v-model="field.query" class="form-control">
+        <select v-model="field.source" class="form-control">
             <option :value="null">-</option>
             <option :value="sourceItem.slug" v-for="sourceItem in sources" :key="sourceItem.slug">{{ sourceItem.title }}</option>
         </select>

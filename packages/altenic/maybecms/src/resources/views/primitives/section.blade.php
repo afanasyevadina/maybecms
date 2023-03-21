@@ -1,8 +1,8 @@
 @if($block->postType()->exists())
     @foreach($block->postType?->posts as $post)
         <div
-            class="section {{ $block->content['background'] ?? '' }} {{ $block->content['width'] ?? '' }} {{ $block->content['display'] ?? '' }} {{ $block->content['align-v'] ?? '' }} {{ $block->content['align-h'] ?? '' }}"
-            style="{{ $block->content['css']?? '' }}"
+            class="section {{ $block->getProperty('background') }} {{ $block->getProperty('width') }} {{ $block->getProperty('display') }} {{ $block->getProperty('align-v') }} {{ $block->getProperty('align-h') }}"
+            style="{{ $block->getProperty('css') }}"
         >
             @foreach($block->blocks as $childBlock)
                 @if(view()->exists('maybecms::primitives.' . $childBlock->type))
@@ -11,10 +11,10 @@
             @endforeach
         </div>
     @endforeach
-    @else
+@else
     <div
-        class="section {{ $block->content['background'] ?? '' }} {{ $block->content['width'] ?? '' }} {{ $block->content['display'] ?? '' }} {{ $block->content['align-v'] ?? '' }} {{ $block->content['align-h'] ?? '' }}"
-        style="{{ $block->content['css']?? '' }}"
+        class="section {{ $block->getProperty('background') }} {{ $block->getProperty('width') }} {{ $block->getProperty('display') }} {{ $block->getProperty('align-v') }} {{ $block->getProperty('align-h') }}"
+        style="{{ $block->getProperty('css') }}"
     >
         @foreach($block->blocks as $childBlock)
             @if(view()->exists('maybecms::primitives.' . $childBlock->type))

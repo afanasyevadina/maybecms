@@ -1,15 +1,3 @@
-<{{ $block->content['level'] ?? 'h1' }} class="heading">
-@if(@$block->query['text'])
-    @if($block->query['text'] == 'title')
-        {!! @$source?->title !!}
-    @endif
-    @if($block->query['text'] == 'description')
-        {!! @$source?->description !!}
-    @endif
-    @if($fieldName = str_replace('field.', '', $block->query['text']))
-        {!! @$source->content[$fieldName] !!}
-    @endif
-@else
-    {!! $block->content['text'] ?? '' !!}
-@endif
-</{{ $block->content['level'] ?? 'h1' }}>
+<{{ $block->getProperty('level') ?? 'h1' }} class="heading">
+{!! nl2br($block->getProperty('text', @$source)) !!}
+</{{ $block->getProperty('level') ?? 'h1' }}>

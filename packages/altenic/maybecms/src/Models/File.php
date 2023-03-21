@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class File extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUser;
 
     protected static function booted()
     {

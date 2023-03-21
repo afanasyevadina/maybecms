@@ -4,7 +4,7 @@ namespace Altenic\MaybeCms\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-trait CmsUser
+class User extends \App\Models\User
 {
     public function roles(): BelongsToMany
     {

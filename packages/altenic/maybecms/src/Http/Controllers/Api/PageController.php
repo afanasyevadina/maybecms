@@ -9,12 +9,9 @@ use Altenic\MaybeCms\Http\Resources\PageListResource;
 use Altenic\MaybeCms\Http\Resources\PageResource;
 use Altenic\MaybeCms\Models\File;
 use Altenic\MaybeCms\Models\Page;
-use Altenic\MaybeCms\Models\Setting;
 
 class PageController extends Controller
 {
-    use Blockable;
-
     public function index()
     {
         return PageListResource::collection(Page::query()->paginate(20));
@@ -43,7 +40,7 @@ class PageController extends Controller
         } else {
             $meta->attachment()->delete();
         }
-        $this->updateBlocks($page, $request->input('blocks') ?? []);
+        $page->updateBlocks($request->input('blocks') ?? []);
         return response()->json([
             'status' => 'success',
             'data' => PageResource::make($page),

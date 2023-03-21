@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Page extends Model
 {
-    use HasFactory;
+    use HasFactory, HasBlocks, HasAttachments, HasMeta, HasUser;
 
     protected static function booted()
     {
@@ -33,19 +33,4 @@ class Page extends Model
     protected $casts = [
         'active' => 'boolean',
     ];
-
-    public function blocks(): MorphMany
-    {
-        return $this->morphMany(Block::class, 'attachable')->orderBy('order');
-    }
-
-    public function meta(): MorphOne
-    {
-        return $this->morphOne(Meta::class, 'attachable');
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(config('maybecms.user_model'))->withDefault();
-    }
 }

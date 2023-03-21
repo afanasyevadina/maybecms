@@ -12,8 +12,6 @@ use Altenic\MaybeCms\Models\Preset;
 
 class PresetController extends Controller
 {
-    use Blockable;
-
     public function index()
     {
         return PresetResource::collection(Preset::all());
@@ -36,7 +34,7 @@ class PresetController extends Controller
     public function update(Preset $preset, PresetUpdateRequest $request)
     {
         $preset->update($request->safe()->except(['blocks']));
-        $this->updateBlocks($preset, $request->input('blocks') ?? []);
+        $preset->updateBlocks($request->input('blocks') ?? []);
         return response()->json([
             'status' => 'success',
             'data' => PresetResource::make($preset),
@@ -50,7 +48,7 @@ class PresetController extends Controller
         info($attachable);
         return response()->json([
             'status' => 'success',
-            'data' => BlockResource::collection($this->appendBlocks($attachable, $preset->blocks)),
+            'data' => BlockResource::collection($attachable->appendBlocks($preset->blocks)),
         ], 201);
     }
 

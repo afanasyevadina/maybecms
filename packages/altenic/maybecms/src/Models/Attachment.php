@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Attachment extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUser;
 
     protected static function booted()
     {

@@ -9,8 +9,6 @@ use Altenic\MaybeCms\Models\Block;
 
 class BlockController extends Controller
 {
-    use Blockable;
-
     public function store(BlockCreateRequest $request)
     {
         $block = Block::create($request->safe()->except('post_type'));
@@ -28,7 +26,7 @@ class BlockController extends Controller
 
     public function clone(Block $block)
     {
-        $this->appendBlocks($block->attachable, [$block]);
+        $block->attachable->appendBlocks([$block]);
         return response()->noContent(201);
     }
 }

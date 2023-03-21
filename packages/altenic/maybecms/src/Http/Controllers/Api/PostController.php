@@ -12,8 +12,6 @@ use Altenic\MaybeCms\Models\Post;
 
 class PostController extends Controller
 {
-    use Blockable;
-
     public function index(string $postType)
     {
         $model = PostType::query()->where('slug', $postType)->firstOrFail();
@@ -37,8 +35,8 @@ class PostController extends Controller
 
     public function update(string $postType, Post $post, PostUpdateRequest $request)
     {
-        $this->updateContent($post, $request->safe()->except(['blocks', 'meta', 'relations']));
-        $this->updateBlocks($post, $request->input('blocks') ?? []);
+        $post->updateContent($request->safe()->except(['blocks', 'meta', 'relations']));
+        $post->updateBlocks($request->input('blocks') ?? []);
         foreach ($request->input('relations') as $relation) {
             $modelRelation = $post->relations()->find($relation['id']);
             $relatedPosts = $modelRelation?->type == 'has-one' ? [$relation['related_post']] : ($relation['related_posts'] ?? []);

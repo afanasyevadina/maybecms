@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
 
 class Setting extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUser;
 
     protected static function booted()
     {

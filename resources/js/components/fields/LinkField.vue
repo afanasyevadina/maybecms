@@ -1,10 +1,10 @@
 <template>
     <div class="mb-4">
-        <input type="url" v-model="field.value" class="form-control" :placeholder="field.title" :disabled="field.query">
+        <input type="url" v-model="field.value" class="form-control" :placeholder="field.title" :disabled="field.source">
     </div>
     <div class="mb-4" v-if="postType">
         <label>Источник</label>
-        <select v-model="field.query" class="form-control">
+        <select v-model="field.source" class="form-control">
             <option :value="null">-</option>
             <option :value="sourceItem.slug" v-for="sourceItem in sources" :key="sourceItem.slug">{{ sourceItem.title }}</option>
         </select>

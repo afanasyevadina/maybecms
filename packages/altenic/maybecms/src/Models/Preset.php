@@ -4,12 +4,10 @@ namespace Altenic\MaybeCms\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Support\Str;
 
 class Preset extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUser, HasBlocks;
 
     protected static function booted()
     {
@@ -25,14 +23,4 @@ class Preset extends Model
     }
 
     protected $guarded = [];
-
-    public function blocks(): MorphMany
-    {
-        return $this->morphMany(Block::class, 'attachable')->orderBy('order');
-    }
-
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(config('maybecms.user_model'))->withDefault();
-    }
 }

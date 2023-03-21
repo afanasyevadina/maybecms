@@ -1,11 +1,11 @@
 <div
-    class="navbar {{ $block->content['background'] ?? '' }}"
+    class="navbar {{ $block->getProperty('background') }}"
 >
     <a href="/" class="navbar-brand">
-        @if($attachment = $block->attachments()->where('role', 'logo')->first())
-            <img src="{{ $attachment->file->assetPath }}" alt="{{ $block->content['text'] ?? 'logo' }}" class="navbar-logo">
+        @if($attachment = $block->getAttachment('logo', @$source))
+            <img src="{{ $attachment->file->assetPath }}" alt="{{ $block->getProperty('text') ?? 'logo' }}" class="navbar-logo">
         @endif
-        <div class="navbar-title">{{ $block->content['text'] ?? '' }}</div>
+        <div class="navbar-title">{{ $block->getProperty('text', @$source) ?? '' }}</div>
     </a>
     @foreach($block->blocks as $childBlock)
         @if(view()->exists('maybecms::primitives.' . $childBlock->type))

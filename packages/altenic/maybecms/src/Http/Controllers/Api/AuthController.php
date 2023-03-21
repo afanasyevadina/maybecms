@@ -3,7 +3,7 @@
 namespace Altenic\MaybeCms\Http\Controllers\Api;
 
 use Altenic\MaybeCms\Http\Controllers\Controller;
-use App\Models\User;
+use Altenic\MaybeCms\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
