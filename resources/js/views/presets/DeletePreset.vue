@@ -1,5 +1,8 @@
 <template>
-    <div class="modal fade" :id="`delete-preset-${this.id}`" tabindex="-1">
+    <a href="#" class="btn btn-light" data-bs-toggle="modal" :data-bs-target="`#delete-preset-${id}`">
+        <i class="fas fa-trash"></i>
+    </a>
+    <div class="modal fade" :id="`delete-preset-${id}`" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <form action="#" method="POST" class="modal-content" @submit.prevent="remove">
                 <div class="modal-header">
@@ -22,7 +25,11 @@
 
 export default {
     name: 'DeletePreset',
-    props: ['id'],
+    props: {
+        id: {
+            type: Number
+        }
+    },
     methods: {
         remove: function () {
             this.deleteRequest(`/api/presets/${this.id}`,() => {

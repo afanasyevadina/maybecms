@@ -7,7 +7,7 @@
             </div>
             <div class="text-center" v-if="loading">
                 <div class="spinner-grow text-secondary" role="status">
-                    <span class="sr-only">Loading...</span>
+                    <span class="sr-only">Загружаем...</span>
                 </div>
             </div>
             <template v-else>
@@ -39,23 +39,21 @@
                                 <td>{{ post.title }}</td>
                                 <td>{{ post.user.name }}</td>
                                 <td>{{ formatDate(post.updated_at) }}</td>
-                                <td class="text-end text-nowrap">
+                                <td class="text-nowrap d-flex justify-content-end">
                                     <a :href="`/${postType}/${post.slug}`" class="btn btn-light me-2" target="_blank">
                                         <i class="fas fa-eye"></i>
                                     </a>
                                     <router-link :to="{name: 'Post', params: {postType: postType, id: post.id}}" class="btn btn-light me-2">
                                         <i class="fas fa-pen"></i>
                                     </router-link>
-                                    <a href="#" class="btn btn-light" data-bs-toggle="modal" :data-bs-target="`#delete-post-${post.id}`">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
+                                    <DeletePost :id="post.id" :post-type="postType"></DeletePost>
                                 </td>
                             </tr>
-                            <DeletePost :id="post.id" :post-type="postType"></DeletePost>
                         </template>
                         </tbody>
                     </template>
                 </table>
+                <Pagination :pagination="posts.meta" @paginate="loadPosts"></Pagination>
             </template>
         </div>
         <CreatePost :postType="postType"></CreatePost>
@@ -65,18 +63,21 @@
 <script>
 import CreatePost from "./CreatePost.vue";
 import DeletePost from "./DeletePost.vue";
+import Pagination from "../../components/Pagination.vue";
 
 export default {
     name: 'Posts',
     props: ['postType'],
     components: {
         CreatePost,
-        DeletePost
+        DeletePost,
+        Pagination
     },
     data() {
         return {
             posts: {
-                data: []
+                data: [],
+                meta: {}
             },
             postTypes: [],
             loading: true
@@ -87,12 +88,17 @@ export default {
             return this.postTypes.find(v => v.slug === this.postType) || {}
         }
     },
+    methods: {
+        loadPosts: function(page = 1) {
+            this.loading = true
+            this.getJson(`/api/posts/${this.postType}?page=${page}`, json => {
+                this.posts = json
+                this.loading = false
+            })
+        }
+    },
     mounted() {
         this.getJson(`/api/post-types`, json => this.postTypes = json.data)
-        this.getJson(`/api/posts/${this.postType}`, json => {
-            this.posts = json
-            this.loading = false
-        })
     }
 }
 </script>

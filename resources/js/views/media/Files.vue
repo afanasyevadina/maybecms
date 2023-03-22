@@ -21,36 +21,55 @@
             </div>
             <div class="text-center" v-if="loading">
                 <div class="spinner-grow text-secondary" role="status">
-                    <span class="sr-only">Loading...</span>
+                    <span class="sr-only">Загружаем...</span>
                 </div>
             </div>
-            <template v-else-if="files.data.length">
-                <div class="row">
-                    <div class="col-lg-4 col-md-6 mb-4" v-for="(file, fileIndex) in files.data" :key="file.id">
-                        <div class="card">
-                            <div class="card-body d-flex align-items-center justify-content-between">
-                                <a :href="file.path">{{ substrWithDots(file.original_name) }}</a>
-                                <a href="#" class="btn btn-light" data-bs-toggle="modal" :data-bs-target="`#delete-file-${file.id}`">
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                            </div>
-                            <DeleteFile :modal-key="`delete-file-${file.id}`" :id="file.id" @remove="files.data.splice(fileIndex, 1)"></DeleteFile>
-                        </div>
-                    </div>
-                </div>
+            <template v-else>
+                <table class="table table-striped mb-4">
+                    <tbody v-if="!files.data.length">
+                    <tr>
+                        <td colspan="5" class="text-center py-3">
+                            Пока нет файлов
+                            <br>
+                            <br>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#upload-file" class="btn btn-outline-dark">Загрузить первый файл</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <template v-else>
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Имя файла</th>
+                            <th>Тип</th>
+                            <th>Размер</th>
+                            <th>Автор</th>
+                            <th>Последнее обновление</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <template v-for="file in files.data" :key="file.id">
+                            <tr>
+                                <td>{{ file.id }}</td>
+                                <td>{{ file.original_name }}</td>
+                                <td>{{ file.mime }}</td>
+                                <td>{{ formatSize(file.size) }}</td>
+                                <td>{{ file.user.name }}</td>
+                                <td>{{ formatDate(file.updated_at) }}</td>
+                                <td class="text-end d-flex justify-content-end">
+                                    <a :href="file.path" class="btn btn-light me-2" target="_blank">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <DeleteFile :id="file.id"></DeleteFile>
+                                </td>
+                            </tr>
+                        </template>
+                        </tbody>
+                    </template>
+                </table>
+                <Pagination :pagination="files.meta" @paginate="loadFiles"></Pagination>
             </template>
-            <table class="table table-striped" v-else>
-                <tbody>
-                <tr>
-                    <td class="text-center py-3">
-                        Пока нет файлов
-                        <br>
-                        <br>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#upload-file" class="btn btn-outline-dark">Загрузить первый файл</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
         </div>
         <UploadFile :modal-key="'upload-file'" @upload="upload"></UploadFile>
     </div>
@@ -59,16 +78,20 @@
 <script>
 import DeleteFile from "../../components/media/DeleteFile.vue";
 import UploadFile from "../../components/media/UploadFile.vue";
+import Pagination from "../../components/Pagination.vue";
+
 export default {
     name: 'Files',
     components: {
         DeleteFile,
-        UploadFile
+        UploadFile,
+        Pagination
     },
     data() {
         return {
             files: {
-                data: []
+                data: [],
+                meta: {}
             },
             loading: true
         }
@@ -76,13 +99,17 @@ export default {
     methods: {
         upload: function (file) {
             this.files.data.unshift(file)
-        }
-    },
-    mounted() {
-        this.getJson(`/api/files?type=file`,json => {
+        },
+        loadFiles: function(page = 1) {
+            this.loading = true
+            this.getJson(`/api/files?type=file&page=${page}`,json => {
                 this.files = json
                 this.loading = false
             })
+        }
+    },
+    mounted() {
+        this.loadFiles()
     }
 }
 </script>

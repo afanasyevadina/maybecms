@@ -7,7 +7,7 @@
             </div>
             <div class="text-center" v-if="loading">
                 <div class="spinner-grow text-secondary" role="status">
-                    <span class="sr-only">Loading...</span>
+                    <span class="sr-only">Загружаем...</span>
                 </div>
             </div>
             <template v-else>
@@ -28,19 +28,16 @@
                             <td>{{ page.title }}</td>
                             <td>{{ page.user.name }}</td>
                             <td>{{ formatDate(page.updated_at) }}</td>
-                            <td class="text-end text-nowrap">
+                            <td class="text-nowrap d-flex justify-content-end">
                                 <a :href="`/${page.slug}`" class="btn btn-light me-2" target="_blank">
                                     <i class="fas fa-eye"></i>
                                 </a>
                                 <router-link :to="{name: 'Page', params: {id: page.id}}" class="btn btn-light me-2">
                                     <i class="fas fa-pen"></i>
                                 </router-link>
-                                <a href="#" class="btn btn-light" data-bs-toggle="modal" :data-bs-target="`#delete-page-${page.id}`">
-                                    <i class="fas fa-trash"></i>
-                                </a>
+                                <DeletePage :id="page.id" :modal-key="`delete-page-${page.id}`"></DeletePage>
                             </td>
                         </tr>
-                        <DeletePage :id="page.id"></DeletePage>
                     </template>
                     <tr v-if="!pages.data.length">
                         <td colspan="5" class="text-center py-3">
@@ -52,6 +49,7 @@
                     </tr>
                     </tbody>
                 </table>
+                <Pagination :pagination="pages.meta" @paginate="loadPages"></Pagination>
             </template>
         </div>
         <CreatePage></CreatePage>
@@ -61,25 +59,34 @@
 <script>
 import CreatePage from "./CreatePage.vue";
 import DeletePage from "./DeletePage.vue";
+import Pagination from "../../components/Pagination.vue";
+
 export default {
     name: 'Pages',
     components: {
         CreatePage,
-        DeletePage
+        DeletePage,
+        Pagination
     },
     data() {
         return {
             pages: {
-                data: []
+                data: [],
+                meta: {}
             },
             loading: true
         }
     },
-    mounted() {
-        this.getJson(`/api/pages`,json => {
+    methods: {
+        loadPages: function(page = 1) {
+            this.getJson(`/api/pages?page=${page}`,json => {
                 this.pages = json
                 this.loading = false
             })
+        }
+    },
+    mounted() {
+        this.loadPages()
     }
 }
 </script>

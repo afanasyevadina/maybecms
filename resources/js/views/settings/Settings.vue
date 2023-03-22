@@ -3,7 +3,7 @@
         <h1 class="mb-4">Настройки</h1>
         <div class="text-center" v-if="loading">
             <div class="spinner-grow text-secondary" role="status">
-                <span class="sr-only">Loading...</span>
+                <span class="sr-only">Загружаем...</span>
             </div>
         </div>
         <template v-else>

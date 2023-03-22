@@ -20,7 +20,7 @@
         </div>
         <div class="text-center" v-if="loading">
             <div class="spinner-grow text-secondary" role="status">
-                <span class="sr-only">Loading...</span>
+                <span class="sr-only">Загружаем...</span>
             </div>
         </div>
         <template v-else-if="images.data.length">
@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="col-md-4" v-if="activeMedia">
-                    <div class="sticky-top card">
+                    <div class="card">
                         <div class="card-header d-flex align-items-center justify-content-between">
                             <h5 class="mb-0">File details</h5>
                             <button type="button" class="btn btn-close" @click.prevent="activeMedia = null"></button>
@@ -47,14 +47,11 @@
                             <div>Original name: {{ activeMedia.original_name }}</div>
                             <div>Size: {{ formatSize(activeMedia.size) }}</div>
                             <div>Uploaded at: {{ formatDate(activeMedia.created_at) }}</div>
-                            <div class="text-end">
-                                <a href="#" class="btn btn-light" data-bs-toggle="modal" :data-bs-target="`#delete-file-${activeMedia.id}`">
-                                    <i class="fas fa-trash"></i>
-                                </a>
+                            <div class="d-flex justify-content-end">
+                                <DeleteFile :id="activeMedia.id"></DeleteFile>
                             </div>
                         </div>
                     </div>
-                    <DeleteFile :modal-key="`delete-file-${activeMedia.id}`" :id="activeMedia.id" @remove="images.data.splice(images.data.findIndex(v => v.id === activeMedia.id), 1)"></DeleteFile>
                 </div>
             </div>
         </template>
@@ -70,6 +67,7 @@
             </tr>
             </tbody>
         </table>
+        <Pagination :pagination="images.meta" @paginate="loadFiles"></Pagination>
         <UploadImage :modal-key="'upload-image'" @upload="upload"></UploadImage>
     </div>
 </template>
@@ -77,16 +75,20 @@
 <script>
 import DeleteFile from "../../components/media/DeleteFile.vue";
 import UploadImage from "../../components/media/UploadImage.vue";
+import Pagination from "../../components/Pagination.vue";
+
 export default {
     name: 'Images',
     components: {
         DeleteFile,
-        UploadImage
+        UploadImage,
+        Pagination
     },
     data() {
         return {
             images: {
-                data: []
+                data: [],
+                meta: {}
             },
             loading: true,
             activeMedia: null
@@ -95,13 +97,17 @@ export default {
     methods: {
         upload: function (image) {
             this.images.data.unshift(image)
-        }
-    },
-    mounted() {
-        this.getJson(`/api/files?type=image`,json => {
+        },
+        loadFiles: function(page = 1) {
+            this.loading = true
+            this.getJson(`/api/files?type=image&page=${page}`,json => {
                 this.images = json
                 this.loading = false
             })
+        }
+    },
+    mounted() {
+        this.loadFiles()
     }
 }
 </script>

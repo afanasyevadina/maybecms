@@ -1,5 +1,8 @@
 <template>
-    <div class="modal fade" :id="`delete-post-${this.id}`" tabindex="-1">
+    <a href="#" class="btn btn-light" data-bs-toggle="modal" :data-bs-target="`#delete-post-${id}`">
+        <i class="fas fa-trash"></i>
+    </a>
+    <div class="modal fade" :id="`delete-post-${id}`" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <form action="#" method="POST" class="modal-content" @submit.prevent="remove">
                 <div class="modal-header">
@@ -22,7 +25,14 @@
 
 export default {
     name: 'DeletePost',
-    props: ['id', 'postType'],
+    props: {
+        id: {
+            type: Number
+        },
+        postType: {
+            type: String
+        }
+    },
     methods: {
         remove: function () {
             this.deleteRequest(`/api/posts/${this.postType}/${this.id}`,() => {

@@ -9,7 +9,7 @@
                 <div class="modal-body p-0">
                     <div class="text-center" v-if="loading">
                         <div class="spinner-grow text-secondary" role="status">
-                            <span class="sr-only">Loading...</span>
+                            <span class="sr-only">Загружаем...</span>
                         </div>
                     </div>
                     <template v-else-if="images.data.length">

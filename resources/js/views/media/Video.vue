@@ -16,12 +16,12 @@
                     </ul>
                 </div>
                 <div class="col-auto mb-4" v-if="videos.data.length">
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#upload-video" class="btn btn-success">Upload video</a>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#upload-video" class="btn btn-success">Загрузить видео</a>
                 </div>
             </div>
             <div class="text-center" v-if="loading">
                 <div class="spinner-grow text-secondary" role="status">
-                    <span class="sr-only">Loading...</span>
+                    <span class="sr-only">Загружаем...</span>
                 </div>
             </div>
             <template v-else-if="videos.data.length">
@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <div class="col-md-4" v-if="activeMedia">
-                        <div class="sticky-top card">
+                        <div class="card">
                             <div class="card-header d-flex align-items-center justify-content-between">
                                 <h5 class="mb-0">File details</h5>
                                 <button type="button" class="btn btn-close" @click.prevent="activeMedia = null"></button>
@@ -47,14 +47,11 @@
                                 <video class="preview-img img-fluid mb-3 border bg-light" :src="activeMedia.path" controls></video>
                                 <div>Size: {{ formatSize(activeMedia.size) }}</div>
                                 <div>Uploaded at: {{ formatDate(activeMedia.created_at) }}</div>
-                                <div class="text-end">
-                                    <a href="#" class="btn btn-light" data-bs-toggle="modal" :data-bs-target="`#delete-file-${activeMedia.id}`">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
+                                <div class="d-flex justify-content-end">
+                                    <DeleteFile :id="activeMedia.id"></DeleteFile>
                                 </div>
                             </div>
                         </div>
-                        <DeleteFile :modal-key="`delete-file-${activeMedia.id}`" :id="activeMedia.id" @remove="videos.data.splice(videos.data.findIndex(v => v.id === activeMedia.id), 1)"></DeleteFile>
                     </div>
                 </div>
             </template>
@@ -70,6 +67,7 @@
                 </tr>
                 </tbody>
             </table>
+            <Pagination :pagination="videos.meta" @paginate="loadFiles"></Pagination>
         </div>
         <UploadVideo :modal-key="'upload-video'" @upload="upload"></UploadVideo>
     </div>
@@ -78,16 +76,20 @@
 <script>
 import DeleteFile from "../../components/media/DeleteFile.vue";
 import UploadVideo from "../../components/media/UploadVideo.vue";
+import Pagination from "../../components/Pagination.vue";
+
 export default {
     name: 'Video',
     components: {
         DeleteFile,
-        UploadVideo
+        UploadVideo,
+        Pagination
     },
     data() {
         return {
             videos: {
-                data: []
+                data: [],
+                meta: {}
             },
             loading: true,
             activeMedia: null
@@ -96,13 +98,17 @@ export default {
     methods: {
         upload: function (video) {
             this.videos.data.unshift(video)
-        }
-    },
-    mounted() {
-        this.getJson(`/api/files?type=video`,json => {
+        },
+        loadFiles: function(page = 1) {
+            this.loading = true
+            this.getJson(`/api/files?type=video&page=${page}`,json => {
                 this.videos = json
                 this.loading = false
             })
+        }
+    },
+    mounted() {
+        this.loadFiles()
     }
 }
 </script>

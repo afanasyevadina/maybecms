@@ -41,7 +41,7 @@
     </div>
     <div class="text-center" v-else>
         <div class="spinner-grow text-secondary" role="status">
-            <span class="sr-only">Loading...</span>
+            <span class="sr-only">Загружаем...</span>
         </div>
     </div>
 </template>

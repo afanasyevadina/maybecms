@@ -7,7 +7,7 @@
             </div>
             <div class="text-center" v-if="loading">
                 <div class="spinner-grow text-secondary" role="status">
-                    <span class="sr-only">Loading...</span>
+                    <span class="sr-only">Загружаем...</span>
                 </div>
             </div>
             <template v-else>
@@ -37,16 +37,13 @@
                                 <td>{{ preset.id }}</td>
                                 <td>{{ preset.title }}</td>
                                 <td>{{ formatDate(preset.updated_at) }}</td>
-                                <td class="text-end text-nowrap">
+                                <td class="text-nowrap d-flex justify-content-end">
                                     <router-link :to="{name: 'Preset', params: {id: preset.id}}" class="btn btn-light me-2">
                                         <i class="fas fa-pen"></i>
                                     </router-link>
-                                    <a href="#" class="btn btn-light" data-bs-toggle="modal" :data-bs-target="`#delete-preset-${preset.id}`">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
+                                    <DeletePreset :id="preset.id"></DeletePreset>
                                 </td>
                             </tr>
-                            <DeletePreset :id="preset.id"></DeletePreset>
                         </template>
                         </tbody>
                     </template>

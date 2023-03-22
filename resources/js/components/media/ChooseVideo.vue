@@ -3,13 +3,13 @@
         <div class="modal-dialog modal-fullscreen modal-dialog-centered">
             <form action="#" method="POST" class="modal-content" @submit.prevent="choose">
                 <div class="modal-header">
-                    <h5 class="modal-title">Choose video</h5>
+                    <h5 class="modal-title">Выбрать видео</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="text-center" v-if="loading">
                         <div class="spinner-grow text-secondary" role="status">
-                            <span class="sr-only">Loading...</span>
+                            <span class="sr-only">Загружаем...</span>
                         </div>
                     </div>
                     <template v-else-if="videos.data.length">

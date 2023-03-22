@@ -23,6 +23,10 @@ class FileResource extends JsonResource
             'mime' => $this->mime,
             'original_name' => $this->original_name,
             'size' => (int)$this->size,
+            'user' => [
+                'id' => $this->user->id,
+                'name' => $this->user->name,
+            ],
             'created_at' => Carbon::create($this->created_at)->toIso8601ZuluString(),
             'updated_at' => Carbon::create($this->updated_at)->toIso8601ZuluString(),
         ];

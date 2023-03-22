@@ -3,7 +3,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <form action="#" method="POST" class="modal-content" @submit.prevent="upload">
                 <div class="modal-header">
-                    <h5 class="modal-title">Upload video</h5>
+                    <h5 class="modal-title">Загрузить новое видео</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -19,8 +19,8 @@
                     <input type="file" class="form-control" accept="video/*" @change="preview" v-else>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                    <button class="btn btn-success">Upload</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Отмена</button>
+                    <button class="btn btn-success">Загрузить</button>
                 </div>
             </form>
         </div>
@@ -30,7 +30,11 @@
 <script>
 export default {
     name: 'UploadVideo',
-    props: ['modalKey'],
+    props: {
+        modalKey: {
+            type: String
+        }
+    },
     data() {
         return {
             uploadState: {

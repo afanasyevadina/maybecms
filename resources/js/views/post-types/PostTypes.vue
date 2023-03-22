@@ -7,7 +7,7 @@
             </div>
             <div class="text-center" v-if="loading">
                 <div class="spinner-grow text-secondary" role="status">
-                    <span class="sr-only">Loading...</span>
+                    <span class="sr-only">Загружаем...</span>
                 </div>
             </div>
             <template v-else>
@@ -26,19 +26,16 @@
                             <td>
                                 {{ model.title }}
                             </td>
-                            <td class="text-end text-nowrap">
+                            <td class="text-nowrap d-flex justify-content-end">
                                 <router-link :to="{name: 'Posts', params: {postType: model.slug}}" class="btn btn-light me-2">
                                     <i class="fas fa-list"></i>
                                 </router-link>
                                 <router-link :to="{name: 'PostType', params: {id: model.id}}" class="btn btn-light me-2">
                                     <i class="fas fa-pen"></i>
                                 </router-link>
-                                <a href="#" class="btn btn-light" data-bs-toggle="modal" :data-bs-target="`#delete-model-${model.id}`">
-                                    <i class="fas fa-trash"></i>
-                                </a>
+                                <DeletePostType :id="model.id"></DeletePostType>
                             </td>
                         </tr>
-                        <delete-model :id="model.id"></delete-model>
                     </template>
                     <tr v-if="!postTypes.length">
                         <td colspan="5" class="text-center py-3">
@@ -52,7 +49,7 @@
                 </table>
             </template>
         </div>
-        <create-model></create-model>
+        <CreatePostType></CreatePostType>
     </div>
 </template>
 
@@ -64,8 +61,8 @@ import {mapState, mapMutations} from "vuex";
 export default {
     name: 'PostTypes',
     components: {
-        'create-model': CreatePostType,
-        'delete-model': DeletePostType
+        DeletePostType,
+        CreatePostType
     },
     data() {
         return {
@@ -80,13 +77,16 @@ export default {
     methods: {
         ...mapMutations([
             'setPostTypes'
-        ])
+        ]),
+        loadPostTypes: function() {
+            this.getJson(`/api/post-types`, json => {
+                this.setPostTypes(json.data)
+                this.loading = false
+            })
+        }
     },
     mounted() {
-        this.getJson(`/api/post-types`, json => {
-            this.setPostTypes(json.data)
-            this.loading = false
-        })
+        this.loadPostTypes()
     }
 }
 </script>
