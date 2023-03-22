@@ -24,7 +24,7 @@ class PageUpdateRequest extends JsonRequest
     public function rules()
     {
         return [
-            'title' => 'sometimes|filled',
+            'title' => 'required',
             'slug' => 'required',
             'blocks' => 'sometimes|array',
             'blocks.*.id' => 'required',

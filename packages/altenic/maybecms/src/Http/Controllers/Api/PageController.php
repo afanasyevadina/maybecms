@@ -25,9 +25,9 @@ class PageController extends Controller
     public function store(PageCreateRequest $request)
     {
         $page = Page::query()->create($request->validated());
+        $page->meta()->create();
         return response()->json([
-            'status' => 'success',
-            'data' => PageResource::make($page),
+            'id' => $page->id,
         ], 201);
     }
 
@@ -41,10 +41,7 @@ class PageController extends Controller
             $meta->attachment()->delete();
         }
         $page->updateBlocks($request->input('blocks') ?? []);
-        return response()->json([
-            'status' => 'success',
-            'data' => PageResource::make($page),
-        ]);
+        return response()->noContent(200);
     }
 
     public function destroy(Page $page)

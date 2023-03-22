@@ -31,7 +31,7 @@ export default {
     data() {
         return {
             form: {},
-            error: null
+            error: false
         }
     },
     methods: {
@@ -47,17 +47,14 @@ export default {
                 },
                 body: JSON.stringify(this.form)
             })
-                .then(response => response.json())
-                .then(json => {
-                    if (json.status === 'error') {
-                        this.error = json.message
-                    } else {
-                        this.setUser(json.data)
-                        localStorage.setItem('_cms_user', JSON.stringify(json.data))
+                .then(response => {
+                    if (!response.ok) this.error = true
+                    else response.json().then(json => {
+                        this.setUser(json)
+                        localStorage.setItem('_cms_user', JSON.stringify(json))
                         this.$router.push({ name: 'Pages' })
-                    }
+                    })
                 })
-                .catch(err => console.log(err))
         }
     }
 }

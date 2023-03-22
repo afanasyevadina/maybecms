@@ -101,8 +101,8 @@ export default {
                 attachable_id: this.block.id,
                 attachable_type: this.block.class_name,
             }, json => {
-                this.block.blocks?.push(json.data)
-                this.setActiveElement(json.data)
+                this.block.blocks?.push(json)
+                this.setActiveElement(json)
             })
         },
         addPreset: function (preset) {

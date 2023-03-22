@@ -74,16 +74,17 @@ if(!function_exists('maybe_setting')) {
 if(!function_exists('maybe_attachable_class')) {
     /**
      * @param string|null $attachableType
-     * @return string
+     * @return string|null
      */
-    function maybe_attachable_class(?string $attachableType) : string
+    function maybe_attachable_class(?string $attachableType) : ?string
     {
         return match ($attachableType) {
             'page' => Page::class,
             'post' => Post::class,
             'preset' => Preset::class,
             'meta' => Meta::class,
-            default => Block::class,
+            'block' => Block::class,
+            default => null,
         };
     }
 }

@@ -14,26 +14,17 @@ class AuthController extends Controller
         $user = User::where('email', $request->input('email'))->first();
         if ($user && Hash::check($request->input('password'), $user->password)) {
             return response()->json([
-                'status' => 'success',
-                'data' => [
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'token' => $user->createToken($user->email)->plainTextToken,
-                ],
+                'name' => $user->name,
+                'email' => $user->email,
+                'token' => $user->createToken($user->email)->plainTextToken,
             ]);
         }
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Unauthorized',
-        ], 403);
+        return response()->noContent(401);
     }
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Logout success',
-        ]);
+        $request->user()->currentAccessToken()?->delete();
+        return response()->noContent(200);
     }
 }

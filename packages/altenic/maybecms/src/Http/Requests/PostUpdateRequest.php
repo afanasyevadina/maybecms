@@ -24,7 +24,7 @@ class PostUpdateRequest extends JsonRequest
     public function rules()
     {
         return [
-            'title' => 'sometimes|filled',
+            'title' => 'required',
             'slug' => 'required',
             'description' => 'sometimes|present',
             'content' => 'sometimes|array',

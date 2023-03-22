@@ -50,5 +50,10 @@ class MaybeCmsServiceProvider extends ServiceProvider
         Gate::define('admin', function ($user) {
             return $user->roles()->where('slug', 'admin')->exists();
         });
+
+        app()->singleton(
+            \Illuminate\Contracts\Debug\ExceptionHandler::class,
+            \Altenic\MaybeCms\Exceptions\Handler::class
+        );
     }
 }

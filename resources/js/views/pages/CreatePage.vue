@@ -28,7 +28,7 @@ export default {
     },
     methods: {
         save: function () {
-            this.postJson(`/api/pages`, this.newPage, json => this.$router.push({ name: 'Page', params: {id: json.data.id} }))
+            this.postJson(`/api/pages`, this.newPage, json => this.$router.push({ name: 'Page', params: {id: json.id} }))
         }
     }
 }

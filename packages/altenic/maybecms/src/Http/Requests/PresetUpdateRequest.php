@@ -22,7 +22,7 @@ class PresetUpdateRequest extends JsonRequest
     public function rules()
     {
         return [
-            'title' => 'sometimes|filled',
+            'title' => 'required',
             'blocks' => 'sometimes|array',
             'blocks.*.id' => 'required',
             'blocks.*.attachment' => 'sometimes|array|nullable',

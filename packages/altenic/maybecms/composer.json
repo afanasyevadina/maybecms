@@ -10,5 +10,15 @@
         }
     ],
     "require": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Altenic\\MaybeCms\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Altenic\\MaybeCms\\Tests\\": "tests/"
+        }
     }
 }

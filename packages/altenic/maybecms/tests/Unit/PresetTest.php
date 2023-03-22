@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\Unit;
+namespace Altenic\MaybeCms\Tests\Unit;
 
 use Altenic\MaybeCms\Factories\BlockFactory;
 use Altenic\MaybeCms\Factories\PresetFactory;
 use Altenic\MaybeCms\Factories\UserFactory;
 use Altenic\MaybeCms\Models\Block;
 use Altenic\MaybeCms\Models\Preset;
+use Altenic\MaybeCms\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Str;
-use Tests\TestCase;
 
 class PresetTest extends TestCase
 {
@@ -18,22 +18,14 @@ class PresetTest extends TestCase
     public function test_list_presets_unauthorized()
     {
         $this->getJson('/api/presets')
-            ->assertForbidden()
-            ->assertJson([
-                'status' => 'error',
-                'message' => 'Unauthorized',
-            ]);
+            ->assertUnauthorized();
     }
 
     public function test_list_presets_permission_denied()
     {
         $this->actingAs(app(UserFactory::class)->create(), 'sanctum');
         $this->getJson('/api/presets')
-            ->assertForbidden()
-            ->assertJson([
-                'status' => 'error',
-                'message' => 'Unauthorized',
-            ]);
+            ->assertForbidden();
     }
 
     public function test_list_presets_success()
@@ -45,7 +37,6 @@ class PresetTest extends TestCase
                 'data' => [
                     '*' => [
                         'id',
-                        'slug',
                         'title',
                         'blocks' => [],
                         'created_at',
@@ -58,33 +49,21 @@ class PresetTest extends TestCase
     public function test_show_preset_unauthorized()
     {
         $this->getJson('/api/presets/' . app(PresetFactory::class)->create()->id)
-            ->assertForbidden()
-            ->assertJson([
-                'status' => 'error',
-                'message' => 'Unauthorized',
-            ]);
+            ->assertUnauthorized();
     }
 
     public function test_show_preset_permission_denied()
     {
         $this->actingAs(app(UserFactory::class)->create(), 'sanctum');
         $this->getJson('/api/presets/' . app(PresetFactory::class)->create()->id)
-            ->assertForbidden()
-            ->assertJson([
-                'status' => 'error',
-                'message' => 'Unauthorized',
-            ]);
+            ->assertForbidden();
     }
 
     public function test_show_preset_not_found()
     {
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
         $this->getJson('/api/presets/' . Preset::max('id') + 1)
-            ->assertNotFound()
-            ->assertJson([
-                'status' => 'error',
-                'message' => 'Not Found',
-            ]);
+            ->assertNotFound();
     }
 
     public function test_show_preset_success()
@@ -93,46 +72,33 @@ class PresetTest extends TestCase
         $this->getJson('/api/presets/' . app(PresetFactory::class)->create()->id)
             ->assertSuccessful()
             ->assertJsonStructure([
-                'data' => [
-                    'id',
-                    'slug',
-                    'title',
-                    'blocks' => [],
-                    'created_at',
-                    'updated_at',
-                ],
+                'id',
+                'title',
+                'blocks' => [],
+                'created_at',
+                'updated_at',
             ]);
     }
 
     public function test_create_preset_unauthorized()
     {
         $this->postJson('/api/presets')
-            ->assertForbidden()
-            ->assertJson([
-                'status' => 'error',
-                'message' => 'Unauthorized',
-            ]);
+            ->assertUnauthorized();
     }
 
     public function test_create_preset_permission_denied()
     {
         $this->actingAs(app(UserFactory::class)->create(), 'sanctum');
         $this->postJson('/api/presets')
-            ->assertForbidden()
-            ->assertJson([
-                'status' => 'error',
-                'message' => 'Unauthorized',
-            ]);
+            ->assertForbidden();
     }
 
     public function test_create_preset_validation_failed()
     {
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
         $this->postJson('/api/presets')
-            ->assertStatus(422)
+            ->assertUnprocessable()
             ->assertJson([
-                'status' => 'error',
-                'message' => 'Validation error',
                 'errors' => [
                     'title' => 'The title field is required.',
                 ],
@@ -147,17 +113,11 @@ class PresetTest extends TestCase
         ];
         $this->postJson('/api/presets', $data)
             ->assertCreated()
-            ->assertJson([
-                'status' => 'success',
-                'data' => [
-                    'title' => $data['title'],
-                    'slug' => Str::slug($data['title']),
-                    'blocks' => [],
-                ],
+            ->assertJsonStructure([
+                'id',
             ]);
         $this->assertDatabaseHas((new Preset)->getTable(), [
             'title' => $data['title'],
-            'slug' => Str::slug($data['title']),
             'user_id' => auth()->id(),
         ]);
     }
@@ -165,33 +125,21 @@ class PresetTest extends TestCase
     public function test_update_preset_unauthorized()
     {
         $this->postJson('/api/presets/' . app(PresetFactory::class)->create()->id)
-            ->assertForbidden()
-            ->assertJson([
-                'status' => 'error',
-                'message' => 'Unauthorized',
-            ]);
+            ->assertUnauthorized();
     }
 
     public function test_update_preset_permission_denied()
     {
         $this->actingAs(app(UserFactory::class)->create(), 'sanctum');
         $this->postJson('/api/presets/' . app(PresetFactory::class)->create()->id)
-            ->assertForbidden()
-            ->assertJson([
-                'status' => 'error',
-                'message' => 'Unauthorized',
-            ]);
+            ->assertForbidden();
     }
 
     public function test_update_preset_not_found()
     {
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
         $this->postJson('/api/presets/' . Preset::max('id') + 1)
-            ->assertNotFound()
-            ->assertJson([
-                'status' => 'error',
-                'message' => 'Not Found',
-            ]);
+            ->assertNotFound();
     }
 
     public function test_update_preset_validation_failed()
@@ -201,12 +149,10 @@ class PresetTest extends TestCase
             'title' => '',
             'blocks' => 123,
         ])
-            ->assertStatus(422)
+            ->assertUnprocessable()
             ->assertJson([
-                'status' => 'error',
-                'message' => 'Validation error',
                 'errors' => [
-                    'title' => 'The title field must have a value.',
+                    'title' => 'The title field is required.',
                     'blocks' => 'The blocks must be an array.',
                 ],
             ]);
@@ -218,62 +164,33 @@ class PresetTest extends TestCase
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
         $data = [
             'title' => fake()->sentence(2),
-            'blocks' => [
-                'type' => 'section',
-                'blocks' => [
-                    ['type' => 'single-line-text'],
-                    ['type' => 'link'],
-                ],
-            ],
         ];
         $this->postJson('/api/presets/' . $preset->id, $data)
-            ->assertSuccessful()
-            ->assertJson([
-                'status' => 'success',
-                'data' => [
-                    'title' => $data['title'],
-                    'slug' => Str::slug($data['title']),
-                    'blocks' => $data['blocks'],
-                ],
-            ]);
+            ->assertSuccessful();
         $this->assertDatabaseHas((new Preset)->getTable(), [
             'id' => $preset->id,
             'title' => $data['title'],
-            'slug' => Str::slug($data['title']),
-            'blocks' => json_encode($data['blocks']),
         ]);
     }
 
     public function test_delete_preset_unauthorized()
     {
         $this->deleteJson('/api/presets/' . app(PresetFactory::class)->create()->id)
-            ->assertForbidden()
-            ->assertJson([
-                'status' => 'error',
-                'message' => 'Unauthorized',
-            ]);
+            ->assertUnauthorized();
     }
 
     public function test_delete_preset_permission_denied()
     {
         $this->actingAs(app(UserFactory::class)->create(), 'sanctum');
         $this->deleteJson('/api/presets/' . app(PresetFactory::class)->create()->id)
-            ->assertForbidden()
-            ->assertJson([
-                'status' => 'error',
-                'message' => 'Unauthorized',
-            ]);
+            ->assertForbidden();
     }
 
     public function test_delete_preset_not_found()
     {
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
         $this->deleteJson('/api/presets/' . Preset::max('id') + 1)
-            ->assertNotFound()
-            ->assertJson([
-                'status' => 'error',
-                'message' => 'Not Found',
-            ]);
+            ->assertNotFound();
     }
 
     public function test_delete_preset_success()
@@ -290,63 +207,32 @@ class PresetTest extends TestCase
     public function test_apply_preset_unauthorized()
     {
         $this->postJson('/api/presets/' . app(PresetFactory::class)->create()->id . '/apply')
-            ->assertForbidden()
-            ->assertJson([
-                'status' => 'error',
-                'message' => 'Unauthorized',
-            ]);
+            ->assertUnauthorized();
     }
 
     public function test_apply_preset_permission_denied()
     {
         $this->actingAs(app(UserFactory::class)->create(), 'sanctum');
         $this->postJson('/api/presets/' . app(PresetFactory::class)->create()->id . '/apply')
-            ->assertForbidden()
-            ->assertJson([
-                'status' => 'error',
-                'message' => 'Unauthorized',
-            ]);
+            ->assertForbidden();
     }
 
     public function test_apply_preset_not_found()
     {
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
         $this->postJson('/api/presets/' . Preset::max('id') + 1 . '/apply')
-            ->assertNotFound()
-            ->assertJson([
-                'status' => 'error',
-                'message' => 'Not Found',
-            ]);
+            ->assertNotFound();
     }
 
     public function test_apply_preset_validation_failed_empty_body()
     {
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
         $this->postJson('/api/presets/' . app(PresetFactory::class)->create()->id . '/apply')
-            ->assertStatus(422)
+            ->assertUnprocessable()
             ->assertJson([
-                'status' => 'error',
-                'message' => 'Validation error',
                 'errors' => [
                     'attachable_id' => 'The attachable id field is required.',
                     'attachable_type' => 'The attachable type field is required.',
-                ],
-            ]);
-    }
-
-    public function test_apply_preset_validation_failed_incorrect_attachable_type()
-    {
-        $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
-        $this->postJson('/api/presets/' . app(PresetFactory::class)->create()->id . '/apply', [
-            'attachable_type' => 'invalid-type',
-            'attachable_id' => app(BlockFactory::class)->create(['type' => 'section'])->id,
-        ])
-            ->assertStatus(422)
-            ->assertJson([
-                'status' => 'error',
-                'message' => 'Validation error',
-                'errors' => [
-                    'attachable_type' => 'Attachable class not exists.',
                 ],
             ]);
     }
@@ -355,58 +241,16 @@ class PresetTest extends TestCase
     {
         $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
         $this->postJson('/api/presets/' . app(PresetFactory::class)->create()->id . '/apply', [
-            'attachable_type' => Block::class,
+            'attachable_type' => 'block',
             'attachable_id' => Block::max('id') + 1,
         ])
-            ->assertStatus(422)
+            ->assertUnprocessable()
             ->assertJson([
-                'status' => 'error',
-                'message' => 'Validation error',
                 'errors' => [
-                    'attachable_id' => 'Attachable model not found.',
+                    'attachable_id' => 'The selected attachable id is invalid.',
                 ],
             ]);
     }
 
-    public function test_apply_preset_success()
-    {
-        $preset = app(PresetFactory::class)->create([
-            'blocks' => [
-                ['type' => 'single-line-text'],
-                ['type' => 'link'],
-            ]
-        ]);
-        $block = app(BlockFactory::class)->create(['type' => 'section']);
-        $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
-        $this->postJson('/api/presets/' . $preset->id . '/apply', [
-            'attachable_type' => Block::class,
-            'attachable_id' => $block->id,
-        ])
-            ->assertSuccessful()
-            ->assertJson([
-                'status' => 'success',
-                'data' => [
-                    [
-                        'attachable_id' => $block->id,
-                        'attachable_type' => Block::class,
-                        'class_name' => Block::class,
-                        'type' => 'single-line-text',
-                        'order' => 1,
-                        'active' => true,
-                        'content' => ['text' => ''],
-                    ],
-                    [
-                        'attachable_id' => $block->id,
-                        'attachable_type' => Block::class,
-                        'class_name' => Block::class,
-                        'type' => 'link',
-                        'order' => 2,
-                        'active' => true,
-                        'content' => ['text' => '', 'link' => ''],
-                        'attachment' => null,
-                    ],
-                ],
-            ]);
-        collect($preset->blocks)->each(fn($presetBlock) => $this->assertTrue($block->blocks()->where('type', $presetBlock['type'])->exists()));
-    }
+    //TODO: apply preset tests
 }

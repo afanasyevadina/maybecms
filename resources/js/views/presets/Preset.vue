@@ -62,14 +62,14 @@ export default {
     methods: {
         loadPreset: function () {
             this.preset = {}
-            this.getJson(`/api/presets/${this.id}`, json => this.preset = json.data)
+            this.getJson(`/api/presets/${this.id}`, json => this.preset = json)
         },
         save: function () {
             this.saving = true
-            this.postJson(`/api/presets/${this.id}`, this.preset, json => {
-                    this.preset = json.data
-                    this.saving = false
-                })
+            this.postJson(`/api/presets/${this.id}`, this.preset, () => {
+                this.saving = false
+                this.loadPreset()
+            })
         },
         ...mapMutations([
             'setPostTypes',

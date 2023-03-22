@@ -24,7 +24,7 @@ class PageResource extends JsonResource
             'updated_at' => Carbon::create($this->updated_at)->toIso8601ZuluString(),
             'class_name' => 'page',
             'blocks' => BlockResource::collection($this->blocks),
-            'meta' => MetaResource::make($this->meta()->firstOrCreate([])),
+            'meta' => MetaResource::make($this->meta),
         ];
     }
 }

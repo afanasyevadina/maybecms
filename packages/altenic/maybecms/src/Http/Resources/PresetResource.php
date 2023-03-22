@@ -24,4 +24,6 @@ class PresetResource extends JsonResource
             'class_name' => 'preset',
         ];
     }
+
+    public static $wrap = null;
 }

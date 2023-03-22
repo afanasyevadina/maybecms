@@ -28,12 +28,13 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
-            "Altenic\\MaybeCms\\": "packages/altenic/maybecms/src"
+            "Altenic\\MaybeCms\\": "packages/altenic/maybecms/src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\": "tests/",
+            "Altenic\\MaybeCms\\Tests\\": "packages/altenic/maybecms/tests/"
         }
     },
     "scripts": {

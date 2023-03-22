@@ -26,8 +26,7 @@ class PresetController extends Controller
     {
         $preset = Preset::create($request->validated());
         return response()->json([
-            'status' => 'success',
-            'data' => PresetResource::make($preset),
+            'id' => $preset->id,
         ], 201);
     }
 
@@ -35,10 +34,7 @@ class PresetController extends Controller
     {
         $preset->update($request->safe()->except(['blocks']));
         $preset->updateBlocks($request->input('blocks') ?? []);
-        return response()->json([
-            'status' => 'success',
-            'data' => PresetResource::make($preset),
-        ]);
+        return response()->noContent(200);
     }
 
     public function apply(Preset $preset, PresetApplyRequest $request)

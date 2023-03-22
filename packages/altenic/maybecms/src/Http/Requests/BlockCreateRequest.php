@@ -34,9 +34,10 @@ class BlockCreateRequest extends JsonRequest
      */
     public function rules()
     {
+        $className = $this->input('attachable_type') ?? Block::class;
         return [
-            'attachable_id' => 'required',
             'attachable_type' => 'required|in:' . implode(',', [Page::class, Post::class, Preset::class, Block::class]),
+            'attachable_id' => 'required|exists:' .(new $className)->getTable() . ',id',
             'post_type' => 'sometimes',
             'type' => 'required|in:' . collect(maybe_primitives())->keys()->implode(','),
             'title' => 'sometimes',

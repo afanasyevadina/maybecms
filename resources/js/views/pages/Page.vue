@@ -73,9 +73,9 @@ export default {
         },
         save: function () {
             this.saving = true
-            this.postJson(`/api/pages/${this.id}`, this.page, json => {
-                this.page = json.data
+            this.postJson(`/api/pages/${this.id}`, this.page, () => {
                 this.saving = false
+                this.loadPage()
             })
         },
         ...mapMutations([

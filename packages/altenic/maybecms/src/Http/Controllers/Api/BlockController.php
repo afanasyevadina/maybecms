@@ -12,10 +12,7 @@ class BlockController extends Controller
     public function store(BlockCreateRequest $request)
     {
         $block = Block::create($request->safe()->except('post_type'));
-        return response()->json([
-            'status' => 'success',
-            'data' => BlockResource::make($block),
-        ], 201);
+        return (new BlockResource($block))->toResponse($request)->setStatusCode(201);
     }
 
     public function destroy(Block $block)

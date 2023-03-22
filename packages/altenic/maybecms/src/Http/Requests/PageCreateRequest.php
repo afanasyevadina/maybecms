@@ -9,7 +9,7 @@ class PageCreateRequest extends JsonRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return $this->user()->can('admin');
     }

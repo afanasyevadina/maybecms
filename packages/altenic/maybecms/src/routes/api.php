@@ -11,6 +11,7 @@ use Altenic\MaybeCms\Http\Controllers\Api\PresetController;
 use Altenic\MaybeCms\Http\Controllers\Api\PrimitiveController;
 use Altenic\MaybeCms\Http\Controllers\Api\RelationTypeController;
 use Altenic\MaybeCms\Http\Controllers\Api\SettingController;
+use Altenic\MaybeCms\Http\Middleware\HeadersMiddleware;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('/api')->middleware('api')->group(function() {
+Route::prefix('/api')->middleware([HeadersMiddleware::class, 'api'])->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
 
     Route::get('/pages', [PageController::class, 'index']);

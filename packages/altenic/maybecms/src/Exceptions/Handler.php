@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Exceptions;
+namespace Altenic\MaybeCms\Exceptions;
 
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -51,5 +52,27 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Exception|Throwable $exception)
+    {
+        if ($request->is('api/*')) {
+            if ($exception instanceof ModelNotFoundException || $exception instanceof NotFoundHttpException) {
+                return response()->noContent(404);
+            }
+            if ($exception instanceof AuthorizationException || $exception instanceof AccessDeniedHttpException) {
+                return response()->noContent(403);
+            }
+        }
+
+        return parent::render($request, $exception);
+    }
+
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if ($request->is('api/*')) {
+            return response()->noContent(401);
+        }
+        return parent::unauthenticated($request, $exception);
     }
 }

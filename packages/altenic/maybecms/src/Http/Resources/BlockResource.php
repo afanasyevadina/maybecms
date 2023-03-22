@@ -15,7 +15,7 @@ class BlockResource extends JsonResource
      */
     public function toArray($request)
     {
-        $data = [
+        return [
             'id' => $this->id,
             'type' => $this->type,
             'title' => $this->title,
@@ -34,6 +34,7 @@ class BlockResource extends JsonResource
             'created_at' => Carbon::create($this->created_at)->toIso8601ZuluString(),
             'updated_at' => Carbon::create($this->updated_at)->toIso8601ZuluString(),
         ];
-        return $data;
     }
+
+    public static $wrap = null;
 }
