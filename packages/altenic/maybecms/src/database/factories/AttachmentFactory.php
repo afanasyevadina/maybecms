@@ -1,13 +1,13 @@
 <?php
 
-namespace Altenic\MaybeCms\Factories;
+namespace Altenic\MaybeCms\Database\Factories;
 
 use Altenic\MaybeCms\Models\Attachment;
 use Altenic\MaybeCms\Models\Block;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends Factory
  */
 class AttachmentFactory extends Factory
 {

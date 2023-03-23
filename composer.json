@@ -28,7 +28,9 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
-            "Altenic\\MaybeCms\\": "packages/altenic/maybecms/src/"
+            "Altenic\\MaybeCms\\": "packages/altenic/maybecms/src/",
+            "Altenic\\MaybeCms\\Database\\Factories\\": "packages/altenic/maybecms/src/database/factories",
+            "Altenic\\MaybeCms\\Database\\Seeders\\": "packages/altenic/maybecms/src/database/seeders"
         }
     },
     "autoload-dev": {

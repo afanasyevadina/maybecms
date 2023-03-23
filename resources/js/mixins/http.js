@@ -7,7 +7,7 @@ export default {
                 }
             })
                 .then(response => {
-                    if (response.status === 403) {
+                    if (response.status === 401 || response.status === 403) {
                         this.$store.commit('unsetUser')
                         this.$router.push({ name: 'Login' })
                     } else if (response.status === 404) {
@@ -28,9 +28,11 @@ export default {
                 }
             })
                 .then(response => {
-                    if (response.status === 403) {
+                    if (response.status === 401 || response.status === 403) {
                         this.$store.commit('unsetUser')
                         this.$router.push({ name: 'Login' })
+                    } else if (response.status === 404) {
+                        this.$router.push({ name: 'NotFound' })
                     } else {
                         return response.text()
                     }
@@ -45,9 +47,11 @@ export default {
                 }
             })
                 .then(response => {
-                    if (response.status === 403) {
+                    if (response.status === 401 || response.status === 403) {
                         this.$store.commit('unsetUser')
                         this.$router.push({ name: 'Login' })
+                    } else if (response.status === 404) {
+                        this.$router.push({ name: 'NotFound' })
                     } else {
                         return callback()
                     }

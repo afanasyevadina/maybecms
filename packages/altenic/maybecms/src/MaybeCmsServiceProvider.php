@@ -48,6 +48,10 @@ class MaybeCmsServiceProvider extends ServiceProvider
             __DIR__.'/public' => public_path('vendor/maybecms'),
         ], 'maybecms-public');
 
+        $this->commands([
+            \Altenic\MaybeCms\Console\Commands\InstallMaybeCmsCommand::class,
+        ]);
+
         Gate::define('admin', function ($user) {
             return $user->roles()->where('slug', 'admin')->exists();
         });

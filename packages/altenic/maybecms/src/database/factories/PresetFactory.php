@@ -1,13 +1,12 @@
 <?php
 
-namespace Altenic\MaybeCms\Factories;
+namespace Altenic\MaybeCms\Database\Factories;
 
 use Altenic\MaybeCms\Models\Preset;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends Factory
  */
 class PresetFactory extends Factory
 {

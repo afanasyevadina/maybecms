@@ -2,10 +2,10 @@
 
 namespace Altenic\MaybeCms\Tests;
 
-use Altenic\MaybeCms\Factories\BlockFactory;
-use Altenic\MaybeCms\Factories\PageFactory;
-use Altenic\MaybeCms\Factories\PresetFactory;
-use Altenic\MaybeCms\Factories\UserFactory;
+use Altenic\MaybeCms\Database\Factories\BlockFactory;
+use Altenic\MaybeCms\Database\Factories\PageFactory;
+use Altenic\MaybeCms\Database\Factories\PresetFactory;
+use Altenic\MaybeCms\Database\Factories\UserFactory;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Tests\CreatesApplication;
 
