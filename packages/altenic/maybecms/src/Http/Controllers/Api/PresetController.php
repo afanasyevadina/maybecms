@@ -42,10 +42,7 @@ class PresetController extends Controller
         $className = $request->input('attachable_type');
         $attachable = $className::find($request->input('attachable_id'));
         info($attachable);
-        return response()->json([
-            'status' => 'success',
-            'data' => BlockResource::collection($attachable->appendBlocks($preset->blocks)),
-        ], 201);
+        return BlockResource::collection($attachable->appendBlocks($preset->blocks));
     }
 
     public function destroy(Preset $preset)

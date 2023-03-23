@@ -47,7 +47,7 @@
                                 <video class="preview-img img-fluid mb-3 border bg-light" :src="activeMedia.path" controls></video>
                                 <div>Size: {{ formatSize(activeMedia.size) }}</div>
                                 <div>Uploaded at: {{ formatDate(activeMedia.created_at) }}</div>
-                                <div class="d-flex justify-content-end">
+                                <div class="text-end">
                                     <DeleteFile :id="activeMedia.id"></DeleteFile>
                                 </div>
                             </div>
@@ -69,7 +69,7 @@
             </table>
             <Pagination :pagination="videos.meta" @paginate="loadFiles"></Pagination>
         </div>
-        <UploadVideo :modal-key="'upload-video'" @upload="upload"></UploadVideo>
+        <UploadVideo :modal-key="'upload-video'" @upload="loadFiles"></UploadVideo>
     </div>
 </template>
 
@@ -96,9 +96,6 @@ export default {
         }
     },
     methods: {
-        upload: function (video) {
-            this.videos.data.unshift(video)
-        },
         loadFiles: function(page = 1) {
             this.loading = true
             this.getJson(`/api/files?type=video&page=${page}`,json => {

@@ -78,8 +78,8 @@ export default {
     },
     mounted() {
         this.loadPreset()
-        this.getJson(`/api/post-types`, json => this.setPostTypes(json.data))
-        this.getJson(`/api/primitives`, json => this.setPrimitives(json.data))
+        this.getJson(`/api/post-types`, json => this.setPostTypes(json))
+        this.getJson(`/api/primitives`, json => this.setPrimitives(json))
     }
 }
 </script>

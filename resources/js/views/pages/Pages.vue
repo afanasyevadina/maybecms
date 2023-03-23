@@ -28,7 +28,7 @@
                             <td>{{ page.title }}</td>
                             <td>{{ page.user.name }}</td>
                             <td>{{ formatDate(page.updated_at) }}</td>
-                            <td class="text-nowrap d-flex justify-content-end">
+                            <td class="text-nowrap text-end">
                                 <a :href="`/${page.slug}`" class="btn btn-light me-2" target="_blank">
                                     <i class="fas fa-eye"></i>
                                 </a>

@@ -64,19 +64,26 @@
             </form>
         </div>
     </div>
+    <Pagination :pagination="images.meta" @paginate="loadFiles"></Pagination>
     <UploadImage :modal-key="'upload-image'" @upload="upload"></UploadImage>
 </template>
 
 <script>
 import UploadImage from "./UploadImage.vue";
+import Pagination from "../../components/Pagination.vue";
+
 export default {
     name: 'ChooseImage',
     props: ['modalKey'],
-    components: {UploadImage},
+    components: {
+        UploadImage,
+        Pagination
+    },
     data() {
         return {
             images: {
-                data: []
+                data: [],
+                meta: {}
             },
             loading: true,
             activeMedia: null
@@ -89,13 +96,17 @@ export default {
         },
         choose: function () {
             this.$emit('choose', this.activeMedia)
-        }
-    },
-    mounted() {
-        this.getJson(`/api/files?type=image`,json => {
+        },
+        loadFiles: function(page = 1) {
+            this.loading = true
+            this.getJson(`/api/files?type=image&page=${page}`,json => {
                 this.images = json
                 this.loading = false
             })
+        }
+    },
+    mounted() {
+        this.loadFiles()
     }
 }
 </script>

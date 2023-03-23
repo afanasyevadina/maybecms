@@ -196,9 +196,9 @@ export default {
     methods: {
         save: function () {
             this.saving = true
-            this.postJson(`/api/post-types/${this.id}`, this.model, json => {
-                    this.model = json.data
+            this.postJson(`/api/post-types/${this.id}`, this.model, () => {
                     this.saving = false
+                this.loadPostType()
                 })
         },
         addField: function (fieldType) {
@@ -212,6 +212,9 @@ export default {
             this.model.relations.push({...this.newRelation, title: this.newRelation.type === 'has-one' ? model.title : model.plural_title})
             this.newRelation = {type: null, related_post_type_id: null}
         },
+        loadPostType: function() {
+            this.getJson(`/api/post-types/${this.id}`, json => this.model = json)
+        },
         ...mapMutations([
             'setPostTypes',
             'setRelationTypes',
@@ -219,10 +222,9 @@ export default {
         ])
     },
     mounted() {
-        this.getJson(`/api/post-types/${this.id}`, json => this.model = json.data)
-        this.getJson(`/api/field-types`, json => this.setFieldTypes(json.data))
-        this.getJson(`/api/relation-types`, json => this.setRelationTypes(json.data))
-        this.getJson(`/api/post-types`, json => this.setPostTypes(json.data))
+        this.getJson(`/api/field-types`, json => this.setFieldTypes(json))
+        this.getJson(`/api/relation-types`, json => this.setRelationTypes(json))
+        this.getJson(`/api/post-types`, json => this.setPostTypes(json))
     }
 }
 </script>

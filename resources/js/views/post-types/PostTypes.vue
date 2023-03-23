@@ -26,7 +26,7 @@
                             <td>
                                 {{ model.title }}
                             </td>
-                            <td class="text-nowrap d-flex justify-content-end">
+                            <td class="text-nowrap text-end">
                                 <router-link :to="{name: 'Posts', params: {postType: model.slug}}" class="btn btn-light me-2">
                                     <i class="fas fa-list"></i>
                                 </router-link>
@@ -80,7 +80,7 @@ export default {
         ]),
         loadPostTypes: function() {
             this.getJson(`/api/post-types`, json => {
-                this.setPostTypes(json.data)
+                this.setPostTypes(json)
                 this.loading = false
             })
         }

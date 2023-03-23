@@ -66,19 +66,25 @@
             </form>
         </div>
     </div>
+    <Pagination :pagination="videos.meta" @paginate="loadFiles"></Pagination>
     <UploadVideo :modal-key="'upload-video'" @upload="upload"></UploadVideo>
 </template>
 
 <script>
 import UploadVideo from "../../components/media/UploadVideo.vue";
+import Pagination from "../Pagination.vue";
 export default {
     name: 'ChooseVideo',
     props: ['modalKey'],
-    components: {UploadVideo},
+    components: {
+        UploadVideo,
+        Pagination
+    },
     data() {
         return {
             videos: {
-                data: []
+                data: [],
+                meta: {}
             },
             loading: true,
             activeMedia: null
@@ -91,13 +97,20 @@ export default {
         },
         choose: function () {
             this.$emit('choose', this.activeMedia)
+        },
+        loadFiles: function(page = 1) {
+            this.loading = true
+            this.getJson(`/api/files?type=image&page=${page}`,json => {
+                this.images = json
+                this.loading = false
+            })
         }
     },
     mounted() {
-        this.getJson(`/api/files?type=video`,json => {
-                this.videos = json
-                this.loading = false
-            })
+        this.loadFiles()
+    },
+    unmounted() {
+        console.log(this.activeMedia)
     }
 }
 </script>

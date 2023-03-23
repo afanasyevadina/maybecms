@@ -8,8 +8,6 @@ class PrimitiveController extends Controller
 {
     public function index()
     {
-        return response()->json([
-            'data' => maybe_primitives(),
-        ]);
+        return response()->json(maybe_primitives());
     }
 }

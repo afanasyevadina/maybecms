@@ -7,29 +7,47 @@ use Altenic\MaybeCms\Http\Requests\PostTypeCreateRequest;
 use Altenic\MaybeCms\Http\Requests\PostTypeUpdateRequest;
 use Altenic\MaybeCms\Http\Resources\PostTypeResource;
 use Altenic\MaybeCms\Models\PostType;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
 
 class PostTypeController extends Controller
 {
-    public function index()
+    /**
+     * @return AnonymousResourceCollection
+     */
+    public function index(): AnonymousResourceCollection
     {
         return PostTypeResource::collection(PostType::all());
     }
 
-    public function show(PostType $postType)
+    /**
+     * @param PostType $postType
+     * @return PostTypeResource
+     */
+    public function show(PostType $postType): PostTypeResource
     {
         return PostTypeResource::make($postType);
     }
 
-    public function store(PostTypeCreateRequest $request)
+    /**
+     * @param PostTypeCreateRequest $request
+     * @return JsonResponse
+     */
+    public function store(PostTypeCreateRequest $request): JsonResponse
     {
         $model = PostType::create($request->validated());
         return response()->json([
-            'status' => 'success',
-            'data' => PostTypeResource::make($model),
+            'id' => $model->id,
         ], 201);
     }
 
-    public function update(PostType $postType, PostTypeUpdateRequest $request)
+    /**
+     * @param PostType $postType
+     * @param PostTypeUpdateRequest $request
+     * @return Response
+     */
+    public function update(PostType $postType, PostTypeUpdateRequest $request): Response
     {
         $postType->update($request->safe()->except('relations'));
         $relations = collect($request->input('relations') ?? [])->map(function ($item) use($postType) {
@@ -41,13 +59,14 @@ class PostTypeController extends Controller
             return $relation->id;
         });
         $postType->relations()->whereNotIn('id', $relations)->delete();
-        return response()->json([
-            'status' => 'success',
-            'data' => PostTypeResource::make($postType),
-        ]);
+        return response()->noContent(200);
     }
 
-    public function destroy(PostType $postType)
+    /**
+     * @param PostType $postType
+     * @return Response
+     */
+    public function destroy(PostType $postType): Response
     {
         $postType->delete();
         return response()->noContent();

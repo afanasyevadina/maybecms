@@ -110,11 +110,11 @@ export default {
                 attachable_type: this.block.class_name,
                 attachable_id: this.block.id,
             }, json => {
-                this.block.blocks = this.block.blocks?.concat(json.data)
+                this.block.blocks = this.block.blocks?.concat(json)
             })
         },
         activate: function () {
-            this.setActiveElement(this.block.type ? this.block : null)
+            this.setActiveElement(this.block.class_name === 'block' ? this.block : null)
         },
         moveUp: function (blockIndex) {
             this.block.blocks[blockIndex].order--

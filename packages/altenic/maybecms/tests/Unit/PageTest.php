@@ -2,8 +2,6 @@
 
 namespace Altenic\MaybeCms\Tests\Unit;
 
-use Altenic\MaybeCms\Factories\PageFactory;
-use Altenic\MaybeCms\Factories\UserFactory;
 use Altenic\MaybeCms\Models\Page;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Str;
@@ -13,22 +11,121 @@ class PageTest extends TestCase
 {
     use DatabaseTransactions;
 
+    public function test_get_pages_unauthorized()
+    {
+        $this->getJson('/api/pages')
+            ->assertUnauthorized();
+    }
+
+    public function test_get_pages_forbidden()
+    {
+        $this->actingAsUser();
+        $this->getJson('/api/pages')
+            ->assertForbidden();
+    }
+
+    public function test_get_pages_success()
+    {
+        $this->actingAsAdmin();
+        $this->pageFactory->count(30 - Page::query()->count())->create();
+        $this->getJson('/api/pages')
+            ->assertSuccessful()
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => [
+                        'id',
+                        'slug',
+                        'title',
+                        'active',
+                        'user' => [
+                            'id',
+                            'name',
+                        ],
+                        'created_at',
+                        'updated_at',
+                    ],
+                ],
+                'meta' => [
+                    'current_page',
+                    'from',
+                    'last_page',
+                    'per_page',
+                    'to',
+                    'total',
+                ],
+            ])
+        ->assertJsonCount(20, 'data')
+        ->assertJson([
+            'meta' => [
+                'current_page' => 1,
+                'from' => 1,
+                'last_page' => 2,
+                'per_page' => 20,
+                'to' => 20,
+                'total' => 30,
+            ],
+        ]);
+    }
+
+    public function test_get_pages_second_page_success()
+    {
+        $this->actingAsAdmin();
+        $this->pageFactory->count(30 - Page::query()->count())->create();
+        $this->getJson('/api/pages?page=2')
+            ->assertSuccessful()
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => [
+                        'id',
+                        'slug',
+                        'title',
+                        'active',
+                        'user' => [
+                            'id',
+                            'name',
+                        ],
+                        'created_at',
+                        'updated_at',
+                    ],
+                ],
+                'meta' => [
+                    'current_page',
+                    'from',
+                    'last_page',
+                    'per_page',
+                    'to',
+                    'total',
+                ],
+            ])
+            ->assertJsonCount(10, 'data')
+            ->assertJson([
+                'meta' => [
+                    'current_page' => 2,
+                    'from' => 21,
+                    'last_page' => 2,
+                    'per_page' => 20,
+                    'to' => 30,
+                    'total' => 30,
+                ],
+            ]);
+    }
+
     public function test_create_page_unauthorized()
     {
         $this->postJson('/api/pages')
             ->assertUnauthorized();
     }
 
-    public function test_create_page_permission_denied()
+    public function test_create_page_forbidden()
     {
-        $this->actingAs(app(UserFactory::class)->create(), 'sanctum');
+        $this->actingAsUser();
         $this->postJson('/api/pages')
             ->assertForbidden();
     }
 
     public function test_create_page_validation_failed()
     {
-        $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
+        $this->actingAsAdmin();
         $this->postJson('/api/pages')
             ->assertUnprocessable()
             ->assertJson([
@@ -40,7 +137,7 @@ class PageTest extends TestCase
 
     public function test_create_page_success()
     {
-        $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
+        $this->actingAsAdmin();
         $data = [
             'title' => fake()->sentence(2),
         ];
@@ -59,28 +156,28 @@ class PageTest extends TestCase
 
     public function test_update_page_unauthorized()
     {
-        $this->postJson('/api/pages/' . app(PageFactory::class)->create()->id)
+        $this->postJson('/api/pages/' . $this->pageFactory->create()->id)
             ->assertUnauthorized();
     }
 
-    public function test_update_page_permission_denied()
+    public function test_update_page_forbidden()
     {
-        $this->actingAs(app(UserFactory::class)->create(), 'sanctum');
-        $this->postJson('/api/pages/' . app(PageFactory::class)->create()->id)
+        $this->actingAs($this->userFactory->create(), 'sanctum');
+        $this->postJson('/api/pages/' . $this->pageFactory->create()->id)
             ->assertForbidden();
     }
 
     public function test_update_page_not_found()
     {
-        $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
-        $this->postJson('/api/pages/' . Page::max('id') + 1)
+        $this->actingAsAdmin();
+        $this->postJson('/api/pages/' . Page::query()->max('id') + 1)
             ->assertNotFound();
     }
 
     public function test_update_page_validation_failed()
     {
-        $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
-        $this->postJson('/api/pages/' . app(PageFactory::class)->create()->id, [
+        $this->actingAsAdmin();
+        $this->postJson('/api/pages/' . $this->pageFactory->create()->id, [
             'title' => '',
             'slug' => '',
         ])
@@ -95,8 +192,8 @@ class PageTest extends TestCase
 
     public function test_update_page_success()
     {
-        $page = app(PageFactory::class)->create();
-        $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
+        $page = $this->pageFactory->create();
+        $this->actingAsAdmin();
         $slug = fake()->sentence(2);
         $data = [
             'title' => fake()->sentence(2),
@@ -113,28 +210,28 @@ class PageTest extends TestCase
 
     public function test_delete_page_unauthorized()
     {
-        $this->deleteJson('/api/pages/' . app(PageFactory::class)->create()->id)
+        $this->deleteJson('/api/pages/' . $this->pageFactory->create()->id)
             ->assertUnauthorized();
     }
 
-    public function test_delete_page_permission_denied()
+    public function test_delete_page_forbidden()
     {
-        $this->actingAs(app(UserFactory::class)->create(), 'sanctum');
-        $this->deleteJson('/api/pages/' . app(PageFactory::class)->create()->id)
+        $this->actingAsUser();
+        $this->deleteJson('/api/pages/' . $this->pageFactory->create()->id)
             ->assertForbidden();
     }
 
     public function test_delete_page_not_found()
     {
-        $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
-        $this->deleteJson('/api/pages/' . Page::max('id') + 1)
+        $this->actingAsAdmin();
+        $this->deleteJson('/api/pages/' . Page::query()->max('id') + 1)
             ->assertNotFound();
     }
 
     public function test_delete_page_success()
     {
-        $page = app(PageFactory::class)->create();
-        $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
+        $page = $this->pageFactory->create();
+        $this->actingAsAdmin();
         $this->deleteJson('/api/pages/' . $page->id)
             ->assertNoContent();
         $this->assertDatabaseMissing((new Page)->getTable(), [

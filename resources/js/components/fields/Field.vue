@@ -36,7 +36,7 @@ export default {
     methods: {
         loadPostType: function () {
             if (this.block.post_type_id) {
-                this.getJson(`/api/post-types/${this.block.post_type_id}`, json => this.setBlockPostType(this.block.blocks || [], json.data))
+                this.getJson(`/api/post-types/${this.block.post_type_id}`, json => this.setBlockPostType(this.block.blocks || [], json))
             } else {
                 this.postType = null
             }

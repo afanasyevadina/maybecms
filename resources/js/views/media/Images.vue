@@ -47,7 +47,7 @@
                             <div>Original name: {{ activeMedia.original_name }}</div>
                             <div>Size: {{ formatSize(activeMedia.size) }}</div>
                             <div>Uploaded at: {{ formatDate(activeMedia.created_at) }}</div>
-                            <div class="d-flex justify-content-end">
+                            <div class="text-end">
                                 <DeleteFile :id="activeMedia.id"></DeleteFile>
                             </div>
                         </div>
@@ -68,7 +68,7 @@
             </tbody>
         </table>
         <Pagination :pagination="images.meta" @paginate="loadFiles"></Pagination>
-        <UploadImage :modal-key="'upload-image'" @upload="upload"></UploadImage>
+        <UploadImage :modal-key="'upload-image'" @upload="loadFiles"></UploadImage>
     </div>
 </template>
 
@@ -95,9 +95,6 @@ export default {
         }
     },
     methods: {
-        upload: function (image) {
-            this.images.data.unshift(image)
-        },
         loadFiles: function(page = 1) {
             this.loading = true
             this.getJson(`/api/files?type=image&page=${page}`,json => {

@@ -39,7 +39,7 @@
                                 <td>{{ post.title }}</td>
                                 <td>{{ post.user.name }}</td>
                                 <td>{{ formatDate(post.updated_at) }}</td>
-                                <td class="text-nowrap d-flex justify-content-end">
+                                <td class="text-nowrap text-end">
                                     <a :href="`/${postType}/${post.slug}`" class="btn btn-light me-2" target="_blank">
                                         <i class="fas fa-eye"></i>
                                     </a>
@@ -98,7 +98,7 @@ export default {
         }
     },
     mounted() {
-        this.getJson(`/api/post-types`, json => this.postTypes = json.data)
+        this.getJson(`/api/post-types`, json => this.postTypes = json)
     }
 }
 </script>

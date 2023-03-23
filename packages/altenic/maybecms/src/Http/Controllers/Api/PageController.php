@@ -9,20 +9,34 @@ use Altenic\MaybeCms\Http\Resources\PageListResource;
 use Altenic\MaybeCms\Http\Resources\PageResource;
 use Altenic\MaybeCms\Models\File;
 use Altenic\MaybeCms\Models\Page;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
 
 class PageController extends Controller
 {
-    public function index()
+    /**
+     * @return AnonymousResourceCollection
+     */
+    public function index(): AnonymousResourceCollection
     {
         return PageListResource::collection(Page::query()->paginate(20));
     }
 
-    public function show(Page $page)
+    /**
+     * @param Page $page
+     * @return PageResource
+     */
+    public function show(Page $page): PageResource
     {
         return PageResource::make($page);
     }
 
-    public function store(PageCreateRequest $request)
+    /**
+     * @param PageCreateRequest $request
+     * @return JsonResponse
+     */
+    public function store(PageCreateRequest $request): JsonResponse
     {
         $page = Page::query()->create($request->validated());
         $page->meta()->create();
@@ -31,7 +45,12 @@ class PageController extends Controller
         ], 201);
     }
 
-    public function update(Page $page, PageUpdateRequest $request)
+    /**
+     * @param Page $page
+     * @param PageUpdateRequest $request
+     * @return Response
+     */
+    public function update(Page $page, PageUpdateRequest $request): Response
     {
         $page->update($request->safe()->except(['blocks', 'meta']));
         $meta = $page->meta()->updateOrCreate([], collect($request->input('meta'))->only(['title', 'description'])->toArray());
@@ -44,7 +63,11 @@ class PageController extends Controller
         return response()->noContent(200);
     }
 
-    public function destroy(Page $page)
+    /**
+     * @param Page $page
+     * @return Response
+     */
+    public function destroy(Page $page): Response
     {
         $page->delete();
         return response()->noContent();

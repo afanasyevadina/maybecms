@@ -3,7 +3,7 @@
         <div>
             <div class="d-flex mb-4 justify-content-between align-items-center">
                 <h1>Шаблоны</h1>
-                <a href="#" data-bs-toggle="modal" data-bs-target="#add-preset" class="btn btn-success" v-if="presets.data.length">Создать еще шаблон</a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#add-preset" class="btn btn-success" v-if="presets.length">Создать еще шаблон</a>
             </div>
             <div class="text-center" v-if="loading">
                 <div class="spinner-grow text-secondary" role="status">
@@ -12,7 +12,7 @@
             </div>
             <template v-else>
                 <table class="table table-striped mb-4">
-                    <tbody v-if="!presets.data.length">
+                    <tbody v-if="!presets.length">
                     <tr>
                         <td colspan="5" class="text-center py-3">
                             Пока нет шаблонов
@@ -32,12 +32,12 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <template v-for="preset in presets.data" :key="preset.id">
+                        <template v-for="preset in presets" :key="preset.id">
                             <tr>
                                 <td>{{ preset.id }}</td>
                                 <td>{{ preset.title }}</td>
                                 <td>{{ formatDate(preset.updated_at) }}</td>
-                                <td class="text-nowrap d-flex justify-content-end">
+                                <td class="text-nowrap text-end">
                                     <router-link :to="{name: 'Preset', params: {id: preset.id}}" class="btn btn-light me-2">
                                         <i class="fas fa-pen"></i>
                                     </router-link>
@@ -66,9 +66,7 @@ export default {
     },
     data() {
         return {
-            presets: {
-                data: []
-            },
+            presets: [],
             loading: true
         }
     },

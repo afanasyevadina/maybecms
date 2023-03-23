@@ -2,6 +2,7 @@
 
 namespace Altenic\MaybeCms;
 
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -55,5 +56,7 @@ class MaybeCmsServiceProvider extends ServiceProvider
             \Illuminate\Contracts\Debug\ExceptionHandler::class,
             \Altenic\MaybeCms\Exceptions\Handler::class
         );
+
+        JsonResource::withoutWrapping();
     }
 }

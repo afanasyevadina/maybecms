@@ -17,5 +17,6 @@ class SettingController extends Controller
     public function update(SettingsUpdateRequest $request)
     {
         collect($request->input('settings'))->each(fn($setting) => Setting::query()->where('slug', $setting['slug'])->first()?->update(['value' => $setting['value']]));
+        return response()->noContent(200);
     }
 }

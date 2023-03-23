@@ -69,7 +69,7 @@ export default {
     methods: {
         loadPage: function () {
             this.page = {}
-            this.getJson(`/api/pages/${this.id}`, json => this.page = json.data)
+            this.getJson(`/api/pages/${this.id}`, json => this.page = json)
         },
         save: function () {
             this.saving = true
@@ -85,8 +85,8 @@ export default {
     },
     mounted() {
         this.loadPage()
-        this.getJson(`/api/post-types`, json => this.setPostTypes(json.data))
-        this.getJson(`/api/primitives`, json => this.setPrimitives(json.data))
+        this.getJson(`/api/post-types`, json => this.setPostTypes(json))
+        this.getJson(`/api/primitives`, json => this.setPrimitives(json))
     }
 }
 </script>

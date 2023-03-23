@@ -35,11 +35,14 @@ export default {
     },
     data() {
         return {
-            presets: []
+            presets: {
+                data: [],
+                meta: {}
+            }
         }
     },
     mounted() {
-        this.getJson(`/api/presets`, json => this.presets = json.data)
+        this.getJson(`/api/presets`, json => this.presets = json)
     }
 }
 </script>

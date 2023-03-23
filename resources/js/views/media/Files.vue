@@ -57,7 +57,7 @@
                                 <td>{{ formatSize(file.size) }}</td>
                                 <td>{{ file.user.name }}</td>
                                 <td>{{ formatDate(file.updated_at) }}</td>
-                                <td class="text-end d-flex justify-content-end">
+                                <td class="text-nowrap text-end">
                                     <a :href="file.path" class="btn btn-light me-2" target="_blank">
                                         <i class="fas fa-eye"></i>
                                     </a>
@@ -71,7 +71,7 @@
                 <Pagination :pagination="files.meta" @paginate="loadFiles"></Pagination>
             </template>
         </div>
-        <UploadFile :modal-key="'upload-file'" @upload="upload"></UploadFile>
+        <UploadFile :modal-key="'upload-file'" @upload="loadFiles"></UploadFile>
     </div>
 </template>
 
@@ -97,9 +97,6 @@ export default {
         }
     },
     methods: {
-        upload: function (file) {
-            this.files.data.unshift(file)
-        },
         loadFiles: function(page = 1) {
             this.loading = true
             this.getJson(`/api/files?type=file&page=${page}`,json => {

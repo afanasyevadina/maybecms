@@ -29,7 +29,7 @@ export default {
     },
     methods: {
         save: function () {
-            this.postJson(`/api/posts/${this.postType}`, this.newPost, json => this.$router.push({ name: 'Post', params: {postType: this.postType, id: json.data.id} }))
+            this.postJson(`/api/posts/${this.postType}`, this.newPost, json => this.$router.push({ name: 'Post', params: {postType: this.postType, id: json.id} }))
         }
     }
 }

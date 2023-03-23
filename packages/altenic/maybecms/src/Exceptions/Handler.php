@@ -7,6 +7,8 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
@@ -54,7 +56,13 @@ class Handler extends ExceptionHandler
         });
     }
 
-    public function render($request, Exception|Throwable $exception)
+    /**
+     * @param $request
+     * @param Exception|Throwable $exception
+     * @return Response|JsonResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws Throwable
+     */
+    public function render($request, Exception|Throwable $exception): Response|JsonResponse|\Symfony\Component\HttpFoundation\Response
     {
         if ($request->is('api/*')) {
             if ($exception instanceof ModelNotFoundException || $exception instanceof NotFoundHttpException) {
@@ -68,6 +76,11 @@ class Handler extends ExceptionHandler
         return parent::render($request, $exception);
     }
 
+    /**
+     * @param $request
+     * @param AuthenticationException $exception
+     * @return Response|\Symfony\Component\HttpFoundation\Response
+     */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
         if ($request->is('api/*')) {

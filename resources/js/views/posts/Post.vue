@@ -103,13 +103,13 @@ export default {
     methods: {
         save: function () {
             this.saving = true
-            this.postJson(`/api/posts/${this.postType}/${this.id}`, this.post, json => {
-                this.post = json.data
+            this.postJson(`/api/posts/${this.postType}/${this.id}`, this.post, () => {
                 this.saving = false
+                this.loadPost()
             })
         },
         loadPost: function () {
-            this.getJson(`/api/posts/${this.postType}/${this.id}`, json => this.post = json.data)
+            this.getJson(`/api/posts/${this.postType}/${this.id}`, json => this.post = json)
         },
         ...mapMutations([
             'setPostTypes',
@@ -118,8 +118,8 @@ export default {
     },
     mounted() {
         this.loadPost()
-        this.getJson(`/api/post-types`, json => this.setPostTypes(json.data))
-        this.getJson(`/api/primitives`, json => this.setPrimitives(json.data))
+        this.getJson(`/api/post-types`, json => this.setPostTypes(json))
+        this.getJson(`/api/primitives`, json => this.setPrimitives(json))
     }
 }
 </script>

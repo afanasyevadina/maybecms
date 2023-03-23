@@ -9,31 +9,53 @@ use Altenic\MaybeCms\Http\Resources\PostListResource;
 use Altenic\MaybeCms\Http\Resources\PostResource;
 use Altenic\MaybeCms\Models\PostType;
 use Altenic\MaybeCms\Models\Post;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
 
 class PostController extends Controller
 {
-    public function index(string $postType)
+    /**
+     * @param string $postType
+     * @return AnonymousResourceCollection
+     */
+    public function index(string $postType): AnonymousResourceCollection
     {
         $model = PostType::query()->where('slug', $postType)->firstOrFail();
         return PostListResource::collection(Post::byType($model->id)->paginate(20));
     }
 
-    public function show(string $postType, Post $post)
+    /**
+     * @param string $postType
+     * @param Post $post
+     * @return PostResource
+     */
+    public function show(string $postType, Post $post): PostResource
     {
         return PostResource::make($post);
     }
 
-    public function store($postType, PostCreateRequest $request)
+    /**
+     * @param $postType
+     * @param PostCreateRequest $request
+     * @return JsonResponse
+     */
+    public function store($postType, PostCreateRequest $request): JsonResponse
     {
         $model = PostType::query()->where('slug', $postType)->firstOrFail();
         $post = $model->posts()->create($request->validated());
         return response()->json([
-            'status' => 'success',
-            'data' => PostResource::make($post),
+            'id' => $post->id,
         ], 201);
     }
 
-    public function update(string $postType, Post $post, PostUpdateRequest $request)
+    /**
+     * @param string $postType
+     * @param Post $post
+     * @param PostUpdateRequest $request
+     * @return Response
+     */
+    public function update(string $postType, Post $post, PostUpdateRequest $request): Response
     {
         $post->updateContent($request->safe()->except(['blocks', 'meta', 'relations']));
         $post->updateBlocks($request->input('blocks') ?? []);
@@ -45,13 +67,15 @@ class PostController extends Controller
                 'relation_id' => $modelRelation?->id,
             ]);
         }
-        return response()->json([
-            'status' => 'success',
-            'data' => PostResource::make($post),
-        ]);
+        return response()->noContent(200);
     }
 
-    public function destroy(string $postType, Post $post)
+    /**
+     * @param string $postType
+     * @param Post $post
+     * @return Response
+     */
+    public function destroy(string $postType, Post $post): Response
     {
         $post->delete();
         return response()->noContent();

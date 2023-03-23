@@ -72,7 +72,7 @@ export default {
                 request.send(formData)
                 request.onload = () => {
                     this.hideModal()
-                    this.$emit('upload', request.response.data)
+                    this.$emit('upload')
                     this.resetProgress()
                 }
             }

@@ -2,7 +2,6 @@
 
 namespace Altenic\MaybeCms\Tests\Unit;
 
-use Altenic\MaybeCms\Factories\UserFactory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -22,7 +21,7 @@ class AuthTest extends TestCase
     {
         $email = fake()->safeEmail();
         $password = Str::random(8);
-        $user = app(UserFactory::class)->state([
+        $this->userFactory->state([
             'email' => $email,
             'password' => Hash::make($password),
         ])->admin()->create();
@@ -46,7 +45,7 @@ class AuthTest extends TestCase
 
     public function test_logout_success()
     {
-        $this->actingAs(app(UserFactory::class)->admin()->create(), 'sanctum');
+        $this->actingAsAdmin();
         $this->postJson('/api/logout')
             ->assertSuccessful();
     }

@@ -48,7 +48,7 @@ export default {
     },
     mounted() {
         this.getJson(`/api/settings`,json => {
-            this.settings = json.data
+            this.settings = json
             this.loading = false
         })
     }

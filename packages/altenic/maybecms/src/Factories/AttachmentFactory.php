@@ -21,9 +21,9 @@ class AttachmentFactory extends Factory
     public function definition()
     {
         return [
-            'type' => fake()->randomElement(['file', 'image', 'video']),
+            'type' => fake()->randomElement(['image', 'video']),
             'attachable_type' => Block::class,
-            'attachable_id' => app(BlockFactory::class)->create(['type' => 'file'])->id,
+            'attachable_id' => app(BlockFactory::class)->create(['type' => 'image'])->id,
         ];
     }
 }
