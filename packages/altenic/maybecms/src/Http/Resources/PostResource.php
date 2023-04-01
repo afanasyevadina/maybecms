@@ -44,7 +44,7 @@ class PostResource extends JsonResource
                     'related_posts' => PostListResource::collection($posts),
                 ]);
             }),
-            'meta' => MetaResource::make($this->meta()->firstOrCreate([])),
+            'meta' => MetaResource::make($this->meta),
         ];
     }
 }

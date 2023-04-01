@@ -29,9 +29,7 @@ class FileController extends Controller
     public function store(FileCreateRequest $request): JsonResponse
     {
         $file = File::query()->create($request->safe()->except('file'));
-        return response()->json([
-            'id' => $file->id,
-        ], 201);
+        return FileResource::make($file)->toResponse($request)->setStatusCode(201);
     }
 
     /**

@@ -39,7 +39,6 @@ class PageController extends Controller
     public function store(PageCreateRequest $request): JsonResponse
     {
         $page = Page::query()->create($request->validated());
-        $page->meta()->create();
         return response()->json([
             'id' => $page->id,
         ], 201);

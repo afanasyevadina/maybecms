@@ -20,6 +20,7 @@ class Page extends Model
                 'active' => 1,
             ]);
             create_slug($page);
+            $page->meta()->create();
         });
 
         static::deleting(function (Page $page) {

@@ -26,6 +26,7 @@ class Post extends Model
                 'active' => 1,
             ]);
             create_slug($post);
+            $post->meta()->create();
         });
 
         static::deleting(function (Post $post) {
