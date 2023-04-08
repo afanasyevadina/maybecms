@@ -41,7 +41,6 @@ class PresetController extends Controller
     {
         $className = $request->input('attachable_type');
         $attachable = $className::find($request->input('attachable_id'));
-        info($attachable);
         return BlockResource::collection($attachable->appendBlocks($preset->blocks));
     }
 

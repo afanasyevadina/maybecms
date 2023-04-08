@@ -2,7 +2,7 @@
 
 namespace Altenic\MaybeCms\Http\Requests;
 
-class PresetCreateRequest extends JsonRequest
+class ComponentUpdateRequest extends JsonRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,6 +23,10 @@ class PresetCreateRequest extends JsonRequest
     {
         return [
             'title' => 'required',
+            'blocks' => 'sometimes|array',
+            'blocks.*.id' => 'required',
+            'blocks.*.attachment' => 'sometimes|array|nullable',
+            'blocks.*.blocks' => 'sometimes|array',
         ];
     }
 }

@@ -1,13 +1,14 @@
 <template>
-    <div class="modal fade" tabindex="-1" :id="modalKey">
+    <a href="#" class="text-decoration-none text-muted small ms-3" data-bs-toggle="modal" data-bs-target="#unset-post-type">Удалить источник</a>
+    <div class="modal fade" tabindex="-1" id="unset-post-type">
         <div class="modal-dialog modal-dialog-centered">
-            <form action="#" @submit.prevent="remove" class="modal-content">
+            <form action="#" @submit.prevent="unsetPostType" class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Подтверждение</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Этот блок будет удален.</p>
+                    <p>Посты будут откреплены.</p>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-danger">Да, удалить</button>
@@ -19,29 +20,21 @@
 </template>
 
 <script>
-import {mapMutations} from "vuex";
-
 export default {
-    name: "TreeDeleteModal",
+    name: "UnsetPostTypeModal",
     props: {
         block: {
             type: Object
-        },
-        modalKey: {
-            type: String
         }
     },
+    emits: ['update'],
     methods: {
-        remove: function () {
-            this.deleteRequest(`/api/blocks/${this.block.id}`, () => {
-                this.hideModal()
+        unsetPostType: function () {
+            this.deleteRequest(`/api/blocks/${this.block.id}/post-type`, () => {
                 this.$emit('update')
-                this.setActiveElement(null)
+                this.hideModal()
             })
-        },
-        ...mapMutations([
-            'setActiveElement'
-        ])
+        }
     }
 }
 </script>

@@ -1,5 +1,6 @@
 <?php
 
+use Altenic\MaybeCms\Models\Component;
 use Altenic\MaybeCms\Models\PostType;
 use Altenic\MaybeCms\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->integer('attachable_id')->nullable();
             $table->string('attachable_type', 255)->nullable();
             $table->foreignIdFor(PostType::class)->nullable()->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignIdFor(Component::class)->nullable()->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('type', 255)->nullable();
             $table->string('title', 255)->nullable();
             $table->text('content')->nullable();

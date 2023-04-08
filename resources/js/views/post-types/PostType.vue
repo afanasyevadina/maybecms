@@ -222,6 +222,7 @@ export default {
         ])
     },
     mounted() {
+        this.loadPostType()
         this.getJson(`/api/field-types`, json => this.setFieldTypes(json))
         this.getJson(`/api/relation-types`, json => this.setRelationTypes(json))
         this.getJson(`/api/post-types`, json => this.setPostTypes(json))

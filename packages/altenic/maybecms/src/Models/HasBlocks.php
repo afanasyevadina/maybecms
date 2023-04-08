@@ -67,4 +67,16 @@ trait HasBlocks
             return $childBlock;
         });
     }
+
+    /**
+     * @param int|null $postTypeId
+     * @return void
+     */
+    public function setPostType(?int $postTypeId): void
+    {
+        $this->update(['post_type_id' => $postTypeId]);
+        foreach ($this->blocks as $block) {
+            $block->setPostType($postTypeId);
+        }
+    }
 }

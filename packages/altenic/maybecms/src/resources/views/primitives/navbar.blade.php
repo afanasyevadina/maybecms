@@ -1,5 +1,5 @@
 <div
-    class="navbar {{ $block->getProperty('background') }}"
+    class="navbar {{ $block->getProperty('background') }}" style="{{ $block->getProperty('css') }}"
 >
     <a href="/" class="navbar-brand">
         @if($attachment = $block->getAttachment('logo', @$source))

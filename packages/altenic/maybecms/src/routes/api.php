@@ -2,6 +2,7 @@
 
 use Altenic\MaybeCms\Http\Controllers\Api\AuthController;
 use Altenic\MaybeCms\Http\Controllers\Api\BlockController;
+use Altenic\MaybeCms\Http\Controllers\Api\ComponentController;
 use Altenic\MaybeCms\Http\Controllers\Api\FieldTypeController;
 use Altenic\MaybeCms\Http\Controllers\Api\FileController;
 use Altenic\MaybeCms\Http\Controllers\Api\PostTypeController;
@@ -40,9 +41,12 @@ Route::prefix('/api')->middleware([HeadersMiddleware::class, 'api'])->group(func
         Route::post('/pages/{page}', [PageController::class, 'update']);
         Route::delete('/pages/{page}', [PageController::class, 'destroy']);
 
+        Route::get('/blocks/{block}', [BlockController::class, 'show']);
         Route::post('/blocks', [BlockController::class, 'store']);
         Route::post('/blocks/{block}/clone', [BlockController::class, 'clone']);
         Route::delete('/blocks/{block}', [BlockController::class, 'destroy']);
+        Route::post('/blocks/{block}/post-type/{postType}', [BlockController::class, 'setPostType']);
+        Route::delete('/blocks/{block}/post-type', [BlockController::class, 'unsetPostType']);
 
         Route::get('/files', [FileController::class, 'index']);
         Route::post('/files', [FileController::class, 'store']);
@@ -55,6 +59,13 @@ Route::prefix('/api')->middleware([HeadersMiddleware::class, 'api'])->group(func
         Route::post('/presets/{preset}', [PresetController::class, 'update']);
         Route::post('/presets/{preset}/apply', [PresetController::class, 'apply']);
         Route::delete('/presets/{preset}', [PresetController::class, 'destroy']);
+
+        Route::get('/components', [ComponentController::class, 'index']);
+        Route::get('/components/{component}', [ComponentController::class, 'show']);
+        Route::post('/components', [ComponentController::class, 'store']);
+        Route::post('/components/{component}', [ComponentController::class, 'update']);
+        Route::post('/components/{component}/apply', [ComponentController::class, 'apply']);
+        Route::delete('/components/{component}', [ComponentController::class, 'destroy']);
 
         Route::get('/post-types', [PostTypeController::class, 'index']);
         Route::get('/post-types/{postType}', [PostTypeController::class, 'show']);

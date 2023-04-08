@@ -8,7 +8,7 @@ use Altenic\MaybeCms\Models\Page;
 use Altenic\MaybeCms\Models\Post;
 use Altenic\MaybeCms\Models\Preset;
 
-class PresetApplyRequest extends JsonRequest
+class ComponentApplyRequest extends JsonRequest
 {
     /**
      * Determine if the user is authorized to make this request.

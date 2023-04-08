@@ -13,8 +13,11 @@
                     <template v-if="childrenAllowed">
                         <li><a class="dropdown-item small px-2" href="#" data-bs-toggle="modal" :data-bs-target="`#add-primitive-${collapseKey}`">Добавить примитив</a></li>
                     </template>
+                    <template v-if="componentAllowed">
+                        <li><a class="dropdown-item small px-2" href="#" data-bs-toggle="modal" :data-bs-target="`#add-preset-${collapseKey}`">Использовать шаблон</a></li>
+                    </template>
                     <template v-if="presetAllowed">
-                        <li><a class="dropdown-item small px-2" href="#" data-bs-toggle="modal" :data-bs-target="`#add-preset-${collapseKey}`">Вставить шаблон</a></li>
+                        <li><a class="dropdown-item small px-2" href="#" data-bs-toggle="modal" :data-bs-target="`#add-component-${collapseKey}`">Вставить компонент</a></li>
                     </template>
                     <template v-if="block.class_name === 'block'">
                         <li><a class="dropdown-item small px-2" href="#" @click.prevent="cloneBlock">Копировать</a></li>
@@ -32,6 +35,7 @@
         <TreeDeleteModal @update="$emit('update')" :modalKey="`delete-modal-${collapseKey}`" :block="block"></TreeDeleteModal>
         <TreeAddPrimitiveModal @addBlock="addBlock" :modalKey="`add-primitive-${collapseKey}`" :allowed-primitives="allowedPrimitives"></TreeAddPrimitiveModal>
         <TreeAddPresetModal @addPreset="addPreset" :modalKey="`add-preset-${collapseKey}`" v-if="presetAllowed"></TreeAddPresetModal>
+        <TreeAddComponentModal @addComponent="addComponent" :modalKey="`add-component-${collapseKey}`" v-if="componentAllowed"></TreeAddComponentModal>
     </div>
 </template>
 
@@ -39,11 +43,12 @@
 import TreeDeleteModal from "./TreeDeleteModal.vue";
 import TreeAddPrimitiveModal from "./TreeAddPrimitiveModal.vue";
 import TreeAddPresetModal from "./TreeAddPresetModal.vue";
+import TreeAddComponentModal from "./TreeAddComponentModal.vue";
 import {mapMutations, mapState} from "vuex";
 
 export default {
     name: "TreeItem",
-    components: {TreeDeleteModal, TreeAddPresetModal, TreeAddPrimitiveModal},
+    components: {TreeDeleteModal, TreeAddPresetModal, TreeAddPrimitiveModal, TreeAddComponentModal},
     props: {
         block: {
             type: Object
@@ -79,6 +84,9 @@ export default {
         presetAllowed: function () {
             return this.block.class_name !== 'block' || this.blockChildren.includes('preset')
         },
+        componentAllowed: function () {
+            return this.block.class_name !== 'block' || this.blockChildren.includes('component')
+        },
         allowedPrimitives: function () {
             const primitives = {}
             for (const primitiveKey in this.primitives) {
@@ -111,6 +119,14 @@ export default {
                 attachable_id: this.block.id,
             }, json => {
                 this.block.blocks = this.block.blocks?.concat(json)
+            })
+        },
+        addComponent: function (component) {
+            this.postJson(`/api/components/${component.id}/apply`, {
+                attachable_type: this.block.class_name,
+                attachable_id: this.block.id,
+            }, json => {
+                this.block.blocks?.push(json)
             })
         },
         activate: function () {

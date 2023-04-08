@@ -21,6 +21,9 @@
                             <router-link :to="{name: 'Presets'}" class="nav-link">Шаблоны</router-link>
                         </li>
                         <li class="nav-item">
+                            <router-link :to="{name: 'Components'}" class="nav-link">Компоненты</router-link>
+                        </li>
+                        <li class="nav-item">
                             <router-link :to="{name: 'PostTypes'}" class="nav-link">Модели</router-link>
                         </li>
                         <li class="nav-item">

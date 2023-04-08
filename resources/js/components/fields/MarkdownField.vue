@@ -1,6 +1,13 @@
 <template>
     <div class="mb-4">
-        <quill-editor theme="snow" ref="quillEditor" @ready="ready" @textChange="textChange"></quill-editor>
+        <quill-editor theme="snow" ref="quillEditor" @ready="ready" @textChange="textChange" :read-only="field.source"></quill-editor>
+    </div>
+    <div class="mb-4" v-if="sources.length">
+        <label>Источник</label>
+        <select v-model="field.source" class="form-control">
+            <option :value="null">-</option>
+            <option :value="sourceItem.slug" v-for="sourceItem in sources" :key="sourceItem.slug">{{ sourceItem.title }}</option>
+        </select>
     </div>
 </template>
 
@@ -20,6 +27,13 @@ export default {
     data() {
         return {
             text: '',
+        }
+    },
+    computed: {
+        sources: function () {
+            return (this.postType?.structure?.fields || [])
+                .filter(item => item.type === 'markdown')
+                .map(item => ({...item, slug: `field.${item.slug}`}))
         }
     },
     methods: {

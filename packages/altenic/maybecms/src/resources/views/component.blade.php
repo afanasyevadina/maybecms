@@ -1,11 +1,9 @@
 @extends('maybecms::layouts.app', [
-    'metaTitle' => $page->meta?->title ?? $page->title,
-    'metaDescription' => $page->meta?->description,
-    'ogImage' => $page->meta?->attachment?->file->assetPath,
+    'metaTitle' => $component->title,
 ])
 @section('content')
-    <div class="home page">
-        @foreach($page->blocks as $childBlock)
+    <div class="page post">
+        @foreach($component->blocks as $childBlock)
             @if(view()->exists('maybecms::primitives.' . $childBlock->type))
                 @include('maybecms::primitives.' . $childBlock->type, ['block' => $childBlock])
             @endif

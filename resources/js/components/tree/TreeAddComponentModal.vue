@@ -3,18 +3,18 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Выбрать шаблон</h5>
+                    <h5 class="modal-title">Выбрать компонент</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <table class="table table-striped mb-4">
-                        <tbody v-if="!presets.length">
+                        <tbody v-if="!components.length">
                         <tr>
                             <td colspan="5" class="text-center py-3">
-                                Пока нет шаблонов
+                                Пока нет компонентов
                                 <br>
                                 <br>
-                                <router-link :to="{name: 'Presets'}" class="btn btn-outline-dark" target="_blank">Создать первый шаблон</router-link>
+                                <router-link :to="{name: 'Components'}" class="btn btn-outline-dark" target="_blank">Создать первый компонент</router-link>
                             </td>
                         </tr>
                         </tbody>
@@ -28,19 +28,19 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <template v-for="preset in presets" :key="preset.id">
+                            <template v-for="component in components" :key="component.id">
                                 <tr>
-                                    <td>{{ preset.id }}</td>
-                                    <td>{{ preset.title }}</td>
-                                    <td>{{ formatDate(preset.updated_at) }}</td>
+                                    <td>{{ component.id }}</td>
+                                    <td>{{ component.title }}</td>
+                                    <td>{{ formatDate(component.updated_at) }}</td>
                                     <td class="text-nowrap text-end">
-                                        <a href="#" data-bs-dismiss="modal" class="btn btn-light me-2" @click.prevent="$emit('addPreset', preset)">
+                                        <a href="#" data-bs-dismiss="modal" class="btn btn-light me-2" @click.prevent="$emit('addComponent', component)">
                                             <i class="fas fa-check"></i>
                                         </a>
-                                        <a :href="`/presets/${preset.id}`" class="btn btn-light me-2" target="_blank">
+                                        <a :href="`/components/${component.id}`" class="btn btn-light me-2" target="_blank">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <router-link :to="{name: 'Preset', params: {id: preset.id}}" class="btn btn-light me-2">
+                                        <router-link :to="{name: 'Component', params: {id: component.id}}" class="btn btn-light me-2" target="_blank">
                                             <i class="fas fa-pen"></i>
                                         </router-link>
                                     </td>
@@ -59,7 +59,7 @@
 import {mapState} from "vuex";
 
 export default {
-    name: "TreeAddPresetModal",
+    name: "TreeAddComponentModal",
     props: {
         modalKey: {
             type: String
@@ -67,7 +67,7 @@ export default {
     },
     computed: {
         ...mapState([
-            'presets',
+            'components',
         ])
     }
 }

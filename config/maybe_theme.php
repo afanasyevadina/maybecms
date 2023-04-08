@@ -2,27 +2,33 @@
 return [
     'primitives' => [
         'navbar' => [
-            'title' => 'Шапка',
+            'title' => 'Хедер',
             'structure' => [
-                [
-                    'slug' => 'logo',
-                    'title' => 'Логотип',
-                    'field_type' => 'image',
-                ],
-                [
-                    'slug' => 'text',
-                    'title' => 'Заголовок',
-                    'field_type' => 'single-line-text',
-                ],
                 [
                     'slug' => 'background',
                     'title' => 'Фон',
                     'field_type' => 'select',
                     'options' => [
+                        'bg-white' => 'Белый',
                         'bg-light' => 'Светлый',
                         'bg-dark' => 'Темный',
                         'bg-blue' => 'Голубой',
                     ]
+                ],
+                [
+                    'slug' => 'logo',
+                    'title' => 'Лого',
+                    'field_type' => 'image',
+                ],
+                [
+                    'slug' => 'text',
+                    'title' => 'Заголовок',
+                    'field_type' => 'text',
+                ],
+                [
+                    'slug' => 'css',
+                    'title' => 'Свой стиль',
+                    'field_type' => 'text',
                 ],
             ],
             'children' => ['navbar-nav'],
@@ -45,7 +51,8 @@ return [
                         'bg-light' => 'Светлый',
                         'bg-dark' => 'Темный',
                         'bg-blue' => 'Голубой',
-                    ]
+                    ],
+                    'w' => 'col-lg-4',
                 ],
                 [
                     'slug' => 'width',
@@ -58,7 +65,8 @@ return [
                         'w-33' => '33%',
                         'w-25' => '25%',
                         'w-auto' => 'Авто',
-                    ]
+                    ],
+                    'w' => 'col-lg-4',
                 ],
                 [
                     'slug' => 'display',
@@ -67,7 +75,8 @@ return [
                     'options' => [
                         'd-column' => 'Столбцом',
                         'd-row' => 'Строкой',
-                    ]
+                    ],
+                    'w' => 'col-lg-4',
                 ],
                 [
                     'slug' => 'align-v',
@@ -78,7 +87,8 @@ return [
                         'align-v-top' => 'Прибить к верху',
                         'align-v-bottom' => 'Прибить к низу',
                         'align-v-stretch' => 'Растянуть',
-                    ]
+                    ],
+                    'w' => 'col-lg-4',
                 ],
                 [
                     'slug' => 'align-h',
@@ -90,7 +100,8 @@ return [
                         'align-h-right' => 'Прибить вправо',
                         'align-h-between' => 'Распределить к краям',
                         'align-h-around' => 'Распределить равномерно',
-                    ]
+                    ],
+                    'w' => 'col-lg-4',
                 ],
                 [
                     'slug' => 'css',
@@ -98,9 +109,9 @@ return [
                     'field_type' => 'text',
                 ],
             ],
-            'children' => ['text', 'markdown', 'link', 'image', 'video', 'heading', 'delimeter', 'section', 'preset'],
+            'children' => ['text', 'markdown', 'link', 'image', 'video', 'heading', 'delimeter', 'section', 'preset', 'component'],
             'root' => true,
-            'source' => true,
+            'allow_source' => true,
         ],
         'heading' => [
             'title' => 'Заголовок',
@@ -109,6 +120,7 @@ return [
                     'slug' => 'text',
                     'title' => 'Текст',
                     'field_type' => 'text',
+                    'allow_source' => true,
                 ],
                 [
                     'slug' => 'level',
@@ -123,6 +135,11 @@ return [
                         'h6' => 'h6',
                     ],
                 ],
+                [
+                    'slug' => 'css',
+                    'title' => 'Свой стиль',
+                    'field_type' => 'text',
+                ],
             ],
         ],
         'text' => [
@@ -131,6 +148,12 @@ return [
                 [
                     'slug' => 'text',
                     'title' => 'Текст',
+                    'field_type' => 'text',
+                    'allow_source' => true,
+                ],
+                [
+                    'slug' => 'css',
+                    'title' => 'Свой стиль',
                     'field_type' => 'text',
                 ],
             ],
@@ -142,6 +165,12 @@ return [
                     'slug' => 'text',
                     'title' => 'Контент',
                     'field_type' => 'markdown',
+                    'allow_source' => true,
+                ],
+                [
+                    'slug' => 'css',
+                    'title' => 'Свой стиль',
+                    'field_type' => 'text',
                 ],
             ],
         ],
@@ -152,11 +181,13 @@ return [
                     'slug' => 'text',
                     'title' => 'Текст ссылки',
                     'field_type' => 'single-line-text',
+                    'allow_source' => true,
                 ],
                 [
                     'slug' => 'url',
                     'title' => 'URL ссылки',
                     'field_type' => 'link',
+                    'allow_source' => true,
                 ],
                 [
                     'slug' => 'style',
@@ -166,6 +197,11 @@ return [
                         'link' => 'Ссылка',
                         'button' => 'Кнопка',
                     ],
+                ],
+                [
+                    'slug' => 'css',
+                    'title' => 'Свой стиль',
+                    'field_type' => 'text',
                 ],
             ],
         ],
@@ -181,17 +217,22 @@ return [
                     'slug' => 'src',
                     'title' => 'Изображение',
                     'field_type' => 'image',
+                    'allow_source' => true,
                 ],
                 [
-                    'slug' => 'shape',
-                    'title' => 'Форма',
+                    'slug' => 'rounds',
+                    'title' => 'Скругление',
                     'field_type' => 'select',
                     'options' => [
-                        'shape-normal' => 'Обычная',
-                        'shape-rounded' => 'Скругленные углы',
-                        'shape-circle' => 'Круглая',
-                        'shape-scale' => '1/2',
+                        'rounds-0' => 'Обычная',
+                        'rounds-rounded' => 'Скругленные углы',
+                        'rounds-circle' => 'Круглая',
                     ],
+                ],
+                [
+                    'slug' => 'css',
+                    'title' => 'Свой стиль',
+                    'field_type' => 'text',
                 ],
             ],
         ],
@@ -202,12 +243,24 @@ return [
                     'slug' => 'src',
                     'title' => 'Видео',
                     'field_type' => 'video',
+                    'allow_source' => true,
+                ],
+                [
+                    'slug' => 'css',
+                    'title' => 'Свой стиль',
+                    'field_type' => 'text',
                 ],
             ],
         ],
         'delimeter' => [
             'title' => 'Разделитель',
-            'structure' => [],
+            'structure' => [
+                [
+                    'slug' => 'css',
+                    'title' => 'Свой стиль',
+                    'field_type' => 'text',
+                ],
+            ],
             'root' => true,
         ],
     ],

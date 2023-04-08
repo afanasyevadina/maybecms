@@ -5,6 +5,8 @@ import PostTypes from "../views/post-types/PostTypes.vue";
 import PostType from "../views/post-types/PostType.vue";
 import Presets from "../views/presets/Presets.vue";
 import Preset from "../views/presets/Preset.vue";
+import Components from "../views/components/Components.vue";
+import Component from "../views/components/Component.vue";
 import Posts from "../views/posts/Posts.vue";
 import Post from "../views/posts/Post.vue";
 import Settings from "../views/settings/Settings.vue";
@@ -50,6 +52,15 @@ const routes = [{
     path: '/presets/:id',
     component: Preset,
     name: 'Preset',
+    props: true
+}, {
+    path: '/components',
+    component: Components,
+    name: 'Components'
+}, {
+    path: '/components/:id',
+    component: Component,
+    name: 'Component',
     props: true
 }, {
     path: '/posts/:postType',

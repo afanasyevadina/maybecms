@@ -1,12 +1,12 @@
 <template>
-    <div class="vh-100 editor-page bg-white" v-if="page.id">
+    <div class="vh-100 editor-page bg-white" v-if="component.id">
         <div class="px-3 d-flex justify-content-between align-items-center border-bottom">
-            <router-link :to="{name: 'Pages'}" class="btn btn-sm btn-light">
+            <router-link :to="{name: 'Components'}" class="btn btn-sm btn-light">
                 <i class="fas fa-chevron-left"></i>
                 Назад
             </router-link>
             <div>
-                <a :href="`/${page.slug}`" class="btn btn-sm btn-light me-2" target="_blank">
+                <a :href="`/components/${component.id}`" class="btn btn-sm btn-light me-2" target="_blank">
                     Посмотреть, что получилось
                 </a>
                 <button type="button" class="btn btn-sm btn-success" @click="save()">
@@ -17,25 +17,18 @@
         </div>
         <div class="editor-wrapper">
             <div class="editor-tree border-end overflow-auto p-3">
-                <tree-item :block="page" :depth="0" :order="0" :count="page.blocks.length"
-                           @update="loadPage"></tree-item>
+                <tree-item :block="component" :depth="0" :order="0" :count="component.blocks.length" @update="loadComponent"></tree-item>
             </div>
             <div class="editor-fields p-3 overflow-auto">
                 <template v-if="activeElement">
-                    <field :block="activeElement" @save="loadPage"
-                           @remove="activeElement = null; loadPage()" @update="loadPage"></field>
+                    <field :block="activeElement" @save="loadComponent"
+                           @remove="activeElement = null; loadComponent()"></field>
                 </template>
                 <template v-else>
                     <div class="mb-4">
-                        <label>Название страницы</label>
-                        <input type="text" class="form-control" v-model="page.title" placeholder="Название страницы">
+                        <label>Название</label>
+                        <input type="text" class="form-control" v-model="component.title">
                     </div>
-                    <div class="mb-4">
-                        <label>Фрагмент урла</label>
-                        <input type="text" class="form-control" v-model="page.slug"
-                               placeholder="Латинские буквы, цифры и дефис">
-                    </div>
-                    <MetaFields :meta="page.meta"></MetaFields>
                 </template>
             </div>
         </div>
@@ -48,39 +41,39 @@
 </template>
 
 <script>
-import MetaFields from "../../components/MetaFields.vue";
 import {mapState, mapMutations} from "vuex";
 
 export default {
-    name: "Page",
+    name: "Component",
     props: ['id'],
-    components: {MetaFields},
     data() {
         return {
-            page: {},
+            component: {},
             saving: false
         }
     },
     computed: {
         ...mapState([
-            'activeElement'
+            'activeElement',
+            'primitives',
+            'postTypes',
         ])
     },
     methods: {
-        loadPage: function () {
-            this.page = {}
-            this.getJson(`/api/pages/${this.id}`, json => {
-                this.page = json
+        loadComponent: function () {
+            this.component = {}
+            this.getJson(`/api/components/${this.id}`, json => {
+                this.component = json
                 if (this.activeElement) {
-                    this.resetActiveElement(this.page.blocks)
+                    this.resetActiveElement(this.component.blocks)
                 }
             })
         },
         save: function () {
             this.saving = true
-            this.postJson(`/api/pages/${this.id}`, this.page, () => {
+            this.postJson(`/api/components/${this.id}`, this.component, () => {
                 this.saving = false
-                this.loadPage()
+                this.loadComponent()
             })
         },
         ...mapMutations([
@@ -92,12 +85,12 @@ export default {
         ])
     },
     mounted() {
-        this.loadPage()
+        this.loadComponent()
         this.getJson(`/api/post-types`, json => this.setPostTypes(json))
         this.getJson(`/api/primitives`, json => this.setPrimitives(json))
         this.getJson(`/api/presets`, json => this.setPresets(json))
         this.getJson(`/api/components`, json => this.setComponents(json))
-        this.setActiveElement(null)
+        this.setActiveElement()
     }
 }
 </script>

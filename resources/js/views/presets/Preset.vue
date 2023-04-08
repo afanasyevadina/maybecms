@@ -17,7 +17,7 @@
         </div>
         <div class="editor-wrapper">
             <div class="editor-tree border-end overflow-auto p-3">
-                <tree-item :block="preset" :depth="0" :order="0" :count="preset.blocks.length"></tree-item>
+                <tree-item :block="preset" :depth="0" :order="0" :count="preset.blocks.length" @update="loadPreset"></tree-item>
             </div>
             <div class="editor-fields p-3 overflow-auto">
                 <template v-if="activeElement">
@@ -62,7 +62,12 @@ export default {
     methods: {
         loadPreset: function () {
             this.preset = {}
-            this.getJson(`/api/presets/${this.id}`, json => this.preset = json)
+            this.getJson(`/api/presets/${this.id}`, json => {
+                this.preset = json
+                if (this.activeElement) {
+                    this.resetActiveElement(this.preset.blocks)
+                }
+            })
         },
         save: function () {
             this.saving = true
@@ -74,12 +79,18 @@ export default {
         ...mapMutations([
             'setPostTypes',
             'setPrimitives',
+            'setPresets',
+            'setComponents',
+            'setActiveElement',
         ])
     },
     mounted() {
         this.loadPreset()
         this.getJson(`/api/post-types`, json => this.setPostTypes(json))
         this.getJson(`/api/primitives`, json => this.setPrimitives(json))
+        this.getJson(`/api/presets`, json => this.setPresets(json))
+        this.getJson(`/api/components`, json => this.setComponents(json))
+        this.setActiveElement(null)
     }
 }
 </script>

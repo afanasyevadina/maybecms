@@ -1,38 +1,6 @@
 <?php
 return [
     'primitives' => [
-        'navbar' => [
-            'title' => 'Шапка',
-            'structure' => [
-                [
-                    'slug' => 'logo',
-                    'title' => 'Логотип',
-                    'field_type' => 'image',
-                ],
-                [
-                    'slug' => 'text',
-                    'title' => 'Заголовок',
-                    'field_type' => 'single-line-text',
-                ],
-                [
-                    'slug' => 'background',
-                    'title' => 'Фон',
-                    'field_type' => 'select',
-                    'options' => [
-                        'bg-light' => 'Светлый',
-                        'bg-dark' => 'Темный',
-                        'bg-blue' => 'Голубой',
-                    ]
-                ],
-            ],
-            'children' => ['navbar-nav'],
-            'root' => true,
-        ],
-        'navbar-nav' => [
-            'title' => 'Меню в шапке',
-            'structure' => [],
-            'children' => ['text', 'link'],
-        ],
         'section' => [
             'title' => 'Секция',
             'structure' => [
@@ -123,6 +91,11 @@ return [
                         'h6' => 'h6',
                     ],
                 ],
+                [
+                    'slug' => 'css',
+                    'title' => 'Свой стиль',
+                    'field_type' => 'text',
+                ],
             ],
         ],
         'text' => [
@@ -142,6 +115,11 @@ return [
                     'slug' => 'text',
                     'title' => 'Контент',
                     'field_type' => 'markdown',
+                ],
+                [
+                    'slug' => 'css',
+                    'title' => 'Свой стиль',
+                    'field_type' => 'text',
                 ],
             ],
         ],
@@ -167,6 +145,11 @@ return [
                         'button' => 'Кнопка',
                     ],
                 ],
+                [
+                    'slug' => 'css',
+                    'title' => 'Свой стиль',
+                    'field_type' => 'text',
+                ],
             ],
         ],
         'image' => [
@@ -183,15 +166,24 @@ return [
                     'field_type' => 'image',
                 ],
                 [
-                    'slug' => 'shape',
-                    'title' => 'Форма',
+                    'slug' => 'rounds',
+                    'title' => 'Скругление',
                     'field_type' => 'select',
                     'options' => [
-                        'shape-normal' => 'Обычная',
-                        'shape-rounded' => 'Скругленные углы',
-                        'shape-circle' => 'Круглая',
-                        'shape-scale' => '1/2',
+                        'rounds-0' => 'Обычная',
+                        'rounds-rounded' => 'Скругленные углы',
+                        'rounds-circle' => 'Круглая',
                     ],
+                ],
+                [
+                    'slug' => 'css',
+                    'title' => 'Свой стиль',
+                    'field_type' => 'text',
+                ],
+                [
+                    'slug' => 'css',
+                    'title' => 'Свой стиль',
+                    'field_type' => 'text',
                 ],
             ],
         ],
@@ -203,11 +195,22 @@ return [
                     'title' => 'Видео',
                     'field_type' => 'video',
                 ],
+                [
+                    'slug' => 'css',
+                    'title' => 'Свой стиль',
+                    'field_type' => 'text',
+                ],
             ],
         ],
         'delimeter' => [
             'title' => 'Разделитель',
-            'structure' => [],
+            'structure' => [
+                [
+                    'slug' => 'css',
+                    'title' => 'Свой стиль',
+                    'field_type' => 'text',
+                ],
+            ],
             'root' => true,
         ],
     ],

@@ -38,17 +38,21 @@
                         <label>{{ field.title }}</label>
                         <component :is="`${field.type}-field`" :field="field"></component>
                     </template>
+                    <hr class="mb-4">
                     <template v-if="post.relations.length">
                         <h4 class="mb-3">Отношения модели</h4>
-                        <div class="border p-4 pb-2 bg-white mb-5">
-                            <component v-for="relation in post.relations" :key="relation.id" :model="post"
-                                       :relation="relation"
-                                       :is="relation.type"></component>
+                        <div class="row mb-4">
+                            <div class="col-lg-6" v-for="relation in post.relations" :key="relation.id">
+                                <component :model="post"
+                                           :relation="relation"
+                                           :is="relation.type"></component>
+                            </div>
                         </div>
+                        <hr class="mb-4">
                     </template>
                     <template v-if="post.inverse_relations?.length">
                         <h4 class="mb-3">Используется в отношениях</h4>
-                        <div class="border p-4 pb-2 bg-white mb-5" v-for="relation in post.inverse_relations"
+                        <div class="mb-4" v-for="relation in post.inverse_relations"
                              :key="relation.id">
                             <div class="mb-2">Модель: {{ relation.model?.title }}</div>
                             <div class="mb-2">Название: {{ relation.title }}</div>
@@ -62,6 +66,7 @@
                                 </router-link>
                             </div>
                         </div>
+                        <hr class="mb-4">
                     </template>
                     <MetaFields :meta="post.meta"></MetaFields>
                 </template>
@@ -109,17 +114,29 @@ export default {
             })
         },
         loadPost: function () {
-            this.getJson(`/api/posts/${this.postType}/${this.id}`, json => this.post = json)
+            this.post = {}
+            this.getJson(`/api/posts/${this.postType}/${this.id}`, json => {
+                this.post = json
+                if (this.activeElement) {
+                    this.resetActiveElement(this.post.blocks)
+                }
+            })
         },
         ...mapMutations([
             'setPostTypes',
             'setPrimitives',
+            'setPresets',
+            'setComponents',
+            'setActiveElement',
         ])
     },
     mounted() {
         this.loadPost()
         this.getJson(`/api/post-types`, json => this.setPostTypes(json))
         this.getJson(`/api/primitives`, json => this.setPrimitives(json))
+        this.getJson(`/api/presets`, json => this.setPresets(json))
+        this.getJson(`/api/components`, json => this.setComponents(json))
+        this.setActiveElement(null)
     }
 }
 </script>

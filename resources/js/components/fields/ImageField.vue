@@ -17,7 +17,7 @@
             <ChooseImage :modal-key="`choose-image-${field.id}`" @choose="chooseImage"></ChooseImage>
         </template>
     </div>
-    <div class="mb-4" v-if="postType">
+    <div class="mb-4" v-if="sources.length">
         <label>Источник</label>
         <select v-model="field.source" class="form-control">
             <option :value="null">-</option>

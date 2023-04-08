@@ -15,6 +15,7 @@ class BlockResource extends JsonResource
      */
     public function toArray($request)
     {
+        $primitive = maybe_primitives()[$this->type] ?? [];
         return [
             'id' => $this->id,
             'type' => $this->type,
@@ -22,12 +23,16 @@ class BlockResource extends JsonResource
             'content' => collect($this->structure ?? [])->map(function($item) {
                 $item['value'] = $this->content[$item['slug']]['value'] ?? '';
                 $item['source'] = $this->content[$item['slug']]['source'] ?? null;
+                $item['allow_source'] = (bool)@$item['allow_source'];
                 $item['attachment'] = AttachmentResource::make($this->attachments()->where(['role' => $item['slug']])->first());
                 return $item;
             })->toArray(),
-            'children' => maybe_primitives()[$this->type]['children'] ?? [],
+            'query' => $this->query,
+            'children' => $primitive['children'] ?? [],
+            'allow_source' => (bool)@$primitive['allow_source'],
             'class_name' => 'block',
-            'post_type_id' => $this->post_type_id,
+            'postType' => $this->postType,
+            'component' => $this->component,
             'active' => $this->active,
             'order' => $this->order,
             'blocks' => BlockResource::collection($this->blocks),

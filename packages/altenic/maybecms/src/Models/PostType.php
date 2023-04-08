@@ -23,7 +23,7 @@ class PostType extends Model
             $model->update([
                 'user_id' => auth()->id(),
                 'slug' => Str::plural(create_slug($model)),
-                'plural_title' => Str::plural($model->title),
+                'plural_title' => $model->title,
             ]);
         });
     }

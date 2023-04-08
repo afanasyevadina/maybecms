@@ -1,5 +1,6 @@
 <?php
 
+use Altenic\MaybeCms\Http\Controllers\ComponentController;
 use Altenic\MaybeCms\Http\Controllers\PageController;
 use Altenic\MaybeCms\Http\Controllers\PostController;
 use Altenic\MaybeCms\Http\Controllers\PresetController;
@@ -20,5 +21,6 @@ Route::any('/admin/{any?}', function () {
 })->where('any', '.*');
 Route::get('/', [PageController::class, 'index']);
 Route::get('/presets/{id}', [PresetController::class, 'show']);
+Route::get('/components/{id}', [ComponentController::class, 'show']);
 Route::get('/{slug}', [PageController::class, 'show']);
 Route::get('/{postType}/{slug}', [PostController::class, 'show']);

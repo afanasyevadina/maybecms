@@ -9,7 +9,9 @@ const store = createStore({
             postTypes: [],
             primitives: [],
             fieldTypes: [],
-            relationTypes: []
+            relationTypes: [],
+            presets: [],
+            components: [],
         }
     },
     getters: {
@@ -39,6 +41,12 @@ const store = createStore({
         },
         setRelationTypes (state, relationTypes) {
             state.relationTypes = relationTypes
+        },
+        setPresets (state, presets) {
+            state.presets = presets
+        },
+        setComponents (state, components) {
+            state.components = components
         }
     }
 })

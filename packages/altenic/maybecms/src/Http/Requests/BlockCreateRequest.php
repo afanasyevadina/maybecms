@@ -3,8 +3,10 @@
 namespace Altenic\MaybeCms\Http\Requests;
 
 use Altenic\MaybeCms\Models\Block;
+use Altenic\MaybeCms\Models\Component;
 use Altenic\MaybeCms\Models\Page;
 use Altenic\MaybeCms\Models\Post;
+use Altenic\MaybeCms\Models\PostType;
 use Altenic\MaybeCms\Models\Preset;
 
 class BlockCreateRequest extends JsonRequest
@@ -23,7 +25,7 @@ class BlockCreateRequest extends JsonRequest
     {
         $this->merge([
             'attachable_type' => maybe_attachable_class($this->input('attachable_type')),
-            'title' => maybe_primitives()[$this->input('type')]['title'] ?? 'Секция',
+            'title' => $this->input('title') ?? maybe_primitives()[$this->input('type')]['title'] ?? 'Секция',
         ]);
     }
 
@@ -36,9 +38,9 @@ class BlockCreateRequest extends JsonRequest
     {
         $className = $this->input('attachable_type') ?? Block::class;
         return [
-            'attachable_type' => 'required|in:' . implode(',', [Page::class, Post::class, Preset::class, Block::class]),
-            'attachable_id' => 'required|exists:' .(new $className)->getTable() . ',id',
-            'post_type' => 'sometimes',
+            'attachable_type' => 'required|in:' . implode(',', [Page::class, Post::class, Preset::class, Component::class, Block::class]),
+            'attachable_id' => 'required|exists:' . (new $className)->getTable() . ',id',
+            'post_type_id' => 'sometimes|exists:post_types,id',
             'type' => 'required|in:' . collect(maybe_primitives())->keys()->implode(','),
             'title' => 'sometimes',
         ];

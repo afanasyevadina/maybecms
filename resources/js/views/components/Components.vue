@@ -2,8 +2,8 @@
     <div class="p-4">
         <div>
             <div class="d-flex mb-4 justify-content-between align-items-center">
-                <h1>Шаблоны</h1>
-                <a href="#" data-bs-toggle="modal" data-bs-target="#add-preset" class="btn btn-success" v-if="presets.length">Создать еще шаблон</a>
+                <h1>Компоненты</h1>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#add-component" class="btn btn-success" v-if="components.length">Создать еще компонент</a>
             </div>
             <div class="text-center" v-if="loading">
                 <div class="spinner-grow text-secondary" role="status">
@@ -12,13 +12,13 @@
             </div>
             <template v-else>
                 <table class="table table-striped mb-4">
-                    <tbody v-if="!presets.length">
+                    <tbody v-if="!components.length">
                     <tr>
                         <td colspan="5" class="text-center py-3">
-                            Пока нет шаблонов
+                            Пока нет компонентов
                             <br>
                             <br>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#add-preset" class="btn btn-outline-dark">Создать первый шаблон</a>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#add-component" class="btn btn-outline-dark">Создать первый компонент</a>
                         </td>
                     </tr>
                     </tbody>
@@ -32,19 +32,19 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <template v-for="preset in presets" :key="preset.id">
+                        <template v-for="component in components" :key="component.id">
                             <tr>
-                                <td>{{ preset.id }}</td>
-                                <td>{{ preset.title }}</td>
-                                <td>{{ formatDate(preset.updated_at) }}</td>
+                                <td>{{ component.id }}</td>
+                                <td>{{ component.title }}</td>
+                                <td>{{ formatDate(component.updated_at) }}</td>
                                 <td class="text-nowrap text-end">
-                                    <a :href="`/presets/${preset.id}`" class="btn btn-light me-2" target="_blank">
+                                    <a :href="`/components/${component.id}`" class="btn btn-light me-2" target="_blank">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <router-link :to="{name: 'Preset', params: {id: preset.id}}" class="btn btn-light me-2">
+                                    <router-link :to="{name: 'Component', params: {id: component.id}}" class="btn btn-light me-2">
                                         <i class="fas fa-pen"></i>
                                     </router-link>
-                                    <DeletePreset :id="preset.id"></DeletePreset>
+                                    <DeleteComponent :id="component.id"></DeleteComponent>
                                 </td>
                             </tr>
                         </template>
@@ -53,29 +53,29 @@
                 </table>
             </template>
         </div>
-        <CreatePreset></CreatePreset>
+        <CreateComponent></CreateComponent>
     </div>
 </template>
 
 <script>
-import CreatePreset from "./CreatePreset.vue";
-import DeletePreset from "./DeletePreset.vue";
+import CreateComponent from "./CreateComponent.vue";
+import DeleteComponent from "./DeleteComponent.vue";
 
 export default {
-    name: 'Presets',
+    name: 'Components',
     components: {
-        CreatePreset,
-        DeletePreset
+        CreateComponent,
+        DeleteComponent
     },
     data() {
         return {
-            presets: [],
+            components: [],
             loading: true
         }
     },
     mounted() {
-        this.getJson(`/api/presets`,json => {
-            this.presets = json
+        this.getJson(`/api/components`,json => {
+            this.components = json
             this.loading = false
         })
     }

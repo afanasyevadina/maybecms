@@ -108,9 +108,6 @@ export default {
     },
     mounted() {
         this.loadFiles()
-    },
-    unmounted() {
-        console.log(this.activeMedia)
     }
 }
 </script>

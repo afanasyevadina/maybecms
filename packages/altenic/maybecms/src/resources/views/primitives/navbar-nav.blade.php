@@ -1,5 +1,5 @@
 <div
-    class="navbar-nav"
+    class="navbar-nav" style="{{ $block->getProperty('css') }}"
 >
     @foreach($block->blocks as $childBlock)
         @if(view()->exists('maybecms::primitives.' . $childBlock->type))

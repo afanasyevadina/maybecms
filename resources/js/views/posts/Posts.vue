@@ -98,6 +98,7 @@ export default {
         }
     },
     mounted() {
+        this.loadPosts()
         this.getJson(`/api/post-types`, json => this.postTypes = json)
     }
 }

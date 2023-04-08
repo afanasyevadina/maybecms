@@ -2,7 +2,7 @@
     <div class="mb-4">
         <input type="text" v-model="field.value" class="form-control" :placeholder="field.title" autocomplete="off" :disabled="field.source">
     </div>
-    <div class="mb-4" v-if="postType">
+    <div class="mb-4" v-if="sources.length">
         <label>Источник</label>
         <select v-model="field.source" class="form-control">
             <option :value="null">-</option>
@@ -25,6 +25,7 @@ export default {
     },
     computed: {
         sources: function () {
+            if (!this.postType) return []
             return (this.postType?.structure?.fields || [])
                 .filter(item => item.type === 'text')
                 .map(item => ({...item, slug: `field.${item.slug}`}))

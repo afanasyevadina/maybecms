@@ -33,11 +33,18 @@
             </div>
         </template>
         <template v-else>
-            <button type="button" class="btn btn-light" data-bs-toggle="modal" :data-bs-target="`#choose-video-${field.id}`">
+            <button type="button" class="btn btn-light" data-bs-toggle="modal" :data-bs-target="`#choose-video-${field.id}`" :disabled="field.source">
                 Выбрать видео
             </button>
             <ChooseVideo :modal-key="`choose-video-${field.id}`" @choose="chooseVideo"></ChooseVideo>
         </template>
+    </div>
+    <div class="mb-4" v-if="sources.length">
+        <label>Источник</label>
+        <select v-model="field.source" class="form-control">
+            <option :value="null">-</option>
+            <option :value="sourceItem.slug" v-for="sourceItem in sources" :key="sourceItem.slug">{{ sourceItem.title }}</option>
+        </select>
     </div>
 </template>
 
@@ -51,7 +58,13 @@ export default {
             type: Object
         }
     },
-    components: { ChooseVideo, ChooseImage },
+    components: { ChooseVideo, ChooseImage },computed: {
+        sources: function () {
+            return (this.postType?.structure?.fields || [])
+                .filter(item => item.type === 'video')
+                .map(item => ({...item, slug: `field.${item.slug}`}))
+        }
+    },
     methods: {
         chooseVideo: function (file) {
             (this.field.attachment = this.field.attachment || {}).file = file

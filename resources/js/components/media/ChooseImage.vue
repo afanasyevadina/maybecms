@@ -75,6 +75,7 @@ import Pagination from "../../components/Pagination.vue";
 export default {
     name: 'ChooseImage',
     props: ['modalKey'],
+    emits: ['choose'],
     components: {
         UploadImage,
         Pagination

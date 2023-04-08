@@ -59,6 +59,11 @@ class Block extends Model
         return $this->belongsTo(PostType::class);
     }
 
+    public function component(): BelongsTo
+    {
+        return $this->belongsTo(Component::class);
+    }
+
     public function getStructureAttribute()
     {
         return maybe_primitives()[$this->type]['structure'] ?? [];
@@ -81,7 +86,7 @@ class Block extends Model
     {
         if (!@$this->content[$slug]['source'])
             return $this->attachments()->where('role', $slug)->first();
-        if($fieldName = str_replace('field.', '', $this->content[$slug]['query'])) {
+        if($fieldName = str_replace('field.', '', $this->content[$slug]['source'])) {
             return $source?->attachments()->where('role', $fieldName)->first();
         }
     }

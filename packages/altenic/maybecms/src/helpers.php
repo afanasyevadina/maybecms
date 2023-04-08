@@ -1,6 +1,7 @@
 <?php
 
 use Altenic\MaybeCms\Models\Block;
+use Altenic\MaybeCms\Models\Component;
 use Altenic\MaybeCms\Models\Meta;
 use Altenic\MaybeCms\Models\Page;
 use Altenic\MaybeCms\Models\Post;
@@ -82,6 +83,7 @@ if(!function_exists('maybe_attachable_class')) {
             'page' => Page::class,
             'post' => Post::class,
             'preset' => Preset::class,
+            'component' => Component::class,
             'meta' => Meta::class,
             'block' => Block::class,
             default => null,
