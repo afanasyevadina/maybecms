@@ -5,6 +5,7 @@
             {{ $block->getProperty('background') }}
             {{ $block->getProperty('width') }}
             {{ $block->getProperty('display') }}
+            {{ $block->getProperty('rounds') }}
             {{ $block->getProperty('align-v') }}
             {{ $block->getProperty('align-h') }}"
             style="{{ $block->getProperty('css') }}"
@@ -18,7 +19,13 @@
     @endforeach
 @else
     <div
-        class="section {{ $block->getProperty('background') }} {{ $block->getProperty('width') }} {{ $block->getProperty('display') }} {{ $block->getProperty('align-v') }} {{ $block->getProperty('align-h') }}"
+        class="section
+            {{ $block->getProperty('background') }}
+            {{ $block->getProperty('width') }}
+            {{ $block->getProperty('display') }}
+            {{ $block->getProperty('rounds') }}
+            {{ $block->getProperty('align-v') }}
+            {{ $block->getProperty('align-h') }}"
         style="{{ $block->getProperty('css') }}"
     >
         @foreach($block->blocks as $childBlock)

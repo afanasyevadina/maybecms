@@ -12,6 +12,8 @@ export default {
                         this.$router.push({ name: 'Login' })
                     } else if (response.status === 404) {
                         this.$router.push({ name: 'NotFound' })
+                    } else if (Math.floor(response.status / 100) === 5) {
+                        this.$store.commit('setFlashError', 'Что-то пошло не так!')
                     } else {
                         return response.text()
                     }
@@ -33,7 +35,10 @@ export default {
                         this.$router.push({ name: 'Login' })
                     } else if (response.status === 404) {
                         this.$router.push({ name: 'NotFound' })
+                    } else if (Math.floor(response.status / 100) === 5) {
+                        this.$store.commit('setFlashError', 'Что-то пошло не так!')
                     } else {
+                        this.$store.commit('setFlashSuccess', 'Надежно сохранено!')
                         return response.text()
                     }
                 })
@@ -52,7 +57,10 @@ export default {
                         this.$router.push({ name: 'Login' })
                     } else if (response.status === 404) {
                         this.$router.push({ name: 'NotFound' })
+                    } else if (Math.floor(response.status / 100) === 5) {
+                        this.$store.commit('setFlashError', 'Что-то пошло не так!')
                     } else {
+                        this.$store.commit('setFlashSuccess', 'Удалили ненужное!')
                         return callback()
                     }
                 })

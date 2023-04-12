@@ -60,7 +60,7 @@
                             <div class="btn-group w-100 border mb-3" v-for="relatedPost in relation.related_posts"
                                  :key="relatedPost.id">
                                 <div class="w-100 px-3 align-self-center">{{ relatedPost?.title }}</div>
-                                <router-link :to="{name: 'Post', params: {postType: relation.postType?.slug, id: relatedPost?.id}}" target="_blank"
+                                <router-link :to="{name: 'Post', params: {postType: relation.related_model?.slug, id: relatedPost?.id}}" target="_blank"
                                              type="button" class="btn btn-light">
                                     <i class="fa-sharp fa-solid fa-arrow-up-right-from-square"></i>
                                 </router-link>
@@ -86,7 +86,7 @@ import {mapState, mapMutations} from "vuex";
 
 export default {
     name: "Post",
-    props: ['id', 'postType'],
+    props: ['postType', 'id'],
     components: {MetaFields},
     computed: {
         ...mapState([

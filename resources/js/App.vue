@@ -54,6 +54,8 @@
         </nav>
         <main>
             <router-view :key="$route.path"></router-view>
+            <FlashSuccess></FlashSuccess>
+            <FlashError></FlashError>
         </main>
     </div>
 </template>
@@ -61,11 +63,14 @@
 <script>
 import {mapState} from 'vuex'
 import {mapMutations} from 'vuex'
+import FlashSuccess from "./components/flash/FlashSuccess.vue";
+import FlashError from "./components/flash/FlashError.vue";
 export default {
     name: "App",
+    components: {FlashSuccess, FlashError},
     computed: {
         ...mapState([
-            'user'
+            'user',
         ])
     },
     methods: {
@@ -115,5 +120,10 @@ export default {
 }
 .tree-node:hover {
     background-color: #f8f9fa;
+}
+.alert {
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
 }
 </style>

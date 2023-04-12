@@ -52,7 +52,7 @@ ol, ul {
     color: #ffffff;
 }
 .bg-light {
-    background: #dadada;
+    background: #ececec;
     color: #000000;
 }
 .bg-white {
@@ -127,21 +127,22 @@ ol, ul {
 .align-h-around {
     justify-content: space-around;
 }
-.shape-circle {
+.rounds-0 {
+    border-radius: 0;
+}
+.rounds-rounded {
+    border-radius: 1rem;
+}
+.rounds-circle {
     border-radius: 50%;
-}
-.shape-rounded {
-    border-radius: 2rem;
-}
-.shape-scale {
-    aspect-ratio: 2;
 }
 .link.button {
     display: inline-block;
-    padding: .5rem;
+    padding: .5rem .75rem;
     border-radius: .5rem;
-    background: #dde8fc;
+    background: #1a202c;
     margin-top: .75rem;
+    color: #ffffff;
 }
 .navbar {
     display: flex;

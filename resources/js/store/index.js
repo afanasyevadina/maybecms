@@ -12,6 +12,8 @@ const store = createStore({
             relationTypes: [],
             presets: [],
             components: [],
+            flashError: null,
+            flashSuccess: null,
         }
     },
     getters: {
@@ -47,6 +49,14 @@ const store = createStore({
         },
         setComponents (state, components) {
             state.components = components
+        },
+        setFlashSuccess(state, text) {
+            state.flashSuccess = text
+            setTimeout(() => state.flashSuccess = null, 3000)
+        },
+        setFlashError(state, text) {
+            state.flashError = text
+            setTimeout(() => state.flashError = null, 3000)
         }
     }
 })

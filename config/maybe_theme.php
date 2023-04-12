@@ -69,6 +69,17 @@ return [
                     'w' => 'col-lg-4',
                 ],
                 [
+                    'slug' => 'rounds',
+                    'title' => 'Скругление',
+                    'field_type' => 'select',
+                    'options' => [
+                        'rounds-0' => 'Обычная',
+                        'rounds-rounded' => 'Скругленные углы',
+                        'rounds-circle' => 'Круглая',
+                    ],
+                    'w' => 'col-lg-4',
+                ],
+                [
                     'slug' => 'display',
                     'title' => 'Отображение контента',
                     'field_type' => 'select',
@@ -124,7 +135,7 @@ return [
                 ],
                 [
                     'slug' => 'level',
-                    'title' => 'Текст',
+                    'title' => 'Уровень',
                     'field_type' => 'select',
                     'options' => [
                         'h1' => 'h1',
