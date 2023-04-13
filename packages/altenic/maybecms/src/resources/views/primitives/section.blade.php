@@ -1,5 +1,5 @@
 @if($block->postType()->exists())
-    @foreach($block->postType?->posts as $post)
+    @foreach($block->posts as $post)
         <div
             class="section
             {{ $block->getProperty('background') }}

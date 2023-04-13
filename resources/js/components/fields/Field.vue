@@ -6,9 +6,16 @@
         </div>
         <div class="row">
             <template v-for="field in block.content">
-                <div :class="field.w">
+                <div :class="field.w" class="mb-4">
                     <label>{{ field.title }}</label>
-                    <component :is="`${field.field_type}-field`" :field="field" :post-type="field.allow_source ? block.postType : null"></component>
+                    <component :is="`${field.field_type}-field`" :field="field" v-if="!field.source"></component>
+                    <div class="d-flex mt-2" v-if="field.allow_source && sources(field).length">
+                        <label class="me-1">Источник: </label>
+                        <select v-model="field.source" class="border-0">
+                            <option :value="null">нет</option>
+                            <option :value="sourceItem.slug" v-for="sourceItem in sources(field)" :key="sourceItem.slug">{{ sourceItem.title }}</option>
+                        </select>
+                    </div>
                 </div>
             </template>
         </div>
@@ -53,5 +60,34 @@ export default {
             'postTypes'
         ])
     },
+    methods: {
+        sources: function (field) {
+            if (!this.block.postType) return []
+            let fields = this.block.postType?.structure?.fields || []
+            if (['text', 'single-line-text'].includes(field.field_type)) {
+                fields = fields.filter(item => item.type === 'text')
+            }
+            if (['image'].includes(field.field_type)) {
+                fields = fields.filter(item => item.type === 'image')
+            }
+            if (['video'].includes(field.field_type)) {
+                fields = fields.filter(item => item.type === 'video')
+            }
+            if (['link'].includes(field.field_type)) {
+                fields = fields.filter(item => item.type === 'link')
+            }
+            if (['markdown'].includes(field.field_type)) {
+                fields = fields.filter(item => item.type === 'markdown')
+            }
+            fields = fields.map(item => ({...item, slug: `field.${item.slug}`}))
+            if (['text', 'single-line-text'].includes(field.field_type)) {
+                fields = fields.concat([{slug: 'title', 'title': 'Название'}])
+            }
+            if (['link'].includes(field.field_type)) {
+                fields = fields.concat([{slug: 'link', 'title': 'Основная ссылка'}])
+            }
+            return fields
+        }
+    }
 }
 </script>

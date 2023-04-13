@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Collection;
 
 class Block extends Model
 {
@@ -31,6 +32,7 @@ class Block extends Model
                             'value' => array_keys($item['options'] ?? [])[0] ?? '',
                         ],
                     ])->collapse(),
+                'post_type_id' => $block->attachable->post_type_id,
             ]);
         });
 
@@ -67,6 +69,14 @@ class Block extends Model
     public function getStructureAttribute()
     {
         return maybe_primitives()[$this->type]['structure'] ?? [];
+    }
+
+    public function getPostsAttribute(): ?Collection
+    {
+        if ($this->attachable_type == Post::class) {
+            return collect([$this->attachable]);
+        }
+        return $this->postType?->posts;
     }
 
     public function getProperty(string $slug, $source = null)

@@ -58,7 +58,7 @@ class BlockController extends Controller
     public function setPostType(Block $block, PostType $postType): Response
     {
         $block->setPostType($postType->id);
-        $block->update(['query' => ['select' => null]]);
+        $block->update(['query' => ['select' => 'all']]);
         return response()->noContent();
     }
 

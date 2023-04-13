@@ -1,5 +1,5 @@
 <template>
-    <div class="mb-4">
+    <div>
         <template v-if="field.attachment?.file?.id">
             <div class="row">
                 <div class="col-sm-6">
@@ -39,13 +39,6 @@
             <ChooseVideo :modal-key="`choose-video-${field.id}`" @choose="chooseVideo"></ChooseVideo>
         </template>
     </div>
-    <div class="mb-4" v-if="sources.length">
-        <label>Источник</label>
-        <select v-model="field.source" class="form-control">
-            <option :value="null">-</option>
-            <option :value="sourceItem.slug" v-for="sourceItem in sources" :key="sourceItem.slug">{{ sourceItem.title }}</option>
-        </select>
-    </div>
 </template>
 
 <script>
@@ -58,13 +51,7 @@ export default {
             type: Object
         }
     },
-    components: { ChooseVideo, ChooseImage },computed: {
-        sources: function () {
-            return (this.postType?.structure?.fields || [])
-                .filter(item => item.type === 'video')
-                .map(item => ({...item, slug: `field.${item.slug}`}))
-        }
-    },
+    components: { ChooseVideo, ChooseImage },
     methods: {
         chooseVideo: function (file) {
             (this.field.attachment = this.field.attachment || {}).file = file

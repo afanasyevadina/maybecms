@@ -1,14 +1,5 @@
 <template>
-    <div class="mb-4">
-        <textarea v-model="field.value" class="form-control" :placeholder="field.title" :disabled="field.source"></textarea>
-    </div>
-    <div class="mb-4" v-if="sources.length">
-        <label>Источник</label>
-        <select v-model="field.source" class="form-control">
-            <option :value="null">-</option>
-            <option :value="sourceItem.slug" v-for="sourceItem in sources" :key="sourceItem.slug">{{ sourceItem.title }}</option>
-        </select>
-    </div>
+    <textarea v-model="field.value" class="form-control" :placeholder="field.title"></textarea>
 </template>
 
 <script>
@@ -17,19 +8,6 @@ export default {
     props: {
         field: {
             type: Object
-        },
-        postType: {
-            type: Object,
-            default: null
-        }
-    },
-    computed: {
-        sources: function () {
-            if (!this.postType) return []
-            return (this.postType?.structure?.fields || [])
-                .filter(item => item.type === 'text')
-                .map(item => ({...item, slug: `field.${item.slug}`}))
-                .concat([{slug: 'title', 'title': 'Название'}])
         }
     }
 }
