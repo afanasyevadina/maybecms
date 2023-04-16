@@ -22,8 +22,7 @@
             </div>
             <div class="editor-fields p-3 overflow-auto">
                 <template v-if="activeElement">
-                    <field :block="activeElement" @save="loadPage"
-                           @remove="activeElement = null; loadPage()" @update="loadPage"></field>
+                    <field :block="activeElement" @update="loadPage"></field>
                 </template>
                 <template v-else>
                     <div class="mb-4">
@@ -68,6 +67,7 @@ export default {
     },
     methods: {
         loadPage: function () {
+            console.log('updated')
             this.page = {}
             this.getJson(`/api/pages/${this.id}`, json => {
                 this.page = json

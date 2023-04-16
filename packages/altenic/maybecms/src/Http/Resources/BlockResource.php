@@ -28,11 +28,11 @@ class BlockResource extends JsonResource
                 $item['attachment'] = AttachmentResource::make($this->attachments()->where(['role' => $item['slug']])->first());
                 return $item;
             })->toArray(),
-            'query' => $this->query,
+            'query' => $this->query ?? [],
             'children' => $primitive['children'] ?? [],
             'allow_source' => (bool)@$primitive['allow_source'],
             'class_name' => 'block',
-            'postType' => $this->postType,
+            'postType' => PostTypeResource::make($this->postType),
             'component' => $this->component,
             'active' => $this->active,
             'order' => $this->order,

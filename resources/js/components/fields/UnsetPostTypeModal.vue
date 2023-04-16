@@ -1,5 +1,5 @@
 <template>
-    <a href="#" class="text-decoration-none text-muted small ms-3" data-bs-toggle="modal" data-bs-target="#unset-post-type">Удалить источник</a>
+    <a href="#" class="text-decoration-none text-muted small mt-3" data-bs-toggle="modal" data-bs-target="#unset-post-type">Удалить источник</a>
     <div class="modal fade" tabindex="-1" id="unset-post-type">
         <div class="modal-dialog modal-dialog-centered">
             <form action="#" @submit.prevent="unsetPostType" class="modal-content">

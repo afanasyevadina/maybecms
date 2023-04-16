@@ -8,6 +8,7 @@ use Altenic\MaybeCms\Http\Resources\BlockResource;
 use Altenic\MaybeCms\Models\Block;
 use Altenic\MaybeCms\Models\PostType;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class BlockController extends Controller
@@ -55,10 +56,10 @@ class BlockController extends Controller
      * @param PostType $postType
      * @return Response
      */
-    public function setPostType(Block $block, PostType $postType): Response
+    public function setPostType(Block $block, PostType $postType, Request $request): Response
     {
         $block->setPostType($postType->id);
-        $block->update(['query' => ['select' => 'all']]);
+        $block->update(['query' => $request->input('query')]);
         return response()->noContent();
     }
 
@@ -69,6 +70,7 @@ class BlockController extends Controller
     public function unsetPostType(Block $block): Response
     {
         $block->setPostType(null);
+        $block->update(['query' => []]);
         return response()->noContent();
     }
 }

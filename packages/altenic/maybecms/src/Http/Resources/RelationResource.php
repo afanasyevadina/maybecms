@@ -20,14 +20,13 @@ class RelationResource extends JsonResource
             'slug' => $this->slug,
             'title' => $this->title,
             'type' => $this->type,
-            'post_type' => $this->post_type,
             'related_post_type_id' => $this->related_post_type_id,
-            'model' => [
+            'post_type' => [
                 'id' => $this->postType->id,
                 'slug' => $this->postType->slug,
                 'title' => $this->postType->title,
             ],
-            'related_model' => [
+            'related_post_type' => [
                 'id' => $this->relatedPostType->id,
                 'slug' => $this->relatedPostType->slug,
                 'title' => $this->relatedPostType->title,

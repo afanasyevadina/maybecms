@@ -33,6 +33,7 @@ class Block extends Model
                         ],
                     ])->collapse(),
                 'post_type_id' => $block->attachable->post_type_id,
+                'query' => $block->attachable_type == Post::class ? ['id' => $block->attachable_id] : [],
             ]);
         });
 
@@ -71,12 +72,14 @@ class Block extends Model
         return maybe_primitives()[$this->type]['structure'] ?? [];
     }
 
-    public function getPostsAttribute(): ?Collection
+    public function getPosts($source = null): ?Collection
     {
-        if ($this->attachable_type == Post::class) {
-            return collect([$this->attachable]);
+        if (@$this->query['select']) return $this->postType?->posts()->where('id', $this->query['id'])->get();
+        if (@$this->query['relation']) {
+            if (@$this->query['inverse']) return $source?->inversePosts()->wherePivot('relation_id', $this->query['relation'])->get();
+            else return $source?->posts()->wherePivot('relation_id', $this->query['relation'])->get();
         }
-        return $this->postType?->posts;
+        return $source ? collect([$source]) : null;
     }
 
     public function getProperty(string $slug, $source = null)

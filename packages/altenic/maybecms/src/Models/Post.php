@@ -67,12 +67,4 @@ class Post extends Model
     {
         return $this->belongsToMany(Post::class, 'post_post', 'related_post_id', 'post_id')->withTimestamps();
     }
-
-    public function getRelated($relation, $additionalQuery = null)
-    {
-        $modelRelation = $this->relations()->where('slug', $relation)->first();
-        $query = $this->posts()->byType($modelRelation?->post_type_id)->wherePivot('relation_id', $modelRelation?->id);
-        if ($additionalQuery instanceof \Closure) $query = $additionalQuery($query);
-        return $modelRelation?->type == 'has-one' ? $query->first() : $query->get();
-    }
 }

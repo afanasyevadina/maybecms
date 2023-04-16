@@ -157,7 +157,7 @@
                     </thead>
                     <tbody>
                     <tr v-for="relation in model.inverse_relations" :key="relation.id">
-                        <td>{{ relation.model?.title }}</td>
+                        <td>{{ relation.post_type?.title }}</td>
                         <td>{{ relation.title }}</td>
                         <td>{{ relation.type }}</td>
                     </tr>

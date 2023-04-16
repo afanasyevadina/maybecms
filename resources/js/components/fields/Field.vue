@@ -28,15 +28,20 @@
         </div>
         <template v-if="block.allow_source">
             <label>Источник</label>
-            <div class="mb-4" v-if="block.postType?.id">
-                <router-link :to="{name: 'Posts', params: {postType: block.postType?.slug}}" class="btn btn-light" target="_blank">
-                    {{ block.postType?.title }}
-                    <i class="fa-sharp fa-solid fa-arrow-up-right-from-square"></i>
-                </router-link>
-                <UnsetPostTypeModal :block="block" v-if="block.query" @update="$emit('update')"></UnsetPostTypeModal>
+            <div class="mb-4" v-if="!block.postType?.id">
+                <SetPostTypeModal :block="block" @update="$emit('update')"></SetPostTypeModal>
             </div>
             <div class="mb-4" v-else>
-                <SetPostTypeModal :block="block" @update="$emit('update')"></SetPostTypeModal>
+                <div class="btn btn-light" v-if="block.query?.relation">Связанные посты - {{ block.postType?.title }}</div>
+                <template v-else>
+                    <router-link :to="{name: 'Posts', params: {postType: block.postType?.slug}}" class="btn btn-light" target="_blank">
+                        {{ block.postType?.title }}
+                        <i class="fa-sharp fa-solid fa-arrow-up-right-from-square"></i>
+                    </router-link>
+                    <SetRelatedPostTypeModal :block="block" @update="$emit('update')" v-if="!block.query.select && !block.query.id"></SetRelatedPostTypeModal>
+                </template>
+                <br>
+                <UnsetPostTypeModal :block="block" @update="$emit('update')" v-if="block.query"></UnsetPostTypeModal>
             </div>
         </template>
     </div>
@@ -45,11 +50,13 @@
 <script>
 import {mapState} from "vuex";
 import SetPostTypeModal from "./SetPostTypeModal.vue";
+import SetRelatedPostTypeModal from "./SetRelatedPostTypeModal.vue";
 import UnsetPostTypeModal from "./UnsetPostTypeModal.vue";
 
 export default {
     name: "BaseField",
-    components: {SetPostTypeModal, UnsetPostTypeModal},
+    components: {SetPostTypeModal, SetRelatedPostTypeModal, UnsetPostTypeModal},
+    emits: ['update'],
     props: {
         block: {
             type: Object

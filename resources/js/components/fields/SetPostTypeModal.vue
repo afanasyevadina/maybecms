@@ -20,20 +20,20 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <template v-for="model in postTypes" :key="model.id">
+                        <template v-for="postType in postTypes" :key="postType.id">
                             <tr>
-                                <td>{{ model.id }}</td>
+                                <td>{{ postType.id }}</td>
                                 <td>
-                                    {{ model.title }}
+                                    {{ postType.title }}
                                 </td>
                                 <td class="text-nowrap text-end">
-                                    <a href="#" data-bs-dismiss="modal" class="btn btn-light me-2" @click.prevent="setPostType(model)">
+                                    <a href="#" data-bs-dismiss="modal" class="btn btn-light me-2" @click.prevent="setPostType(postType)">
                                         <i class="fas fa-check"></i>
                                     </a>
-                                    <router-link :to="{name: 'Posts', params: {postType: model.slug}}" class="btn btn-light me-2" target="_blank">
+                                    <router-link :to="{name: 'Posts', params: {postType: postType.slug}}" class="btn btn-light me-2" target="_blank">
                                         <i class="fas fa-list"></i>
                                     </router-link>
-                                    <router-link :to="{name: 'PostType', params: {id: model.id}}" class="btn btn-light me-2" target="_blank">
+                                    <router-link :to="{name: 'PostType', params: {id: postType.id}}" class="btn btn-light me-2" target="_blank">
                                         <i class="fas fa-pen"></i>
                                     </router-link>
                                 </td>
@@ -65,6 +65,7 @@ export default {
             type: Object
         }
     },
+    emits: ['update'],
     computed: {
         ...mapState([
             'postTypes'
@@ -72,7 +73,11 @@ export default {
     },
     methods: {
         setPostType: function (postType) {
-            this.postJson(`/api/blocks/${this.block.id}/post-type/${postType.id}`, {}, () => {
+            this.postJson(`/api/blocks/${this.block.id}/post-type/${postType.id}`, {
+                query: {
+                    select: 'all'
+                }
+            }, () => {
                 this.$emit('update')
                 this.hideModal()
             })

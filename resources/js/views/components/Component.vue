@@ -21,8 +21,7 @@
             </div>
             <div class="editor-fields p-3 overflow-auto">
                 <template v-if="activeElement">
-                    <field :block="activeElement" @save="loadComponent"
-                           @remove="activeElement = null; loadComponent()"></field>
+                    <field :block="activeElement" @update="loadComponent"></field>
                 </template>
                 <template v-else>
                     <div class="mb-4">

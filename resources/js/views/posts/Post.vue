@@ -22,8 +22,7 @@
             </div>
             <div class="editor-fields p-3 overflow-auto">
                 <template v-if="activeElement">
-                    <field :block="activeElement" @save="loadPost"
-                           @remove="activeElement = null; loadPost()"></field>
+                    <field :block="activeElement" @update="loadPost"></field>
                 </template>
                 <template v-else>
                     <div class="mb-4">
@@ -34,10 +33,10 @@
                         <label>Фрагмент урла</label>
                         <input type="text" class="form-control" v-model="post.slug" placeholder="Латинские буквы, цифры и дефис">
                     </div>
-                    <template v-for="field in post.content">
+                    <div class="mb-4" v-for="field in post.content">
                         <label>{{ field.title }}</label>
                         <component :is="`${field.type}-field`" :field="field"></component>
-                    </template>
+                    </div>
                     <hr class="mb-4">
                     <template v-if="post.relations.length">
                         <h4 class="mb-3">Отношения модели</h4>
@@ -54,13 +53,13 @@
                         <h4 class="mb-3">Используется в отношениях</h4>
                         <div class="mb-4" v-for="relation in post.inverse_relations"
                              :key="relation.id">
-                            <div class="mb-2">Модель: {{ relation.model?.title }}</div>
+                            <div class="mb-2">Модель: {{ relation.post_type?.title }}</div>
                             <div class="mb-2">Название: {{ relation.title }}</div>
                             <div class="mb-3">Тип отношения: {{ relation.type }}</div>
                             <div class="btn-group w-100 border mb-3" v-for="relatedPost in relation.related_posts"
                                  :key="relatedPost.id">
                                 <div class="w-100 px-3 align-self-center">{{ relatedPost?.title }}</div>
-                                <router-link :to="{name: 'Post', params: {postType: relation.related_model?.slug, id: relatedPost?.id}}" target="_blank"
+                                <router-link :to="{name: 'Post', params: {postType: relation.post_type?.slug, id: relatedPost?.id}}" target="_blank"
                                              type="button" class="btn btn-light">
                                     <i class="fa-sharp fa-solid fa-arrow-up-right-from-square"></i>
                                 </router-link>
