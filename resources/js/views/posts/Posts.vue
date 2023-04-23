@@ -56,7 +56,7 @@
                 <Pagination :pagination="posts.meta" @paginate="loadPosts"></Pagination>
             </template>
         </div>
-        <CreatePost :postType="postType"></CreatePost>
+        <CreatePost :postType="postType" :modal-key="'add-post'" @update="loadPosts(posts.meta.current_page)"></CreatePost>
     </div>
 </template>
 

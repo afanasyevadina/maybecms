@@ -25,11 +25,17 @@ class RelationResource extends JsonResource
                 'id' => $this->postType->id,
                 'slug' => $this->postType->slug,
                 'title' => $this->postType->title,
+                'structure' => [
+                    'fields' => $this->postType->structure['fields'] ?? [],
+                ],
             ],
             'related_post_type' => [
                 'id' => $this->relatedPostType->id,
                 'slug' => $this->relatedPostType->slug,
                 'title' => $this->relatedPostType->title,
+                'structure' => [
+                    'fields' => $this->relatedPostType->structure['fields'] ?? [],
+                ],
             ],
         ];
     }

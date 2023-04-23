@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex align-items-start">
-        <a href="#" data-bs-toggle="collapse" :data-bs-target="`#tree-item-${collapseKey}`" class="btn btn-sm border-0 px-0" :class="{'collapsed': collapsed}" @click="collapsed = !collapsed" v-if="childrenAllowed">
+        <a href="#" data-bs-toggle="collapse" :data-bs-target="`#tree-item-${collapseKey}`" class="btn btn-sm border-0 px-0" :class="{'collapsed': collapsed, 'fade': !block.blocks.length}" @click="collapsed = !collapsed" v-if="childrenAllowed">
             <i :class="`fas fa-chevron-${collapsed ? 'right' : 'down'}`"></i>
         </a>
         <div class="w-100">

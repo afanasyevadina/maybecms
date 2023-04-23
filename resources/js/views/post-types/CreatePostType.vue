@@ -28,7 +28,7 @@ export default {
     },
     methods: {
         save: function () {
-            this.postJson(`/api/post-types`, this.newModel, json => this.$router.push({ name: 'PostType', params: {id: json.id} }))
+            this.postJson(`/api/post-types`, this.newModel, () => this.$emit('update'))
         }
     }
 }

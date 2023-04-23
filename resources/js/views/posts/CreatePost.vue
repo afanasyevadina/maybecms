@@ -1,5 +1,5 @@
 <template>
-    <div class="modal fade" id="add-post" tabindex="-1">
+    <div class="modal fade" :id="modalKey" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <form action="#" method="POST" class="modal-content" @submit.prevent="save">
                 <div class="modal-header">
@@ -20,8 +20,8 @@
 
 <script>
 export default {
-    name: 'CreatePage',
-    props: ['postType'],
+    name: 'CreatePost',
+    props: ['postType', 'modalKey'],
     data() {
         return {
             newPost: {}
@@ -29,7 +29,7 @@ export default {
     },
     methods: {
         save: function () {
-            this.postJson(`/api/posts/${this.postType}`, this.newPost, json => this.$router.push({ name: 'Post', params: {postType: this.postType, id: json.id} }))
+            this.postJson(`/api/posts/${this.postType}`, this.newPost, () => this.$emit('update'))
         }
     }
 }

@@ -8,17 +8,19 @@
             </button>
         </div>
         <div class="border p-4 bg-white mb-5">
-            <div class="mb-4">
-                <label>Singular title</label>
-                <input type="text" v-model="model.title" class="form-control" required>
-            </div>
-            <div class="mb-4">
-                <label>Plural title</label>
-                <input type="text" v-model="model.plural_title" class="form-control" required>
-            </div>
-            <div>
-                <label>Slug</label>
-                <input type="text" v-model="model.slug" class="form-control" required pattern="^[\w-]*$">
+            <div class="row">
+                <div class="mb-4 mb-md-0 col-md-4">
+                    <label>Singular title</label>
+                    <input type="text" v-model="model.title" class="form-control" required>
+                </div>
+                <div class="mb-4 mb-md-0 col-md-4">
+                    <label>Plural title</label>
+                    <input type="text" v-model="model.plural_title" class="form-control" required>
+                </div>
+                <div class="col-md-4">
+                    <label>Slug</label>
+                    <input type="text" v-model="model.slug" class="form-control" required pattern="^[\w-]*$">
+                </div>
             </div>
         </div>
         <h4 class="mb-3">Поля модели</h4>

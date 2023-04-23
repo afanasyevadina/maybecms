@@ -74,12 +74,13 @@ class Block extends Model
 
     public function getPosts($source = null): ?Collection
     {
-        if (@$this->query['select']) return $this->postType?->posts()->where('id', $this->query['id'])->get();
+        if (@$this->query['id']) return $this->postType?->posts()->where('id', $this->query['id'])->get();
+        if (@$this->query['select']) return $this->postType?->posts()->get();
         if (@$this->query['relation']) {
             if (@$this->query['inverse']) return $source?->inversePosts()->wherePivot('relation_id', $this->query['relation'])->get();
-            else return $source?->posts()->wherePivot('relation_id', $this->query['relation'])->get();
+            return $source?->posts()->wherePivot('relation_id', $this->query['relation'])->get();
         }
-        return $source ? collect([$source]) : null;
+        return collect([$source]);
     }
 
     public function getProperty(string $slug, $source = null)
@@ -90,9 +91,25 @@ class Block extends Model
             return $source?->title ?? '';
         if(@$this->content[$slug]['source'] == 'link')
             return url('/' . $source?->postType->slug . '/' . $source?->slug);
-        if($fieldName = str_replace('field.', '', $this->content[$slug]['source'])) {
-            return $source?->content[$fieldName]['value'] ?? '';
+        $fieldNameParts = explode('.', $this->content[$slug]['source']);
+        if (count($fieldNameParts)) {
+            if ($fieldNameParts[0] == 'field') {
+                return $source?->content[$fieldNameParts[1]]['value'] ?? '';
+            }
+            if ($fieldNameParts[0] == 'relation') {
+                $post = $source?->posts()->wherePivot('relation_id', @$fieldNameParts[1])->first();
+            } elseif ($fieldNameParts[0] == 'inverse_relation') {
+                $post = $source?->inversePosts()->wherePivot('relation_id', @$fieldNameParts[1])->first();
+            }
+            if(@$fieldNameParts[2] == 'title')
+                return $post?->title ?? '';
+            if(@$fieldNameParts[2] == 'link')
+                return url('/' . $post?->postType->slug . '/' . $post?->slug);
+            if (@$fieldNameParts[2] == 'field') {
+                return $post?->content[@$fieldNameParts[3]]['value'] ?? '';
+            }
         }
+        return null;
     }
 
     public function getAttachment(string $slug, $source = null)

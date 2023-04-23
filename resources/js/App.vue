@@ -116,7 +116,7 @@ export default {
     grid-template-columns: 200px 1fr;
 }
 .tree-node:not(:hover) .dropdown-toggle {
-    display: none;
+    opacity: 0;
 }
 .tree-node:hover {
     background-color: #f8f9fa;
@@ -125,5 +125,8 @@ export default {
     bottom: 2rem;
     left: 50%;
     transform: translateX(-50%);
+}
+.select-list {
+    max-height: 150px;
 }
 </style>

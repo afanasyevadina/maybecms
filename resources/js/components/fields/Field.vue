@@ -70,7 +70,31 @@ export default {
     methods: {
         sources: function (field) {
             if (!this.block.postType) return []
-            let fields = this.block.postType?.structure?.fields || []
+            // let fields = (this.block.postType?.structure?.fields || [])
+            //     .concat(this.block.postType?.relations?.filter(v => v.type == 'has-one').map(relation => relation.related_post_type?.structure?.fields).flat())
+            //     .concat(this.block.postType?.inverse_relations?.filter(v => v.type == 'has-many').map(relation => relation.post_type?.structure?.fields).flat())
+            // console.log(this.block.postType)
+            console.log(this.block.postType?.relations)
+            let fields = [
+                {slug: 'title', 'title': 'Название', type: 'text'},
+                {slug: 'link', 'title': 'Основная ссылка', type: 'link'},
+            ]
+                .concat(this.block.postType?.structure?.fields?.map(item => ({...item, slug: `field.${item.slug}`})))
+                .concat(
+                    this.block.postType?.relations?.filter(v => v.type === 'has-one')
+                        .map(relation => [
+                            {slug: `relation.${relation.id}.title`, 'title': `${relation.related_post_type.title} - Название`, type: 'text'},
+                            {slug: `relation.${relation.id}.link`, 'title': `${relation.related_post_type.title} - Основная ссылка`, type: 'link'},
+                        ].concat(relation.related_post_type?.structure?.fields?.map(item => ({...item, slug: `relation.${relation.id}.field.${item.slug}`, title: `${relation.related_post_type.title} - ${item.title}`}))).flat()).flat()
+                )
+                .concat(
+                    this.block.postType?.inverse_relations?.filter(v => v.type === 'has-many')
+                        .map(relation => [
+                            {slug: `inverse_relation.${relation.id}.title`, 'title': 'Название', type: 'text'},
+                            {slug: `inverse_relation.${relation.id}.link`, 'title': 'Основная ссылка', type: 'link'},
+                        ].concat(relation.post_type?.structure?.fields?.map(item => ({...item, slug: `inverse_relation.${relation.id}.field.${item.slug}`, title: `${relation.post_type.title} - ${item.title}`}))).flat()).flat()
+                )
+           console.log(fields)
             if (['text', 'single-line-text'].includes(field.field_type)) {
                 fields = fields.filter(item => item.type === 'text')
             }
@@ -85,13 +109,6 @@ export default {
             }
             if (['markdown'].includes(field.field_type)) {
                 fields = fields.filter(item => item.type === 'markdown')
-            }
-            fields = fields.map(item => ({...item, slug: `field.${item.slug}`}))
-            if (['text', 'single-line-text'].includes(field.field_type)) {
-                fields = fields.concat([{slug: 'title', 'title': 'Название'}])
-            }
-            if (['link'].includes(field.field_type)) {
-                fields = fields.concat([{slug: 'link', 'title': 'Основная ссылка'}])
             }
             return fields
         }

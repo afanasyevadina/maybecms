@@ -25,14 +25,16 @@
                     <field :block="activeElement" @update="loadPage"></field>
                 </template>
                 <template v-else>
-                    <div class="mb-4">
-                        <label>Название страницы</label>
-                        <input type="text" class="form-control" v-model="page.title" placeholder="Название страницы">
-                    </div>
-                    <div class="mb-4">
-                        <label>Фрагмент урла</label>
-                        <input type="text" class="form-control" v-model="page.slug"
-                               placeholder="Латинские буквы, цифры и дефис">
+                    <div class="row">
+                        <div class="mb-4 col-md-6">
+                            <label>Название страницы</label>
+                            <input type="text" class="form-control" v-model="page.title" placeholder="Название страницы">
+                        </div>
+                        <div class="mb-4 col-md-6">
+                            <label>Фрагмент урла</label>
+                            <input type="text" class="form-control" v-model="page.slug"
+                                   placeholder="Латинские буквы, цифры и дефис">
+                        </div>
                     </div>
                     <MetaFields :meta="page.meta"></MetaFields>
                 </template>

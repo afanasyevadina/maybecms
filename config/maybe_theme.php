@@ -120,9 +120,54 @@ return [
                     'field_type' => 'text',
                 ],
             ],
-            'children' => ['text', 'markdown', 'link', 'image', 'video', 'heading', 'delimeter', 'section', 'preset', 'component'],
+            'children' => ['text', 'markdown', 'link', 'image', 'video', 'heading', 'table', 'delimeter', 'section', 'preset', 'component'],
             'root' => true,
             'allow_source' => true,
+        ],
+        'table' => [
+            'title' => 'Таблица',
+            'structure' => [
+                [
+                    'slug' => 'css',
+                    'title' => 'Свой стиль',
+                    'field_type' => 'text',
+                ],
+            ],
+            'children' => ['table_header', 'table_row'],
+        ],
+        'table_header' => [
+            'title' => 'Шапка таблицы',
+            'structure' => [
+                [
+                    'slug' => 'css',
+                    'title' => 'Свой стиль',
+                    'field_type' => 'text',
+                ],
+            ],
+            'children' => ['table_cell'],
+        ],
+        'table_row' => [
+            'title' => 'Строка таблицы',
+            'structure' => [
+                [
+                    'slug' => 'css',
+                    'title' => 'Свой стиль',
+                    'field_type' => 'text',
+                ],
+            ],
+            'children' => ['table_cell'],
+            'allow_source' => true,
+        ],
+        'table_cell' => [
+            'title' => 'Ячейка таблицы',
+            'structure' => [
+                [
+                    'slug' => 'css',
+                    'title' => 'Свой стиль',
+                    'field_type' => 'text',
+                ],
+            ],
+            'children' => ['text', 'markdown', 'image'],
         ],
         'heading' => [
             'title' => 'Заголовок',

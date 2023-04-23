@@ -25,13 +25,15 @@
                     <field :block="activeElement" @update="loadPost"></field>
                 </template>
                 <template v-else>
-                    <div class="mb-4">
-                        <label>Название</label>
-                        <input type="text" class="form-control" v-model="post.title" placeholder="Название">
-                    </div>
-                    <div class="mb-4">
-                        <label>Фрагмент урла</label>
-                        <input type="text" class="form-control" v-model="post.slug" placeholder="Латинские буквы, цифры и дефис">
+                    <div class="row">
+                        <div class="mb-4 col-md-6">
+                            <label>Название</label>
+                            <input type="text" class="form-control" v-model="post.title" placeholder="Название">
+                        </div>
+                        <div class="mb-4 col-md-6">
+                            <label>Фрагмент урла</label>
+                            <input type="text" class="form-control" v-model="post.slug" placeholder="Латинские буквы, цифры и дефис">
+                        </div>
                     </div>
                     <div class="mb-4" v-for="field in post.content">
                         <label>{{ field.title }}</label>
@@ -40,8 +42,8 @@
                     <hr class="mb-4">
                     <template v-if="post.relations.length">
                         <h4 class="mb-3">Отношения модели</h4>
-                        <div class="row mb-4">
-                            <div class="col-lg-6" v-for="relation in post.relations" :key="relation.id">
+                        <div class="row mb-4" v-for="relation in post.relations" :key="relation.id">
+                            <div class="col-lg-6">
                                 <component :model="post"
                                            :relation="relation"
                                            :is="relation.type"></component>
@@ -51,18 +53,20 @@
                     </template>
                     <template v-if="post.inverse_relations?.length">
                         <h4 class="mb-3">Используется в отношениях</h4>
-                        <div class="mb-4" v-for="relation in post.inverse_relations"
+                        <div class="mb-4 row" v-for="relation in post.inverse_relations"
                              :key="relation.id">
-                            <div class="mb-2">Модель: {{ relation.post_type?.title }}</div>
-                            <div class="mb-2">Название: {{ relation.title }}</div>
-                            <div class="mb-3">Тип отношения: {{ relation.type }}</div>
-                            <div class="btn-group w-100 border mb-3" v-for="relatedPost in relation.related_posts"
-                                 :key="relatedPost.id">
-                                <div class="w-100 px-3 align-self-center">{{ relatedPost?.title }}</div>
-                                <router-link :to="{name: 'Post', params: {postType: relation.post_type?.slug, id: relatedPost?.id}}" target="_blank"
-                                             type="button" class="btn btn-light">
-                                    <i class="fa-sharp fa-solid fa-arrow-up-right-from-square"></i>
-                                </router-link>
+                            <div class="col-lg-6">
+                                <div class="mb-2">Модель: {{ relation.post_type?.title }}</div>
+                                <div class="mb-2">Название: {{ relation.title }}</div>
+                                <div class="mb-3">Тип отношения: {{ relation.type }}</div>
+                                <div class="btn-group w-100 border mb-3" v-for="relatedPost in relation.related_posts"
+                                     :key="relatedPost.id">
+                                    <div class="w-100 px-3 align-self-center">{{ relatedPost?.title }}</div>
+                                    <router-link :to="{name: 'Post', params: {postType: relation.post_type?.slug, id: relatedPost?.id}}" target="_blank"
+                                                 type="button" class="btn btn-light">
+                                        <i class="fa-sharp fa-solid fa-arrow-up-right-from-square"></i>
+                                    </router-link>
+                                </div>
                             </div>
                         </div>
                         <hr class="mb-4">

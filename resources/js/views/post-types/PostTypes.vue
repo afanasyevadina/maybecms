@@ -49,7 +49,7 @@
                 </table>
             </template>
         </div>
-        <CreatePostType></CreatePostType>
+        <CreatePostType @update="loadPostTypes"></CreatePostType>
     </div>
 </template>
 

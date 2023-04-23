@@ -54,6 +54,7 @@ class BlockController extends Controller
     /**
      * @param Block $block
      * @param PostType $postType
+     * @param Request $request
      * @return Response
      */
     public function setPostType(Block $block, PostType $postType, Request $request): Response
