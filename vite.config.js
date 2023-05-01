@@ -13,8 +13,8 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'resources/sass/app.scss',
-                'resources/js/app.js',
+                'packages/altenic/maybecms/src/resources/sass/app.scss',
+                'packages/altenic/maybecms/src/resources/js/app.js',
             ],
             refresh: true,
         }),

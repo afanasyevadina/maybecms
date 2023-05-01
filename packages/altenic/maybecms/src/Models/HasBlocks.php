@@ -55,6 +55,7 @@ trait HasBlocks
                 'title' => $block->title ?? '',
                 'content' => $block->content ?? [],
                 'post_type_id' => $block->post_type_id,
+                'component_id' => $block->component_id,
             ]);
             foreach ($block->attachments as $attachment) {
                 $childBlock->attachments()->create([

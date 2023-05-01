@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('slug', 255)->nullable();
             $table->foreignIdFor(PostType::class)->nullable()->constrained('post_types')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignIdFor(PostType::class, 'related_post_type_id')->nullable()->constrained('post_types')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->enum('type', ['has-one', 'has-many'])->nullable();
+            $table->string('type')->nullable();
             $table->timestamps();
         });
     }

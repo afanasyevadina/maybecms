@@ -61,7 +61,7 @@ class PostController extends Controller
         $post->updateBlocks($request->input('blocks') ?? []);
         foreach ($request->input('relations') as $relation) {
             $modelRelation = $post->relations()->find($relation['id']);
-            $relatedPosts = $modelRelation?->type == 'has-one' ? [$relation['related_post']] : ($relation['related_posts'] ?? []);
+            $relatedPosts = $modelRelation?->type == 'many-to-one' ? [$relation['related_post']] : ($relation['related_posts'] ?? []);
             $post->posts()->wherePivot('relation_id', $modelRelation?->id)->whereNotIn('related_post_id', $relatedPosts)->detach();
             $post->posts()->attach(array_filter($relatedPosts), [
                 'relation_id' => $modelRelation?->id,

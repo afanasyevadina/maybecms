@@ -32,12 +32,14 @@ return [
                 ],
             ],
             'children' => ['navbar-nav'],
+            'class' => 'fas fa-bars',
             'root' => true,
         ],
         'navbar-nav' => [
             'title' => 'Меню в шапке',
             'structure' => [],
             'children' => ['text', 'link'],
+            'class' => 'fas fa-bars',
         ],
         'section' => [
             'title' => 'Секция',
@@ -120,8 +122,75 @@ return [
                     'field_type' => 'text',
                 ],
             ],
-            'children' => ['text', 'markdown', 'link', 'image', 'video', 'heading', 'table', 'delimeter', 'section', 'preset', 'component'],
+            'children' => ['text', 'markdown', 'link', 'image', 'video', 'youtube', 'heading', 'cards', 'table', 'delimeter', 'section', 'preset', 'component'],
             'root' => true,
+            'allow_source' => true,
+            'class' => 'fas fa-folder',
+        ],
+        'cards' => [
+            'title' => 'Карточки',
+            'structure' => [
+                [
+                    'slug' => 'columns',
+                    'title' => 'Количество в строке',
+                    'field_type' => 'select',
+                    'options' => [
+                        'columns-2' => '2',
+                        'columns-3' => '3',
+                        'columns-4' => '4',
+                        'columns-5' => '5',
+                        'columns-6' => '6',
+                    ],
+                    'w' => 'col-lg-4',
+                ],
+                [
+                    'slug' => 'cards_background',
+                    'title' => 'Фон карточек',
+                    'field_type' => 'select',
+                    'options' => [
+                        'cards-bg-white' => 'Белый',
+                        'cards-bg-light' => 'Светлый',
+                        'cards-bg-dark' => 'Темный',
+                        'cards-bg-blue' => 'Голубой',
+                    ],
+                    'w' => 'col-lg-4',
+                ],
+                [
+                    'slug' => 'cards_style',
+                    'title' => 'Стиль карточек',
+                    'field_type' => 'select',
+                    'options' => [
+                        'cards-style-grid' => 'Простая плитка',
+                        'cards-style-flow' => 'Плавающие блоки',
+                    ],
+                    'w' => 'col-lg-4',
+                ],
+                [
+                    'slug' => 'css',
+                    'title' => 'Свой стиль',
+                    'field_type' => 'text',
+                ],
+            ],
+            'children' => ['card'],
+            'class' => 'fas fa-grip',
+        ],
+        'card' => [
+            'title' => 'Карточка',
+            'structure' => [
+                [
+                    'slug' => 'url',
+                    'title' => 'URL ссылки',
+                    'field_type' => 'link',
+                    'allow_source' => true,
+                ],
+                [
+                    'slug' => 'css',
+                    'title' => 'Свой стиль',
+                    'field_type' => 'text',
+                ],
+            ],
+            'class' => 'far fa-square',
+            'children' => ['heading', 'text', 'image'],
             'allow_source' => true,
         ],
         'table' => [
@@ -133,6 +202,7 @@ return [
                     'field_type' => 'text',
                 ],
             ],
+            'class' => 'fas fa-table',
             'children' => ['table_header', 'table_row'],
         ],
         'table_header' => [
@@ -144,6 +214,7 @@ return [
                     'field_type' => 'text',
                 ],
             ],
+            'class' => 'fas fa-table',
             'children' => ['table_cell'],
         ],
         'table_row' => [
@@ -155,6 +226,7 @@ return [
                     'field_type' => 'text',
                 ],
             ],
+            'class' => 'fas fa-table',
             'children' => ['table_cell'],
             'allow_source' => true,
         ],
@@ -167,6 +239,7 @@ return [
                     'field_type' => 'text',
                 ],
             ],
+            'class' => 'fas fa-table-cell-large',
             'children' => ['text', 'markdown', 'image'],
         ],
         'heading' => [
@@ -190,6 +263,18 @@ return [
                         'h5' => 'h5',
                         'h6' => 'h6',
                     ],
+                    'w' => 'col-lg-6',
+                ],
+                [
+                    'slug' => 'align',
+                    'title' => 'Выравнивание',
+                    'field_type' => 'select',
+                    'options' => [
+                        'align-left' => 'По левому краю',
+                        'align-right' => 'По правому краю',
+                        'align-center' => 'По центру',
+                    ],
+                    'w' => 'col-lg-6',
                 ],
                 [
                     'slug' => 'css',
@@ -197,6 +282,7 @@ return [
                     'field_type' => 'text',
                 ],
             ],
+            'class' => 'fas fa-heading',
         ],
         'text' => [
             'title' => 'Текст',
@@ -208,11 +294,35 @@ return [
                     'allow_source' => true,
                 ],
                 [
+                    'slug' => 'align',
+                    'title' => 'Выравнивание',
+                    'field_type' => 'select',
+                    'options' => [
+                        'align-left' => 'По левому краю',
+                        'align-right' => 'По правому краю',
+                        'align-center' => 'По центру',
+                    ],
+                    'w' => 'col-lg-6',
+                ],
+                [
+                    'slug' => 'margin',
+                    'title' => 'Отступ снизу',
+                    'field_type' => 'select',
+                    'options' => [
+                        'margin-none' => 'Нет',
+                        'margin-sm' => 'Маленький',
+                        'margin-md' => 'Средний',
+                        'margin-lg' => 'Большой',
+                    ],
+                    'w' => 'col-lg-6',
+                ],
+                [
                     'slug' => 'css',
                     'title' => 'Свой стиль',
                     'field_type' => 'text',
                 ],
             ],
+            'class' => 'fas fa-align-justify',
         ],
         'markdown' => [
             'title' => 'Markdown',
@@ -229,6 +339,7 @@ return [
                     'field_type' => 'text',
                 ],
             ],
+            'class' => 'fas fa-code',
         ],
         'link' => [
             'title' => 'Ссылка',
@@ -238,12 +349,14 @@ return [
                     'title' => 'Текст ссылки',
                     'field_type' => 'single-line-text',
                     'allow_source' => true,
+                    'w' => 'col-lg-6',
                 ],
                 [
                     'slug' => 'url',
                     'title' => 'URL ссылки',
                     'field_type' => 'link',
                     'allow_source' => true,
+                    'w' => 'col-lg-6',
                 ],
                 [
                     'slug' => 'style',
@@ -253,6 +366,17 @@ return [
                         'link' => 'Ссылка',
                         'button' => 'Кнопка',
                     ],
+                    'w' => 'col-lg-6',
+                ],
+                [
+                    'slug' => 'target',
+                    'title' => 'Режим открытия',
+                    'field_type' => 'select',
+                    'options' => [
+                        '_self' => 'В текущей вкладке',
+                        '_blank' => 'В новой вкладке',
+                    ],
+                    'w' => 'col-lg-6',
                 ],
                 [
                     'slug' => 'css',
@@ -260,6 +384,7 @@ return [
                     'field_type' => 'text',
                 ],
             ],
+            'class' => 'fas fa-link',
         ],
         'image' => [
             'title' => 'Картинка',
@@ -291,6 +416,7 @@ return [
                     'field_type' => 'text',
                 ],
             ],
+            'class' => 'far fa-image',
         ],
         'video' => [
             'title' => 'Видео',
@@ -307,6 +433,18 @@ return [
                     'field_type' => 'text',
                 ],
             ],
+            'class' => 'fas fa-video',
+        ],
+        'youtube' => [
+            'title' => 'Видео Youtube',
+            'structure' => [
+                [
+                    'slug' => 'url',
+                    'title' => 'URL',
+                    'field_type' => 'link',
+                ],
+            ],
+            'class' => 'fas fa-circle-play',
         ],
         'delimeter' => [
             'title' => 'Разделитель',
@@ -317,6 +455,7 @@ return [
                     'field_type' => 'text',
                 ],
             ],
+            'class' => 'fas fa-grip-lines',
             'root' => true,
         ],
     ],

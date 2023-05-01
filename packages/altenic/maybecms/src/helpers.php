@@ -44,8 +44,9 @@ if(!function_exists('maybe_relation_types')) {
     function maybe_relation_types() : array
     {
         return [
-            ['type' => 'has-one', 'title' => 'Has one'],
-            ['type' => 'has-many', 'title' => 'Has many'],
+            ['type' => 'one-to-many', 'title' => 'Один ко многим'],
+            ['type' => 'many-to-many', 'title' => 'Многие ко многим'],
+            ['type' => 'many-to-one', 'title' => 'Многие к одному'],
         ];
     }
 }

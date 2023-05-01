@@ -5,50 +5,6 @@
  */
 
 import './bootstrap';
-import {createApp} from 'vue';
-import router from './router'
-import store from './store'
-
-import App from "./App.vue";
-
-/**
- * Next, we will create a fresh Vue application instance. You may then begin
- * registering components with the application instance so they are ready
- * to use in your application's views. An example is included for you.
- */
-
-window.app = createApp(App);
-
-app.use(router)
-app.use(store)
-
-import HasOne from "./components/relations/HasOne.vue";
-import HasMany from "./components/relations/HasMany.vue";
-
-import Field from './components/fields/Field.vue';
-import TextField from './components/fields/TextField.vue';
-import SingleLineTextField from './components/fields/SingleLineTextField.vue';
-import MarkdownField from "./components/fields/MarkdownField.vue";
-import LinkField from "./components/fields/LinkField.vue";
-import ImageField from "./components/fields/ImageField.vue";
-import VideoField from "./components/fields/VideoField.vue";
-import SelectField from "./components/fields/SelectField.vue";
-
-import TreeItem from "./components/tree/TreeItem.vue";
-
-app.component('field', Field);
-app.component('text-field', TextField);
-app.component('single-line-text-field', SingleLineTextField);
-app.component('markdown-field', MarkdownField);
-app.component('link-field', LinkField);
-app.component('image-field', ImageField);
-app.component('video-field', VideoField);
-app.component('select-field', SelectField);
-
-app.component('has-one', HasOne);
-app.component('has-many', HasMany);
-
-app.component('tree-item', TreeItem);
 
 /**
  * The following block of code may be used to automatically register your
@@ -67,14 +23,3 @@ app.component('tree-item', TreeItem);
  * an "id" attribute of "app". This element is included with the "auth"
  * scaffolding. Otherwise, you will need to add an element yourself.
  */
-import http from './mixins/http.js'
-import str from './mixins/str.js'
-import media from './mixins/media.js'
-import util from './mixins/util.js'
-
-app.mixin(http)
-app.mixin(str)
-app.mixin(media)
-app.mixin(util)
-
-app.mount('#app');

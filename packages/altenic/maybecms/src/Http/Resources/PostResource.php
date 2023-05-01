@@ -32,7 +32,7 @@ class PostResource extends JsonResource
             'blocks' => BlockResource::collection($this->blocks),
             'relations' => $this->relations->map(function ($relation) {
                 $posts = $this->posts()->wherePivot('relation_id', $relation->id)->pluck('related_post_id');
-                return array_merge(RelationResource::make($relation)->toArray(request()), $relation->type == 'has-one' ? [
+                return array_merge(RelationResource::make($relation)->toArray(request()), $relation->type == 'many-to-one' ? [
                     'related_post' => $posts->first(),
                 ] : [
                     'related_posts' => $posts,
