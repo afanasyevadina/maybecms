@@ -25,22 +25,58 @@
 9) создание навигации по сайту;
 10) управление preset-ами (создание, редактирование, удаление, подключение к страницам и блокам).
 
-## Запуск
+## Установка
 
-Распакуйте проект. В консоли запустите:
-```shell
-./vendor/bin/sail up -d
+Подключите провайдер в app.php:
+
+```phpt
+'providers' => [
+
+        /*
+         * Package Service Providers...
+         */
+
+        \Altenic\MaybeCms\MaybeCmsServiceProvider::class,
+
+        ...
+
+    ],
 ```
-Это соберет и запустит докер-контейнеры
+
+Выполните команду:
 
 ```shell
-./vendor/bin/sail artisan vendor:publish
+php artisan maybecms:install
 ```
-Выберите MaybeCmsServiceProvider
+Эта команда распакует нужные файлы и выполнит миграции. При выполнении будут запрошены логин и пароль администратора.
 
-```shell
-./vendor/bin/sail artisan migrate:seed
+## Конфигурация тем:
+
+Отредактируйте файл config/maybe_theme.php или создайте новый аналогичный по структуре.
+
+Настройте типы примитивов и их полей:
+
+```phpt
+'card' => [
+    'title' => 'Карточка',
+    'structure' => [
+        [
+            'slug' => 'url',
+            'title' => 'URL ссылки',
+            'field_type' => 'link',
+            'allow_source' => true,
+        ],
+        [
+            'slug' => 'css',
+            'title' => 'Свой стиль',
+            'field_type' => 'text',
+        ],
+    ],
+    'class' => 'far fa-square',
+    'children' => ['heading', 'text', 'image'],
+    'allow_source' => true,
+]
 ```
-Заполним таблицы и начальные данные
 
-Добавьте в хосты http://dev.cms.test. Приложение будет работать по этому адресу.
+В папке public/vendor/maybecms/themes создайте папку с именем вашей темы и отредактируйте style.css и script.js.
+Затем включите нужную тему в настройках админки.
