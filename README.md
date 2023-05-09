@@ -29,18 +29,28 @@
 
 Распакуйте проект. В консоли запустите:
 ```shell
+cp .env.example .env
+```
+
+```shell
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php80-composer:latest \
+    composer install --ignore-platform-reqs
+```
+
+И затем:
+
+```shell
 ./vendor/bin/sail up -d
 ```
 Это соберет и запустит докер-контейнеры
 
 ```shell
-./vendor/bin/sail artisan vendor:publish
+./vendor/bin/sail artisan maybecms:install
 ```
-Выберите MaybeCmsServiceProvider
+Это выполнит нужные настройки для запуска админ-панели
 
-```shell
-./vendor/bin/sail artisan migrate:seed
-```
-Заполним таблицы и начальные данные
-
-Добавьте в хосты http://dev.cms.test. Приложение будет работать по этому адресу.
+Приложение будет работать по адресу http://localhost:80 (если не переопределено в hosts файле).
